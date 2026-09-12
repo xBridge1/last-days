@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Últimos Dias — Sobrevivência</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nosifer&family=Special+Elite&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root{
+  --bg:#0c0e0d;
+  --painel:#141816;
+  --painel2:#1b201d;
+  --borda:#2b332e;
+  --txt:#c6cfc7;
+  --txt2:#7d8a80;
+  --sangue:#8b1a1a;
+  --sangue2:#c0392b;
+  --bom:#6a9c5a;
+  --aviso:#c9a227;
+}
+
+body{
+  background:
+    radial-gradient(ellipse at 50% -10%, #1a2420 0%, transparent 60%),
+    var(--bg);
+  color:var(--txt);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.tela{ max-width:1500px; margin:0 auto; padding:16px; }
+
+/* ====== CRIAÇÃO ====== */
+#criacao{
+  max-width:720px; margin:0 auto; padding:40px 20px;
+  animation: fade .6s ease; font-family:'Special Elite','Courier New',monospace;
+}
+#criacao h1, #criacao .pergunta, #criacao .resumoBox h3{
+  font-family:'Nosifer',Georgia,serif; font-weight:400;
+  color:#b6423e;
+  text-shadow:0 0 7px rgba(80,0,0,.85), 0 0 22px rgba(139,26,26,.55);
+}
+.aberturaFrase{ font-family:'Nosifer',Georgia,serif; font-weight:400; }
+#criacao h1{ letter-spacing:4px; }
+#criacao .pergunta{ font-size:17px; line-height:1.45; }
+.abertura{
+  min-height:100vh; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; text-align:center; padding:30px 20px;
+  animation:fade .8s ease;
+}
+.abertura::before, .abertura::after, #criacao::before, #criacao::after{
+  content:''; position:fixed; z-index:-1; pointer-events:none; opacity:.34;
+  background:
+    radial-gradient(ellipse at 35% 30%, rgba(139,26,26,.75) 0 8%, transparent 10%),
+    radial-gradient(ellipse at 60% 55%, rgba(96,10,10,.6) 0 13%, transparent 16%),
+    radial-gradient(circle at 25% 70%, rgba(192,57,43,.5) 0 2%, transparent 4%),
+    radial-gradient(circle at 76% 25%, rgba(139,26,26,.55) 0 3%, transparent 5%);
+  filter:blur(1px); transform:rotate(-12deg); mix-blend-mode:screen;
+}
+.abertura::before, #criacao::before{ inset:-10% 52% 48% -12%; }
+.abertura::after, #criacao::after{ inset:48% -12% -10% 52%; transform:rotate(164deg); opacity:.25; }
+#abertura[hidden]{ display:none; }
+#videoCriacaoFundo{
+  position:fixed; inset:0; z-index:0; overflow:hidden; background:#080a09;
+}
+#videoCriacaoFundo[hidden]{ display:none; }
+#videoCriacaoFundo video{
+  position:absolute; inset:-5%; width:110%; height:110%; object-fit:cover;
+  filter:blur(3px) brightness(.48); transform:scale(1.02);
+}
+#videoCriacaoFundo::after{
+  content:''; position:absolute; inset:0; background:rgba(7,9,8,.42);
+}
+#criacao, #abertura, #jogo{ position:relative; z-index:1; }
+.aberturaFrase{
+  max-width:720px; color:#b6423e; font-size:clamp(30px,6vw,64px);
+  line-height:1.08; letter-spacing:3px; text-transform:uppercase;
+  text-shadow:0 0 8px rgba(80,0,0,.9), 0 0 30px rgba(139,26,26,.8); font-weight:800;
+}
+.aberturaSub{ color:var(--txt2); margin-top:18px; font-size:14px; letter-spacing:2px; }
+.btnAbertura{
+  margin-top:42px; padding:15px 28px; background:transparent;
+  border:1px solid #8b1a1a; color:#d9e0da; border-radius:5px;
+  font:700 14px inherit; letter-spacing:2px; cursor:pointer; transition:.2s;
+}
+.btnAbertura:hover{ background:#5e1010; border-color:#c0392b; }
+@keyframes fade{ from{opacity:0; transform:translateY(10px)} to{opacity:1;transform:none} }
+
+#criacao h1{
+  font-size:clamp(30px,7vw,54px);
+  letter-spacing:6px;
+  text-align:center;
+  color:#b6423e;
+  text-shadow:0 0 8px rgba(80,0,0,.9), 0 0 30px rgba(139,26,26,.8);
+  font-weight:800;
+}
+#criacao .sub{
+  text-align:center; color:var(--txt2); margin:10px 0 34px;
+  letter-spacing:2px; font-size:13px; text-transform:uppercase;
+}
+.pergunta{
+  font-size:19px; margin-bottom:6px; color:#b6423e; font-weight:600;
+  text-shadow:0 0 6px rgba(80,0,0,.7);
+}
+.dica{ font-size:13px; color:var(--txt2); margin-bottom:16px; }
+
+.opcao{
+  display:block; width:100%; text-align:left;
+  background:var(--painel); border:1px solid var(--borda);
+  color:var(--txt); padding:14px 16px; margin-bottom:10px;
+  border-radius:6px; cursor:pointer; transition:.15s;
+  font-size:15px; font-family:inherit;
+}
+.opcao:hover{
+  background:var(--painel2); border-color:#4a5a4f;
+  transform:translateX(4px);
+}
+.opcao strong{ display:block; color:#e6ece7; margin-bottom:3px; }
+.opcao span{ font-size:12.5px; color:var(--txt2); }
+
+.resumoBox{
+  background:var(--painel); border:1px solid var(--borda);
+  border-radius:8px; padding:20px; margin-top:10px;
+}
+.resumoBox h3{ margin-bottom:12px; color:#d8ded9; letter-spacing:1px;}
+.resumoBox p{ font-size:14px; margin-bottom:6px; color:var(--txt2); }
+.resumoBox p b{ color:#b9c7bb; }
+
+.campoNome{
+  display:block; width:100%; margin:14px 0 4px; padding:12px 13px;
+  background:#0a0c0b; border:1px solid var(--borda); border-radius:5px;
+  color:var(--txt); font:inherit;
+}
+.campoNome:focus{ outline:2px solid #8b1a1a; outline-offset:1px; }
+.identidadeGrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.aparenciaGrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+.aparenciaOpcao{ padding:5px; background:#0a0c0b; border:1px solid var(--borda); border-radius:5px; cursor:pointer; color:var(--txt2); font:inherit; font-size:11px; }
+.aparenciaOpcao:hover, .aparenciaOpcao.selecionada{ border-color:#b6423e; color:#e0e6e1; }
+.aparenciaOpcao img{ display:block; width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:3px; margin-bottom:5px; background:#171c19; }
+.uploadFoto{ display:block; margin-top:10px; padding:10px; border:1px dashed #5e3034; border-radius:5px; color:#c58d91; font-size:12px; cursor:pointer; }
+.uploadFoto input{ display:block; width:100%; margin-top:6px; color:var(--txt2); font:inherit; font-size:11px; }
+.campoLabel{ display:block; color:var(--txt2); font-size:12px; margin-top:12px; }
+.linhaTempo{
+  display:flex; gap:7px; align-items:center; margin:0 0 18px;
+  color:#8b9d90; font-size:11px; overflow-x:auto; padding-bottom:3px;
+}
+.linhaTempo span{ white-space:nowrap; padding:5px 8px; border:1px solid var(--borda); border-radius:4px; }
+.linhaTempo .ativo{ color:#e5ebe6; border-color:var(--sangue2); background:#241817; }
+.historicoBox{ margin-top:14px; padding-top:12px; border-top:1px solid var(--borda); }
+.historicoBox p{ margin-bottom:5px; }
+.criacaoLayout{ display:grid; grid-template-columns:minmax(180px,240px) 1fr; gap:22px; align-items:start; }
+.retratoCriacao{ position:sticky; top:18px; background:#0a0c0b; border:1px solid var(--borda); border-radius:8px; padding:8px; }
+.retratoCriacao img{ display:block; width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:5px; background:#171c19; }
+.retratoVazio{ display:flex; aspect-ratio:3/4; align-items:center; justify-content:center; color:var(--txt2); font-size:12px; text-align:center; padding:12px; }
+.retratoDados{ padding:9px 3px 2px; }
+.retratoDados strong{ display:block; color:#e3e9e4; font-size:16px; }
+.retratoDados span{ display:block; color:var(--txt2); font-size:11px; margin-top:3px; }
+.idadeCriacao{ color:#c9a227 !important; letter-spacing:1px; text-transform:uppercase; }
+.adultoEscolhas{ display:grid; gap:9px; }
+.eventoEscolhido{ color:#9fb0a3; font-size:12px; padding:6px 0; border-bottom:1px solid #252d27; }
+.eventoEscolhido b{ color:#dbe3dc; }
+.eventoEfeito{ display:block; color:#7d8a80; font-size:11px; margin-top:3px; }
+.eventoEfeito.perda{ color:#d4793f; }
+@media(max-width:700px){ .criacaoLayout{ grid-template-columns:1fr; } .retratoCriacao{ position:static; max-width:220px; margin:0 auto; } }
+@media(max-width:520px){ .identidadeGrid{ grid-template-columns:1fr; } }
+
+.btnIniciar{
+  width:100%; margin-top:18px; padding:16px;
+  background:linear-gradient(180deg,#8b1a1a,#5e1010);
+  border:1px solid #a83232; color:#fff;
+  font-size:16px; letter-spacing:3px; font-weight:700;
+  border-radius:6px; cursor:pointer; font-family:inherit;
+  transition:.2s;
+}
+.btnIniciar:hover{ filter:brightness(1.25); }
+
+/* ====== JOGO ====== */
+#topo{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:16px; flex-wrap:wrap;
+  background:var(--painel); border:1px solid var(--borda);
+  border-radius:8px; padding:12px 18px; margin-bottom:14px;
+}
+#tempo{ font-size:17px; font-weight:700; letter-spacing:2px; color:#dbe3dc; }
+#tempo small{ display:block; font-size:11px; color:var(--txt2); letter-spacing:1px; font-weight:400; }
+#recursos{ display:flex; gap:16px; flex-wrap:wrap; font-size:14px; }
+.recItem{ display:flex; align-items:center; gap:5px; }
+.recItem b{ color:#e8eee9; font-weight:600; }
+
+#grid{
+  display:grid;
+  grid-template-columns: 270px 1fr 250px;
+  gap:14px;
+  align-items:start;
+}
+@media(max-width:1050px){
+  #grid{ grid-template-columns:1fr; }
+}
+
+.painel{
+  background:var(--painel); border:1px solid var(--borda);
+  border-radius:8px; padding:14px; margin-bottom:12px;
+}
+.painel h3{
+  font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--txt2); margin-bottom:12px;
+  border-bottom:1px solid var(--borda); padding-bottom:7px;
+}
+
+.statLinha{
+  display:flex; justify-content:space-between;
+  font-size:13.5px; padding:4px 0; color:var(--txt2);
+}
+.statLinha b{ color:#d5ddd6; font-weight:600; }
+
+.barraMini{
+  height:5px; background:#0a0c0b; border-radius:3px;
+  overflow:hidden; margin:3px 0 8px;
+}
+.barraMini div{ height:100%; transition:width .3s; }
+
+/* LOG */
+#logBox{
+  background:var(--painel); border:1px solid var(--borda);
+  border-radius:8px; padding:14px;
+  height:calc(100vh - 300px); min-height:340px;
+  overflow-y:auto; font-family:'Consolas','Monaco',monospace;
+  font-size:13.5px; line-height:1.65;
+}
+#logBox::-webkit-scrollbar{ width:8px; }
+#logBox::-webkit-scrollbar-thumb{ background:#2b332e; border-radius:4px; }
+
+.entrada{ margin-bottom:5px; animation:fade .3s; }
+.entrada .hora{ color:#4d5a52; margin-right:8px; font-size:12px; }
+.entrada.info{ color:#9aa79d; }
+.entrada.bom{ color:var(--bom); }
+.entrada.ruim{ color:#d4793f; }
+.entrada.sangue{ color:var(--sangue2); font-weight:700; }
+.entrada.sistema{
+  color:#8b9d90; letter-spacing:3px; text-align:center;
+  margin:14px 0; font-size:12px;
+  border-top:1px solid #232a26; border-bottom:1px solid #232a26; padding:5px 0;
+}
+
+/* PROGRESSO */
+#progresso{
+  background:var(--painel); border:1px solid var(--borda);
+  border-radius:8px; padding:12px 16px; margin-bottom:12px;
+  min-height:64px; display:flex; flex-direction:column; justify-content:center;
+}
+.idle{ color:var(--txt2); font-size:13px; font-style:italic; }
+.progNome{ font-size:14px; color:#dbe3dc; margin-bottom:7px; font-weight:600;}
+.barra{ height:8px; background:#0a0c0b; border-radius:4px; overflow:hidden; }
+.barra div{
+  height:100%; background:linear-gradient(90deg,#5e1010,#c0392b);
+  transition:width .4s linear;
+  box-shadow:0 0 12px rgba(192,57,43,.5);
+}
+.progInfo{ font-size:11.5px; color:var(--txt2); margin-top:6px; letter-spacing:1px;}
+
+/* AÇÕES */
+.acaoBtn{
+  display:block; width:100%; text-align:left; font-family:inherit;
+  background:var(--painel2); border:1px solid var(--borda);
+  color:var(--txt); padding:11px 13px; margin-bottom:8px;
+  border-radius:6px; cursor:pointer; transition:.15s;
+}
+.acaoBtn strong{ display:block; font-size:13.5px; color:#dde5de; margin-bottom:2px; }
+.acaoBtn span{ font-size:11px; color:var(--txt2); }
+.acaoBtn:hover:not(:disabled){
+  border-color:#5e1010; background:#20261f;
+  box-shadow:0 0 0 1px rgba(139,26,26,.35) inset;
+}
+.acaoBtn:disabled{ opacity:.35; cursor:not-allowed; }
+
+/* SOBREVIVENTES */
+.sobrev{
+  display:flex; justify-content:space-between; align-items:center;
+  background:var(--painel2); border:1px solid var(--borda);
+  border-radius:5px; padding:7px 9px; margin-bottom:6px; font-size:12.5px;
+}
+.sobrev .nomeS{ color:#d5ddd6; font-weight:600; }
+.sobrev .ferido{ color:var(--sangue2); font-size:11px; }
+.npcDetalhe{ color:#7d8a80; font-size:10.5px; margin-top:3px; }
+.npcSkills{ color:#9aa79d; font-size:10px; margin-top:2px; }
+.tagTarefa{
+  background:#0a0c0b; border:1px solid var(--borda); border-radius:4px;
+  padding:3px 7px; font-size:10.5px; cursor:pointer; color:#9fb0a3;
+  font-family:inherit; transition:.15s;
+}
+.tagTarefa:hover{ border-color:#5e1010; color:#e0e8e1; }
+.painelResumoAcao{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.botaoVisualizar{ background:#0a0c0b; border:1px solid var(--borda); color:#b9c7bb; border-radius:4px; padding:6px 8px; cursor:pointer; font:inherit; font-size:11px; }
+.botaoVisualizar:hover{ border-color:var(--sangue2); color:#fff; }
+.grupoSecao{ margin-top:12px; }
+.grupoSecao h4{ color:#9aa79d; font-size:11px; letter-spacing:1px; margin:10px 0 6px; text-transform:uppercase; }
+.pessoaModal{ border:1px solid var(--borda); background:var(--painel2); border-radius:6px; padding:10px; margin-bottom:8px; }
+.pessoaModal strong{ color:#e1e8e2; }
+.pessoaMeta{ color:var(--txt2); font-size:11px; margin-top:3px; }
+.relBar{ display:grid; grid-template-columns:70px 1fr 28px; gap:6px; align-items:center; color:#9aa79d; font-size:10px; margin-top:5px; }
+.relBar i{ height:5px; background:#0a0c0b; border-radius:3px; overflow:hidden; }
+.relBar i b{ display:block; height:100%; background:#6a9c5a; }
+.relBar.romance i b{ background:#b44e68; }
+.relBar.respeito i b{ background:#c9a227; }
+.nivelBadge{ color:#c9a227; font-size:11px; }
+.acaoRelacao{ display:block; width:100%; margin-top:7px; padding:8px; text-align:left; background:#0a0c0b; border:1px solid var(--borda); color:var(--txt); border-radius:4px; cursor:pointer; font:inherit; font-size:12px; }
+.acaoRelacao:hover{ border-color:var(--sangue2); }
+.nomePerfil{ display:block; width:100%; text-align:left; background:transparent; border:0; color:#e4eae5; padding:0; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
+.nomePerfil:hover{ color:#c0392b; }
+.gravidezPainel{ margin:10px 0 4px; padding:8px; border:1px solid #5e3034; border-radius:5px; background:#211719; cursor:pointer; }
+.gravidezPainel strong{ display:block; color:#e3b5bd; font-size:12px; }
+.gravidezPainel span{ display:block; color:#b78b92; font-size:10.5px; margin-top:3px; }
+.perfilPrincipalImagem{ display:block; width:100%; max-height:300px; object-fit:cover; border-radius:6px; border:1px solid var(--borda); background:#0a0c0b; margin-bottom:15px; }
+
+/* FAMÍLIA */
+.familiaAtual{
+  border-left:3px solid var(--sangue2); padding-left:10px; margin-bottom:12px;
+}
+.familiaAtual strong{ display:block; color:#e4eae5; }
+.familiaAtual span{ color:var(--txt2); font-size:11px; }
+.painelFamiliaClicavel{ cursor:pointer; transition:.15s; }
+.painelFamiliaClicavel:hover{ border-color:#5e1010; background:var(--painel2); }
+.arvore{ overflow-x:auto; padding:4px 0 2px; }
+.arvoreGeracao{
+  display:flex; gap:6px; align-items:flex-start; min-width:max-content;
+  padding:5px 0 9px; border-left:1px solid #39443c; margin-left:5px;
+  padding-left:8px;
+}
+.arvoreGeracao + .arvoreGeracao{ border-top:1px solid #39443c; }
+.geracaoNome{
+  min-width:42px; color:#68776b; font-size:10px; letter-spacing:1px;
+  text-transform:uppercase; padding-top:8px;
+}
+.noFamilia{
+  display:inline-block; min-width:118px; padding:8px 10px; margin:3px;
+  background:var(--painel2); border:1px solid var(--borda); border-radius:5px;
+  vertical-align:top; cursor:pointer; transition:.15s;
+}
+.noFamilia:hover{ border-color:#8b1a1a; background:#232b26; transform:translateY(-2px); }
+.noFamilia.atual{ border-color:var(--sangue2); box-shadow:0 0 0 1px rgba(192,57,43,.25) inset; }
+.noFamilia.morto{ opacity:.45; text-decoration:line-through; }
+.noFamilia strong{ display:block; color:#dbe3dc; font-size:12px; }
+.noFamilia span{ display:block; color:var(--txt2); font-size:10px; margin-top:3px; }
+.linhaFamilia{ color:#5c6a60; font-size:14px; margin:0 3px; }
+.noFamilia small{ display:block; color:#c9a227; font-size:9px; margin-top:4px; }
+.arvoreModal{ overflow-x:auto; padding:4px 0 10px; }
+.arvoreModal .arvoreGeracao{ min-width:100%; }
+.familiaVinculo{
+  margin:2px 3px 8px 50px; color:#68776b; font-size:11px;
+}
+.familiaVinculo b{ color:#9aa79d; }
+.perfilImagem{
+  display:block; width:100%; max-height:280px; object-fit:cover;
+  border:1px solid var(--borda); border-radius:6px; margin-bottom:15px;
+  background:#0a0c0b;
+}
+.imagemFallback{
+  display:flex; min-height:150px; align-items:center; justify-content:center;
+  margin-bottom:15px; border:1px dashed #3a443d; border-radius:6px;
+  color:var(--txt2); font-size:12px; text-align:center;
+}
+.eventoImagem{
+  display:block; width:100%; max-height:210px; object-fit:cover;
+  border:1px solid var(--borda); border-radius:5px; margin:0 0 16px;
+  background:#0a0c0b;
+}
+
+/* MODAL */
+#modal{
+  position:fixed; inset:0; background:rgba(0,0,0,.88);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px; z-index:100; backdrop-filter:blur(3px);
+}
+#modal[hidden]{ display:none; }
+.modalBox{
+  background:#121614; border:1px solid #3a1f1f;
+  border-radius:10px; padding:26px; max-width:560px; width:100%;
+  box-shadow:0 0 60px rgba(139,26,26,.35);
+  animation:pop .25s ease;
+  max-height:88vh; overflow-y:auto;
+}
+@keyframes pop{ from{transform:scale(.94); opacity:0} to{transform:scale(1); opacity:1} }
+.modalBox h2{
+  color:#e4eae5; font-size:20px; margin-bottom:12px; letter-spacing:1px;
+}
+.modalBox p{ color:#a9b5ac; font-size:14px; line-height:1.7; margin-bottom:20px; }
+.modalOps button{
+  display:block; width:100%; text-align:left; font-family:inherit;
+  background:var(--painel2); border:1px solid var(--borda);
+  color:var(--txt); padding:13px 15px; margin-bottom:9px;
+  border-radius:6px; cursor:pointer; font-size:14px; transition:.15s;
+}
+.modalOps button:hover{ background:#232b26; border-color:#5e1010; transform:translateX(3px); }
+</style>
+</head>
+<body>
+
+<div id="videoCriacaoFundo" aria-hidden="true">
+  <video id="videoCriacao" autoplay muted loop playsinline preload="auto">
+    <source src="assets/menu/videoplayback.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- ============ ABERTURA ============ -->
+<div id="abertura" class="abertura">
+  <div class="aberturaFrase">Foi assim que você encontrou sua morte.</div>
+  <div class="aberturaSub">Antes disso, houve uma vida inteira para lembrar.</div>
+  <button class="btnAbertura" onclick="abrirCriacao()">COMEÇAR</button>
+</div>
+
+<!-- ============ CRIAÇÃO ============ -->
+<div id="criacao" class="tela" hidden>
+  <h1>ÚLTIMOS DIAS</h1>
+  <p class="sub">O mundo acabou. Você ainda não.</p>
+  <div id="criacaoBox"></div>
+</div>
+
+<!-- ============ JOGO ============ -->
+<div id="jogo" class="tela" hidden>
+  <header id="topo">
+    <div id="tempo"></div>
+    <div id="recursos"></div>
+  </header>
+  <div id="grid">
+    <aside>
+      <div class="painel" id="statusJogador"></div>
+      <div class="painel" id="painelBase"></div>
+      <div class="painel" id="painelSobreviventes"></div>
+      <div class="painel" id="painelFamilia"></div>
+    </aside>
+    <main>
+      <div id="progresso"></div>
+      <div id="logBox"></div>
+    </main>
+    <aside>
+      <div class="painel">
+        <h3>Ações</h3>
+        <div id="acoes"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div id="modal" hidden></div>
+
+<script>
+/* ============================================================
+   UTILIDADES
+============================================================ */
+const rnd = (a,b)=> Math.floor(Math.random()*(b-a+1))+a;
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const clamp = (v,a,b)=> Math.max(a, Math.min(b,v));
+const esc = v => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const NOMES = ['Ana','Bruno','Carla','Diego','Elena','Fábio','Gabi','Heitor','Iara',
+  'João','Karin','Lucas','Marina','Nando','Olga','Paulo','Rita','Samuel','Tânia',
+  'Ubirajara','Vera','Wesley','Yara','Zeca','Bia','Caio','Dora','Enzo','Fê','Gil'];
+const NOMES_MASC = ['Bruno','Diego','Fábio','Heitor','João','Lucas','Nando','Paulo','Samuel','Ubirajara','Wesley','Zeca','Caio','Enzo','Gil'];
+const NOMES_FEM = ['Ana','Carla','Elena','Gabi','Iara','Karin','Marina','Olga','Rita','Tânia','Vera','Yara','Bia','Dora'];
+
+const PERFIS_NPC = {
+  masculino:[
+    { especialidade:'Batedor', skills:{forca:3, agilidade:5, inteligencia:3, carisma:2, resistencia:3} },
+    { especialidade:'Mecânico', skills:{forca:4, agilidade:2, inteligencia:5, carisma:2, resistencia:3} },
+    { especialidade:'Líder', skills:{forca:3, agilidade:2, inteligencia:4, carisma:5, resistencia:3} },
+    { especialidade:'Guarda', skills:{forca:5, agilidade:3, inteligencia:2, carisma:2, resistencia:5} }
+  ],
+  feminino:[
+    { especialidade:'Médica', skills:{forca:2, agilidade:3, inteligencia:5, carisma:4, resistencia:2} },
+    { especialidade:'Caçadora', skills:{forca:3, agilidade:5, inteligencia:3, carisma:2, resistencia:4} },
+    { especialidade:'Organizadora', skills:{forca:2, agilidade:3, inteligencia:4, carisma:5, resistencia:3} },
+    { especialidade:'Guarda', skills:{forca:4, agilidade:4, inteligencia:2, carisma:2, resistencia:5} }
+  ]
+};
+
+function gerarIdentidadeNpc(genero=null){
+  const escolhido = genero || pick(['masculino','feminino']);
+  const nomes = escolhido === 'feminino' ? NOMES_FEM : NOMES_MASC;
+  return { genero:escolhido, nome:pick(nomes) };
+}
+
+function gerarPerfilNpc(genero){
+  const perfil = pick(PERFIS_NPC[genero]);
+  const skills = {...perfil.skills};
+  return { especialidade:perfil.especialidade, skills };
+}
+
+function rotuloGenero(genero){
+  return genero === 'feminino' ? 'Feminino' : 'Masculino';
+}
+
+function faixaEtaria(idade){
+  if(idade < 13) return 'crianca';
+  if(idade < 18) return 'adolescente';
+  return 'adulto';
+}
+
+function caminhoImagemMembro(membro){
+  return `assets/${membro.genero}/${faixaEtaria(idadeMembro(membro))}/${membro.id}.webp`;
+}
+
+function mostrarFallbackImagem(id){
+  const fallback = document.getElementById(`fallbackImagem${id}`);
+  if(fallback) fallback.hidden = false;
+}
+
+function dadosGravidez(){
+  const g = S?.familia?.gravidez;
+  if(!g) return null;
+  const dias = Math.max(0, Math.floor((S.tempoTotal - g.inicio) / 1440));
+  const trimestre = dias < 94 ? 1 : dias < 187 ? 2 : 3;
+  const nome = trimestre === 1 ? 'Primeiro trimestre' : trimestre === 2 ? 'Segundo trimestre' : 'Terceiro trimestre';
+  return {dias, trimestre, nome, restante:Math.max(0,280-dias)};
+}
+
+function caminhoImagemGravidez(){
+  const dados = dadosGravidez();
+  if(!dados) return 'assets/MC/feminino/gravidez/pos-parto/personagem.webp';
+  const pasta = dados.trimestre === 1 ? '1-trimestre' : dados.trimestre === 2 ? '2-trimestre' : '3-trimestre';
+  return `assets/MC/feminino/gravidez/${pasta}/personagem.webp`;
+}
+
+function abrirEstagioGravidez(){
+  const dados = dadosGravidez();
+  const mae = dados && S.familia.membros.find(m=>m.id === S.familia.gravidez.maeId);
+  if(!dados || !mae) return;
+  abrirModal(`Gestação de ${esc(mae.nome)}`,`
+    <img class="perfilPrincipalImagem" src="${caminhoImagemGravidez()}" alt="${dados.nome}" onerror="this.hidden=true">
+    <p><b>${dados.nome}</b><br>${dados.dias} dias de gestação · ${dados.restante} dias restantes.</p>
+    <p>${dados.trimestre === 1 ? 'O corpo começa a mudar. O risco é maior e o descanso importa.' : dados.trimestre === 2 ? 'A gravidez está mais estável. A criança começa a se desenvolver rapidamente.' : 'A criança já está formada. O acampamento precisa se preparar para o parto.'}</p>`,
+    [{texto:'Fechar estágio',fn:()=>{}}]);
+}
+
+const NOMES_REC = {
+  comida:'comida', agua:'água', remedios:'remédios',
+  materiais:'materiais', municao:'munição', combustivel:'combustível'
+};
+
+const ICONES = {
+  comida:'🥫', agua:'💧', remedios:'💊',
+  materiais:'🔩', municao:'🔫', combustivel:'⛽'
+};
+
+const IMAGENS_EVENTOS = {
+  tentativaBebe:'assets/tentativa-bebe.gif',
+  gravidez:'assets/gravidez.gif'
+};
+
+/* ============================================================
+   CRIAÇÃO DE PERSONAGEM
+============================================================ */
+const CRIACAO = [
+  {
+    pergunta:'Na infância, você aprendeu a sobreviver quando...',
+    opcoes:[
+      { texto:'Cuidava de alguém mais novo', desc:'Você aprendeu cedo a proteger pessoas.', ef:{resistencia:1, carisma:1}, comportamento:{empatia:2,sociabilidade:1}, anos:12, exp:3, tag:'Protetor(a)' },
+      { texto:'Vivia em uma casa rígida', desc:'Erros tinham consequências e horários eram regras.', ef:{inteligencia:1, resistencia:1}, comportamento:{disciplina:2,cautela:1}, anos:12, exp:4, tag:'Disciplinado(a)' },
+      { texto:'Passava a maior parte do tempo na rua', desc:'Você aprendeu a ler intenções antes que alguém falasse.', ef:{agilidade:1, carisma:1}, comportamento:{cautela:2, ambicao:1}, anos:12, exp:3, tag:'Sobrevivente urbano' },
+      { texto:'Cresceu perto da natureza', desc:'Silêncio, trabalho e paciência eram parte da rotina.', ef:{resistencia:2, forca:1}, comportamento:{cautela:1, disciplina:1}, anos:12, exp:4, tag:'Interiorano(a)' }
+    ]
+  },
+  {
+    pergunta:'Na adolescência, algo marcou você...',
+    opcoes:[
+      { texto:'Perdeu alguém importante', desc:'Desde então, você tenta não demonstrar medo.', ef:{resistencia:1, inteligencia:1}, remove:{carisma:1}, comportamento:{trauma:2,cautela:1}, anos:6, exp:5, consequencia:'Você evita criar vínculos profundos.', tag:'Marcado(a) pela perda' },
+      { texto:'Encontrou seu primeiro grupo de amigos', desc:'Você descobriu que pessoas juntas conseguem ir mais longe.', ef:{carisma:2}, comportamento:{empatia:1,sociabilidade:2}, anos:6, exp:4, tag:'Ligado(a) ao grupo' },
+      { texto:'Começou a trabalhar cedo', desc:'Você aprendeu o valor de cada recurso e de cada promessa.', ef:{forca:1, inteligencia:1}, comportamento:{disciplina:2, ambicao:1}, anos:6, exp:6, tag:'Trabalhador(a)' },
+      { texto:'Se refugiou em livros e máquinas', desc:'Enquanto outros procuravam respostas, você aprendia a construir as suas.', ef:{inteligencia:2}, comportamento:{cautela:1, ambicao:2}, anos:6, exp:5, tag:'Autodidata' }
+    ]
+  }
+];
+
+const EVENTOS_ADULTOS = [
+  { texto:'Fez faculdade', desc:'Quatro anos de estudo e uma profissão que exige pensamento.', ef:{inteligencia:2, carisma:1}, remove:{resistencia:1}, comportamento:{disciplina:1, ambicao:2}, exp:8, rec:{materiais:1}, consequencia:'Você sabe analisar problemas, mas passou anos longe do trabalho físico.', tag:'Formado(a)' },
+  { texto:'Trabalhou em dois empregos', desc:'Você aprendeu a funcionar mesmo quando o corpo pedia descanso.', ef:{resistencia:2}, remove:{carisma:1}, comportamento:{disciplina:2}, exp:8, consequencia:'Você aguenta longas jornadas, mas tem pouco tempo para as pessoas.', tag:'Trabalhador(a)' },
+  { texto:'Conversou com alguém que mudou sua vida', desc:'Uma relação ensinou você a confiar, ou a nunca mais confiar.', ef:{carisma:2}, comportamento:{empatia:1, sociabilidade:2}, exp:5, consequencia:'Você procura significado nas pessoas que encontra.', tag:'Marcado por um encontro' },
+  { texto:'Cometeu um crime', desc:'Você cruzou uma linha. Talvez tenha sido por necessidade, talvez não.', ef:{agilidade:1, inteligencia:1}, remove:{carisma:2}, comportamento:{cautela:2, trauma:1, ambicao:1}, exp:7, rec:{municao:2}, consequencia:'Se descobrirem seu passado, a confiança do acampamento pode cair.', tag:'Passado criminoso' },
+  { texto:'Perdeu alguém por sua culpa', desc:'A lembrança não desaparece. Ela muda todas as decisões seguintes.', ef:{resistencia:1, inteligencia:1}, remove:{empatia:1}, comportamento:{trauma:3, cautela:1}, exp:6, consequencia:'Sob pressão, você pode hesitar quando alguém depender da sua decisão.', tag:'Carrega uma culpa' },
+  { texto:'Serviu em uma guerra ou operação de risco', desc:'Você voltou vivo, mas não voltou igual.', ef:{forca:2, agilidade:1}, remove:{carisma:1}, comportamento:{disciplina:2, trauma:2}, exp:10, rec:{municao:5}, arma:'Revólver', armaBonus:3, consequencia:'Você reage rápido ao perigo, mas o barulho de tiros nunca passa despercebido.', tag:'Veterano(a)' },
+  { texto:'Construiu uma família', desc:'Você aprendeu a planejar o amanhã porque alguém dependia de você.', ef:{resistencia:1, carisma:1}, comportamento:{empatia:3, disciplina:1}, exp:6, familiaInicio:'filho', consequencia:'Você começa a jornada com parceiro(a) e filho(a) na comunidade.', tag:'Pai/Mãe' }
+];
+
+let criacao = {
+  passo: 0,
+  identidadePronta: false,
+  build: {
+    stats:{ forca:2, agilidade:2, inteligencia:2, carisma:2, resistencia:2 },
+    rec:{ comida:4, agua:4, remedios:0, materiais:0, municao:0, combustivel:0 },
+    moral:60,
+    arma:'Nenhuma',
+    armaBonus:0,
+    bonusLoot:0,
+    nome:'Alex',
+    sobrenome:'',
+    genero:'feminino',
+    aparencia:'padrao-1',
+    imagemUpload:'',
+    idade:0,
+    experiencia:0,
+    eventosAdultos:[],
+    historico:[],
+    comportamento:{ empatia:0, disciplina:0, cautela:0, ambicao:0, sociabilidade:0, trauma:0 },
+    familiaInicio:'sozinho',
+    tags:[]
+  }
+};
+
+function renderCriacao(){
+  const box = document.getElementById('criacaoBox');
+
+  if(!criacao.identidadePronta){
+    box.innerHTML = `<div class="resumoBox">
+      <h3>QUEM ERA VOCÊ ANTES DO FIM</h3>
+      <p class="dica">Sua história começa antes do apocalipse. O nome, a idade e as escolhas vão acompanhar você.</p>
+      <div class="identidadeGrid">
+        <label class="campoLabel">Nome
+          <input id="nomeInicial" class="campoNome" maxlength="20" value="${esc(criacao.build.nome)}" placeholder="Nome">
+        </label>
+        <label class="campoLabel">Sobrenome
+          <input id="sobrenomeInicial" class="campoNome" maxlength="24" value="${esc(criacao.build.sobrenome)}" placeholder="Sobrenome">
+        </label>
+      </div>
+      <label class="campoLabel">Gênero</label>
+      <div id="generoInicial" class="identidadeGrid">
+        <button class="opcao" data-genero="feminino"><strong>Feminino</strong><span>Uma identidade entre as pessoas que sobreviveram.</span></button>
+        <button class="opcao" data-genero="masculino"><strong>Masculino</strong><span>Uma identidade entre as pessoas que sobreviveram.</span></button>
+      </div>
+      <label class="campoLabel">Aparência</label>
+      <div class="aparenciaGrid">${['padrao-1','padrao-2','padrao-3'].map((aparencia,i)=>`
+        <button type="button" class="aparenciaOpcao ${criacao.build.aparencia === aparencia && !criacao.build.imagemUpload ? 'selecionada' : ''}" onclick="selecionarAparencia('${aparencia}')">
+          <img src="assets/MC/${criacao.build.genero}/${faixaIdadeMC(Math.max(18,criacao.build.idade))}/${aparencia}.webp" alt="Aparência ${i+1}" onerror="this.style.opacity='.18'">
+          Aparência ${i+1}
+        </button>`).join('')}</div>
+      <label class="uploadFoto">Ou envie uma foto própria
+        <input id="fotoPersonagem" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+      </label>
+      <button class="btnIniciar" onclick="confirmarIdentidade()">COMEÇAR MINHA HISTÓRIA</button>
+    </div>`;
+    box.querySelectorAll('[data-genero]').forEach(btn=>{
+      btn.onclick = ()=>{
+        criacao.build.genero = btn.dataset.genero;
+        box.querySelectorAll('[data-genero]').forEach(opcao=>opcao.style.borderColor = opcao === btn ? '#c0392b' : '');
+        renderCriacao();
+      };
+    });
+    box.querySelector('#fotoPersonagem').onchange = selecionarFotoPersonagem;
+    return;
+  }
+
+  if(criacao.passo >= CRIACAO.length && !criacao.adultosProntos){
+    const b = criacao.build;
+    box.innerHTML = `<div class="criacaoLayout">
+      ${renderRetratoCriacao()}
+      <div>
+        <div class="linhaTempo"><span>1. Infância</span><span>2. Adolescência</span><span class="ativo">3. Vida adulta</span></div>
+        <div class="pergunta">Que vida você viveu antes do fim?</div>
+        <div class="dica">Você começa aos 18 anos. Cada acontecimento adulto acrescenta 5 anos à sua idade e deixa uma marca.</div>
+        <div class="adultoEscolhas">${EVENTOS_ADULTOS.map((evento,i)=>`
+          <button class="opcao" onclick="escolherEventoAdulto(${i})"><strong>${evento.texto}</strong><span>${evento.desc} · +5 anos · ${efeitoResumo(evento)}</span></button>`).join('')}</div>
+        <div class="historicoBox"><p><b>Acontecimentos escolhidos:</b></p>
+          ${b.eventosAdultos.length ? b.eventosAdultos.map(evento=>`<div class="eventoEscolhido"><b>${esc(evento.texto)}</b> · ${evento.idade} anos<span class="eventoEfeito">${esc(evento.efeito)}</span>${evento.consequencia ? `<span class="eventoEfeito">${esc(evento.consequencia)}</span>` : ''}</div>`).join('') : '<div class="idle">Nenhum ainda. Você pode começar aos 18.</div>'}
+        </div>
+        <button class="btnIniciar" onclick="finalizarVidaAdulta()">CONTINUAR</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  if(criacao.passo >= CRIACAO.length){
+    const b = criacao.build;
+    box.innerHTML = `<div class="criacaoLayout">${renderRetratoCriacao()}<div class="resumoBox">
+        <h3>QUEM VOCÊ SE TORNOU</h3>
+        <label for="nomeJogador" class="dica">Como você se chama?</label>
+        <input id="nomeJogador" class="campoNome" maxlength="48" value="${esc(b.nomeCompleto || b.nome)}" placeholder="Nome completo do personagem">
+        <p><b>Perfil:</b> ${b.tags.join(' · ')}</p>
+        <p><b>Idade:</b> ${b.idade} anos · <b>Experiência:</b> ${b.experiencia}</p>
+        <p><b>Comportamento:</b> ${comportamentoTexto(b.comportamento)}</p>
+        <div class="historicoBox"><p><b>Biografia construída</b></p>${b.historico.map(evento=>`<div class="eventoEscolhido"><b>${esc(evento.texto)}</b> · ${evento.idade} anos<span class="eventoEfeito">${esc(evento.efeito)}</span>${evento.consequencia ? `<span class="eventoEfeito">${esc(evento.consequencia)}</span>` : ''}</div>`).join('')}</div>
+        <p><b>Arma:</b> ${b.arma}</p>
+        <p><b>Força</b> ${b.stats.forca} &nbsp;·&nbsp; <b>Agilidade</b> ${b.stats.agilidade} &nbsp;·&nbsp; <b>Inteligência</b> ${b.stats.inteligencia}</p>
+        <p><b>Carisma</b> ${b.stats.carisma} &nbsp;·&nbsp; <b>Resistência</b> ${b.stats.resistencia}</p>
+        <p style="margin-top:12px"><b>Suprimentos:</b> ${b.rec.comida} comida · ${b.rec.agua} água · ${b.rec.remedios} remédios · ${b.rec.materiais} materiais · ${b.rec.municao} munição</p>
+        <button class="btnIniciar" onclick="iniciarJogo()">SOBREVIVER</button>
+      </div></div>`;
+    return;
+  }
+
+  const q = CRIACAO[criacao.passo];
+  const etapas = ['Infância','Adolescência'];
+  box.innerHTML = `<div class="criacaoLayout">${renderRetratoCriacao()}<div>
+    <div class="linhaTempo">${etapas.map((etapa,i)=>`<span class="${i === criacao.passo ? 'ativo' : ''}">${i+1}. ${etapa}</span>`).join('')}</div>
+    <div class="pergunta">${q.pergunta}</div>
+    <div class="dica">Escolha ${criacao.passo+1} de ${CRIACAO.length}</div>
+    <div id="ops"></div></div></div>`;
+
+  const ops = box.querySelector('#ops');
+  q.opcoes.forEach((o,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opcao';
+    btn.innerHTML = `<strong>${o.texto}</strong><span>${o.desc} · ${efeitoResumo(o)}</span>`;
+    btn.onclick = ()=> escolher(i);
+    ops.appendChild(btn);
+  });
+}
+
+function faixaIdadeMC(idade){
+  if(idade <= 25) return '18-25';
+  if(idade <= 35) return '26-35';
+  if(idade <= 50) return '36-50';
+  return '51+';
+}
+
+function caminhoRetratoCriacao(){
+  const b = criacao.build;
+  if(b.imagemUpload) return b.imagemUpload;
+  if(b.aparencia && b.aparencia !== 'upload') return `assets/MC/${b.genero}/${faixaIdadeMC(Math.max(18,b.idade))}/${b.aparencia}.webp`;
+  return `assets/MC/${b.genero}/${faixaIdadeMC(Math.max(18,b.idade))}/personagem.webp`;
+}
+
+function renderRetratoCriacao(){
+  const b = criacao.build;
+  const nome = b.nomeCompleto || `${b.nome} ${b.sobrenome}`.trim() || 'Personagem';
+  const caminho = caminhoRetratoCriacao();
+  return `<aside class="retratoCriacao">
+    <img src="${caminho}" alt="Retrato de ${esc(nome)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+    <div class="retratoVazio" hidden>Adicione o retrato em:<br>${caminho}</div>
+    <div class="retratoDados"><strong>${esc(nome)}</strong><span class="idadeCriacao">${Math.max(18,b.idade)} anos</span><span>${rotuloGenero(b.genero)} · Experiência ${b.experiencia}</span></div>
+  </aside>`;
+}
+
+function escolherEventoAdulto(i){
+  const evento = EVENTOS_ADULTOS[i];
+  const b = criacao.build;
+  aplicarEfeitosEvento(evento);
+  b.idade = Math.max(18, b.idade) + 5;
+  b.experiencia += evento.exp || 0;
+  const registro = {texto:evento.texto, idade:b.idade, efeito:efeitoResumo(evento), consequencia:evento.consequencia || ''};
+  b.eventosAdultos.push(registro);
+  b.historico.push(registro);
+  renderCriacao();
+}
+
+function finalizarVidaAdulta(){
+  criacao.adultosProntos = true;
+  renderCriacao();
+}
+
+function confirmarIdentidade(){
+  const nome = document.getElementById('nomeInicial').value.trim();
+  const sobrenome = document.getElementById('sobrenomeInicial').value.trim();
+  if(!nome || !sobrenome){
+    document.getElementById('criacaoBox').querySelector('.dica').textContent = 'Informe nome e sobrenome para continuar.';
+    return;
+  }
+  criacao.build.nome = nome;
+  criacao.build.sobrenome = sobrenome;
+  criacao.build.nomeCompleto = `${nome} ${sobrenome}`;
+  criacao.identidadePronta = true;
+  renderCriacao();
+}
+
+function selecionarAparencia(aparencia){
+  criacao.build.aparencia = aparencia;
+  criacao.build.imagemUpload = '';
+  renderCriacao();
+}
+
+function selecionarFotoPersonagem(evento){
+  const arquivo = evento.target.files?.[0];
+  if(!arquivo || !arquivo.type.startsWith('image/')) return;
+  const leitor = new FileReader();
+  leitor.onload = () => {
+    criacao.build.imagemUpload = leitor.result;
+    criacao.build.aparencia = 'upload';
+    renderCriacao();
+  };
+  leitor.readAsDataURL(arquivo);
+}
+
+function comportamentoTexto(comportamento){
+  const nomes = { empatia:'empatia', disciplina:'disciplina', cautela:'cautela', ambicao:'ambição', sociabilidade:'sociabilidade', trauma:'trauma' };
+  return Object.entries(comportamento).filter(([,valor])=>valor > 0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([chave])=>nomes[chave]).join(' · ') || 'ainda em formação';
+}
+
+function traco(nome){
+  return S?.player?.comportamento?.[nome] || 0;
+}
+
+function efeitoResumo(evento){
+  const ganhos = Object.entries(evento.ef || {}).filter(([,valor])=>valor > 0).map(([skill,valor])=>`+${valor} ${skill}`);
+  const perdas = Object.entries(evento.remove || {}).filter(([,valor])=>valor > 0).map(([skill,valor])=>`-${valor} ${skill}`);
+  return [...ganhos, ...perdas].join(', ') || 'marca permanente';
+}
+
+function aplicarEfeitosEvento(evento){
+  const b = criacao.build;
+  for(const k in (evento.ef || {})) b.stats[k] = (b.stats[k] || 0) + evento.ef[k];
+  for(const k in (evento.remove || {})) b.stats[k] = Math.max(0, (b.stats[k] || 0) - evento.remove[k]);
+  for(const k in (evento.rec || {})) b.rec[k] += evento.rec[k];
+  for(const k in (evento.comportamento || {})) b.comportamento[k] = Math.max(0, b.comportamento[k] + evento.comportamento[k]);
+  for(const k in (evento.removeComportamento || {})) b.comportamento[k] = Math.max(0, b.comportamento[k] - evento.removeComportamento[k]);
+  if(evento.moral) b.moral += evento.moral;
+  if(evento.arma){ b.arma = evento.arma; b.armaBonus = evento.armaBonus || 0; }
+  if(evento.familiaInicio) b.familiaInicio = evento.familiaInicio;
+  if(evento.tag) b.tags.push(evento.tag);
+}
+
+function escolher(i){
+  const o = CRIACAO[criacao.passo].opcoes[i];
+  const b = criacao.build;
+
+  aplicarEfeitosEvento(o);
+  b.idade += o.anos || 0;
+  b.experiencia += o.exp || 0;
+  if(o.bonusLoot) b.bonusLoot += o.bonusLoot;
+  b.historico.push({texto:o.texto, idade:b.idade, efeito:efeitoResumo(o), consequencia:o.consequencia || ''});
+
+  criacao.passo++;
+  renderCriacao();
+}
+
+/* ============================================================
+   ESTADO DO JOGO
+============================================================ */
+let S = null;
+let loopId = null;
+
+function novoMembroFamilia(nome, parentesco, idade, pais=[], geracao=null, genero=null){
+  const geracaoCalculada = geracao === null
+    ? (pais.length ? Math.max(...pais.map(id=>S.familia.membros.find(m=>m.id === id)?.geracao || 0)) + 1 : 0)
+    : geracao;
+  const identidade = gerarIdentidadeNpc(genero);
+  const perfil = gerarPerfilNpc(identidade.genero);
+  if(idade < 16){
+    Object.keys(perfil.skills).forEach(skill=>{
+      perfil.skills[skill] = Math.min(perfil.skills[skill], idade < 12 ? 2 : 3);
+    });
+  }
+  const membro = {
+    id: S.familia.proximoId++, nome:nome || identidade.nome, parentesco, idade, pais,
+    geracao:geracaoCalculada,
+    filhos:[], parceiro:null, vivo:true, jogavel:false,
+    fertilidade:Math.round((0.7 + Math.random()*0.6)*100)/100,
+    genero:identidade.genero,
+    especialidade:perfil.especialidade,
+    skills:perfil.skills,
+    stats:{...perfil.skills},
+    nivel:1,
+    experiencia:0,
+    perks:[],
+    moral:70,
+    rotina:'guarda',
+    emTurno:true,
+    relacao:{ amizade:50, respeito:50, romance:parentesco === 'Parceiro(a)' ? 70 : 0 }
+  };
+  S.familia.membros.push(membro);
+  pais.forEach(id=>{
+    const pai = S.familia.membros.find(m=>m.id === id);
+    if(pai && !pai.filhos.includes(membro.id)) pai.filhos.push(membro.id);
+  });
+  return membro;
+}
+
+function prepararFamilia(nome, perfil, idade=28, genero=null){
+  const principal = novoMembroFamilia(nome, 'Você', idade, [], null, genero);
+  principal.jogavel = true;
+  S.familia.atual = principal.id;
+
+  if(perfil === 'parceiro' || perfil === 'filho'){
+    const identidade = gerarIdentidadeNpc();
+    const parceiro = novoMembroFamilia(identidade.nome, 'Parceiro(a)', Math.max(18, idade), [], principal.geracao, identidade.genero);
+    parceiro.parceiro = principal.id;
+    principal.parceiro = parceiro.id;
+    S.sobreviventes.push({...parceiro, familiaId:parceiro.id, tarefa:'guarda', forca:rnd(2,5), ferido:false});
+  }
+  if(perfil === 'filho'){
+    const parceiro = S.familia.membros.find(m=>m.parentesco === 'Parceiro(a)');
+    const filho = novoMembroFamilia('Lia', 'Filha', 8, [principal.id, parceiro.id], null, 'feminino');
+    filho.jogavel = true;
+    S.sobreviventes.push({...filho, familiaId:filho.id, tarefa:'guarda', forca:2, ferido:false});
+  }
+}
+
+function iniciarJogo(){
+  const b = criacao.build;
+  const nome = (document.getElementById('nomeJogador')?.value || b.nome).trim().slice(0,48) || 'Alex';
+  b.nome = nome;
+  b.nomeCompleto = nome;
+  document.getElementById('criacao').hidden = true;
+  const videoFundo = document.getElementById('videoCriacaoFundo');
+  const videoCriacao = document.getElementById('videoCriacao');
+  videoCriacao.pause();
+  videoFundo.hidden = true;
+  document.getElementById('jogo').hidden = false;
+
+  S = {
+    fase:'jogo',
+    vivo:true,
+    pausado:false,
+    tempoTotal: 6*60,          // começa às 06:00 do dia 1
+    dia: 1,
+    proxRefeicao: 6*60 + 1440,
+    acao: null,
+    logCount: 0,
+    player:{
+      nome:b.nomeCompleto,
+      genero:b.genero,
+      imagem:b.imagemUpload || (b.aparencia && b.aparencia !== 'upload' ? `assets/MC/${b.genero}/18-25/${b.aparencia}.webp` : ''),
+      idade:b.idade,
+      experiencia:b.experiencia,
+      comportamento:{...b.comportamento},
+      especialidade:b.tags[0] || 'Sobrevivente',
+      forca:b.stats.forca, agilidade:b.stats.agilidade,
+      inteligencia:b.stats.inteligencia, carisma:b.stats.carisma,
+      resistencia:b.stats.resistencia,
+      nivel:1,
+      perks:[],
+      moral:70,
+      arma:b.arma, armaBonus:b.armaBonus, bonusLoot:b.bonusLoot,
+      vida:100, vidaMax:100, fome:15, sede:15, energia:100
+    },
+    recursos:{...b.rec},
+    base:{ barricadas:2, ameaca:8, moral:b.moral },
+    sobreviventes: [],
+    familia:{ proximoId:1, membros:[], atual:null, lideranca:null, gravidez:null },
+    ultimaRotacao:1
+  };
+
+  prepararFamilia(nome, b.familiaInicio, b.idade, b.genero);
+  const principal = S.familia.membros.find(m=>m.id === S.familia.atual);
+  principal.stats = {
+    forca:b.stats.forca, agilidade:b.stats.agilidade,
+    inteligencia:b.stats.inteligencia, carisma:b.stats.carisma,
+    resistencia:b.stats.resistencia
+  };
+  principal.skills = {...principal.stats};
+  principal.especialidade = b.tags[0] || 'Líder';
+
+  construirAcoes();
+  document.getElementById('logBox').innerHTML = '';
+  log('O mundo acabou há três semanas. Você ainda está respirando.', 'sistema');
+  log('Encontrou um sobrado com portas reforçadas. É o mais perto de "casa" que existe agora.', 'info');
+  log('Comida, água, remédios. Barricadas. E não fazer barulho.', 'info');
+
+  iniciarLoop();
+  render();
+}
+
+function iniciarLoop(){
+  if(loopId) clearInterval(loopId);
+  loopId = setInterval(tick, 1000);
+}
+
+function abrirCriacao(){
+  document.getElementById('abertura').hidden = true;
+  document.getElementById('criacao').hidden = false;
+  const fundo = document.getElementById('videoCriacaoFundo');
+  const video = document.getElementById('videoCriacao');
+  fundo.hidden = false;
+  video.volume = 0.5;
+  video.muted = false;
+  video.play().catch(()=>{
+    video.muted = true;
+    video.play().catch(()=>{});
+  });
+  renderCriacao();
+}
+
+/* ============================================================
+   LOOP PRINCIPAL — 1 segundo real = 20 minutos de jogo
+============================================================ */
+function tick(){
+  if(!S || !S.vivo || S.pausado || !S.acao) return;
+
+  S.tempoTotal += 20;
+  const p = S.player;
+
+  // Ameaça cresce com o tempo
+  S.base.ameaca += 0.12 + S.dia * 0.006;
+
+  // Fome / sede afetam a saúde
+  if(p.fome >= 70 || p.sede >= 70) p.vida -= 0.7;
+  else if(p.fome < 30 && p.sede < 30 && p.vida < p.vidaMax) p.vida += 0.28;
+
+  p.fome = clamp(p.fome, 0, 100);
+  p.sede = clamp(p.sede, 0, 100);
+
+  // Consumo da base uma vez por dia
+  if(S.tempoTotal >= S.proxRefeicao){
+    while(S.tempoTotal >= S.proxRefeicao) S.proxRefeicao += 1440;
+    consumoBaseDiario();
+  }
+
+  // Novo dia
+  const d = Math.floor(S.tempoTotal/1440)+1;
+  if(d !== S.dia){
+    S.dia = d;
+    rotacionarGuardas();
+    log(`— DIA ${S.dia} —`, 'sistema');
+    if(Math.random() < 0.42 && !S.pausado) setTimeout(()=>{ if(S && S.vivo && !S.pausado) eventoAleatorio(); }, 400);
+  }
+
+  if(S.familia.gravidez) atualizarGestacao();
+
+  // Ação em andamento
+  if(S.acao && S.tempoTotal >= S.acao.fim) resolverAcao();
+
+  // Ataque de horda
+  if(S.base.ameaca >= 100){
+    S.base.ameaca = 8;
+    ataqueHorda();
+  }
+
+  if(p.vida <= 0){
+    p.vida = 0;
+    return gameOver('Você caiu. Os walkers não param de vir.');
+  }
+
+  render();
+}
+
+/* ============================================================
+   REFEIÇÃO / PRODUÇÃO
+============================================================ */
+function consumoBaseDiario(){
+  const vivos = S.sobreviventes.filter(s=>s.vivo);
+  const pessoas = 1 + vivos.length;
+
+  // Produção dos sobreviventes antes do consumo diário
+  let pc=0, pa=0, pm=0;
+  vivos.forEach(s=>{
+    if(s.tarefa === 'coletor'){ pc += 1; pa += 1; }
+    else if(s.tarefa === 'oficina'){ pm += 1.5; }
+  });
+  S.recursos.comida += pc;
+  S.recursos.agua += pa;
+  S.recursos.materiais += Math.floor(pm);
+
+  if(pc+pa+pm > 0){
+    log(`Produção do grupo: +${pc} comida, +${pa} água, +${Math.floor(pm)} materiais.`, 'bom');
+  }
+
+  // Consumo
+  const faltaC = Math.max(0, pessoas - S.recursos.comida);
+  const faltaA = Math.max(0, pessoas - S.recursos.agua);
+  S.recursos.comida = Math.max(0, S.recursos.comida - pessoas);
+  S.recursos.agua = Math.max(0, S.recursos.agua - pessoas);
+
+  if(faltaC > 0) S.player.fome = clamp(S.player.fome + 30, 0, 100);
+
+  if(faltaA > 0) S.player.sede = clamp(S.player.sede + 30, 0, 100);
+
+  if(faltaC > 0 || faltaA > 0){
+    log(`O consumo diário exigia ${pessoas} comida e ${pessoas} água. O grupo ficou sem o suficiente.`, 'ruim');
+    vivos.forEach(s=>{
+      if(Math.random() < 0.25){
+        s.vivo = false;
+        log(`${s.nome} juntou o pouco que tinha e foi embora.`, 'ruim');
+      }
+    });
+    S.base.moral = Math.max(0, S.base.moral - Math.max(1, 5 - traco('empatia')));
+  }
+}
+
+/* ============================================================
+   AÇÕES
+============================================================ */
+const ACOES = [
+  { id:'comer',     nome:'Comer',                   desc:'~20min · reduz a fome · consome 1 comida' },
+  { id:'beber',     nome:'Beber água',              desc:'~20min · reduz a sede · consome 1 água' },
+  { id:'perto',     nome:'Saquear casas próximas',  desc:'~1-2h · risco baixo · pouco loot' },
+  { id:'expedicao', nome:'Expedição distante',      desc:'~4-9h · risco alto · muito loot' },
+  { id:'fortificar',nome:'Fortificar a base',       desc:'~2-4h · consome 4 materiais' },
+  { id:'cacar',     nome:'Caçar e buscar água',     desc:'~3h · comida e água' },
+  { id:'descansar', nome:'Descansar',               desc:'~2h · recupera vida e energia' },
+  { id:'procurar',  nome:'Procurar sobreviventes',  desc:'~4h · recruta aliados' },
+  { id:'familia',   nome:'Cuidar da família',       desc:'~6h · fortalece ou aumenta a linhagem' },
+  { id:'ajudar',    nome:'Ajudar no acampamento',   desc:'~2h · aprende e melhora o moral' }
+];
+
+function membroAtual(){
+  return S?.familia?.membros.find(m=>m.id === S.familia.atual) || null;
+}
+
+function idadeMembro(membro){
+  return membro.idade + Math.floor(Math.max(0, (S?.dia || 1) - 1) / 365);
+}
+
+function idadeAtual(){
+  const membro = membroAtual();
+  return membro ? idadeMembro(membro) : 28;
+}
+
+function acoesDisponiveis(){
+  const idade = idadeAtual();
+  if(idade < 12) return ACOES.filter(a=>['comer','beber','descansar','familia','ajudar'].includes(a.id));
+  if(idade < 16) return ACOES.filter(a=>!['expedicao','fortificar','cacar'].includes(a.id));
+  return ACOES;
+}
+
+function construirAcoes(){
+  const box = document.getElementById('acoes');
+  box.innerHTML = '';
+  acoesDisponiveis().forEach(a=>{
+    const b = document.createElement('button');
+    b.className = 'acaoBtn';
+    b.dataset.id = a.id;
+    b.innerHTML = `<strong>${a.nome}</strong><span>${a.desc}</span>`;
+    b.onclick = ()=> clicarAcao(a.id);
+    box.appendChild(b);
+  });
+}
+
+function clicarAcao(id){
+  if(!S.vivo || S.acao) return;
+  if(!acoesDisponiveis().some(a=>a.id === id)){
+    log('Você ainda não tem idade ou experiência para fazer isso.', 'ruim');
+    return;
+  }
+  if(id === 'comer')     return acaoComer();
+  if(id === 'beber')     return acaoBeber();
+  if(id === 'expedicao') return abrirExpedicao();
+  if(id === 'perto')     return acaoPerto();
+  if(id === 'fortificar')return acaoFortificar();
+  if(id === 'cacar')     return acaoCacar();
+  if(id === 'descansar') return acaoDescansar();
+  if(id === 'procurar')  return acaoProcurar();
+  if(id === 'familia')   return acaoFamilia();
+  if(id === 'ajudar')    return acaoAjudar();
+}
+
+function podeAgir(custo){
+  if(S.player.energia < custo){
+    log('Você está exausto demais. Precisa descansar.', 'ruim');
+    return false;
+  }
+  return true;
+}
+
+function acaoComer(){
+  if(S.recursos.comida < 1){
+    log('Não há comida disponível para esta refeição.', 'ruim');
+    return;
+  }
+  S.acao = { tipo:'comer', nome:'Comer', fim:S.tempoTotal+20, dur:20 };
+  log('Você separa uma porção e come devagar.', 'info');
+}
+
+function acaoBeber(){
+  if(S.recursos.agua < 1){
+    log('Não há água disponível para beber.', 'ruim');
+    return;
+  }
+  S.acao = { tipo:'beber', nome:'Beber água', fim:S.tempoTotal+20, dur:20 };
+  log('Você bebe água e guarda o restante com cuidado.', 'info');
+}
+
+function resolverComer(){
+  if(S.recursos.comida < 1) return;
+  S.recursos.comida -= 1;
+  S.player.fome = Math.max(0, S.player.fome - 45);
+  log('Você recuperou parte da fome. -1 comida.', 'bom');
+}
+
+function resolverBeber(){
+  if(S.recursos.agua < 1) return;
+  S.recursos.agua -= 1;
+  S.player.sede = Math.max(0, S.player.sede - 45);
+  log('Você recuperou parte da sede. -1 água.', 'bom');
+}
+
+/* ---- Saquear proximidades ---- */
+function acaoPerto(){
+  if(!podeAgir(15)) return;
+  const dur = rnd(3,6)*20;
+  S.player.energia -= 15;
+  S.base.ameaca += 6;
+  S.acao = { tipo:'perto', nome:'Saquear casas próximas', fim:S.tempoTotal+dur, dur };
+  log('Você sai pelas ruas do quarteirão, com o machado na mão.', 'info');
+}
+
+function resolverPerto(){
+  const bonus = 1 + S.player.inteligencia*0.05 + S.player.bonusLoot;
+  const tabela = {
+    comida:[2,7], agua:[1,6], materiais:[1,5],
+    remedios:[0,2], municao:[0,2], combustivel:[0,1]
+  };
+  const ganhos = gerarLoot(tabela, bonus);
+
+  if(Math.random() < 0.28){
+    const n = rnd(1,3);
+    log(`Um walker sai de trás de um carro. Depois outro.`, 'sangue');
+    combate(n);
+  }
+  aplicarGanhos(ganhos);
+}
+
+/* ---- Expedição distante ---- */
+const LOCAIS = [
+  { id:'mercado', nome:'Supermercado', tempo:[240,400], risco:0.45, zumbis:[2,5],
+    loot:{ comida:[8,17], agua:[6,13], remedios:[0,2], materiais:[1,4] } },
+  { id:'farmacia', nome:'Farmácia', tempo:[200,320], risco:0.40, zumbis:[2,4],
+    loot:{ remedios:[4,10], comida:[1,3], agua:[1,3] } },
+  { id:'posto', nome:'Posto de Gasolina', tempo:[200,300], risco:0.35, zumbis:[1,4],
+    loot:{ combustivel:[3,8], comida:[3,7], agua:[2,5], materiais:[1,3] } },
+  { id:'construcao', nome:'Depósito de Construção', tempo:[280,420], risco:0.42, zumbis:[2,5],
+    loot:{ materiais:[9,18], combustivel:[1,3] } },
+  { id:'delegacia', nome:'Delegacia Abandonada', tempo:[320,480], risco:0.62, zumbis:[3,7],
+    loot:{ municao:[6,15], remedios:[1,3], materiais:[2,5] } },
+  { id:'hospital', nome:'Hospital Central', tempo:[400,560], risco:0.78, zumbis:[4,9],
+    loot:{ remedios:[9,18], comida:[1,4], materiais:[2,6] } }
+];
+
+function abrirExpedicao(){
+  const ops = LOCAIS.map(l=>{
+    const h1 = Math.round(l.tempo[0]/60*10)/10;
+    const h2 = Math.round(l.tempo[1]/60*10)/10;
+    return {
+      texto:`${l.nome} — ${h1} a ${h2}h · risco ${Math.round(l.risco*100)}%`,
+      fn: ()=> iniciarExpedicao(l)
+    };
+  });
+  ops.push({ texto:'Cancelar', fn: ()=>{} });
+  abrirModal('Escolha o destino',
+    'Quanto mais longe, melhor o saque. E mais walkers pelo caminho. Você volta antes do anoitecer — ou não volta.',
+    ops);
+}
+
+function iniciarExpedicao(l){
+  if(!podeAgir(30)) return;
+  let dur = rnd(l.tempo[0], l.tempo[1]);
+  dur = Math.round(dur/20)*20;
+  S.player.energia -= 30;
+  S.base.ameaca += 18;
+  S.acao = { tipo:'expedicao', nome:'Expedição: '+l.nome, fim:S.tempoTotal+dur, dur, local:l };
+  log(`Você parte em direção ao ${l.nome}. ${Math.round(dur/60*10)/10}h de caminhada.`, 'info');
+}
+
+function resolverExpedicao(a){
+  const l = a.local;
+  const bonus = 1 + S.player.inteligencia*0.05 + S.player.bonusLoot;
+  const ganhos = gerarLoot(l.loot, bonus);
+
+  if(Math.random() < l.risco){
+    const n = rnd(l.zumbis[0], l.zumbis[1]);
+    log(`Dentro do ${l.nome}, ${n} walkers erguem a cabeça ao mesmo tempo.`, 'sangue');
+    const venceu = combate(n);
+    if(!venceu){
+      for(const k in ganhos) ganhos[k] = Math.floor(ganhos[k]/2);
+      log('Você larga metade do que achou e corre.', 'ruim');
+    }
+  } else {
+    log(`O ${l.nome} está estranhamente vazio. Você trabalha rápido.`, 'info');
+  }
+  aplicarGanhos(ganhos);
+}
+
+/* ---- Fortificar ---- */
+function acaoFortificar(){
+  if(S.recursos.materiais < 4){
+    log('Você não tem materiais suficientes para reforçar as barricadas.', 'ruim');
+    return;
+  }
+  if(!podeAgir(25)) return;
+  const dur = rnd(6,12)*20;
+  S.recursos.materiais -= 4;
+  S.player.energia -= 25;
+  S.base.ameaca += 8;
+  S.acao = { tipo:'fortificar', nome:'Fortificar a base', fim:S.tempoTotal+dur, dur };
+  log('Você prega tábuas nas janelas. O barulho do martelo ecoa longe.', 'info');
+}
+
+function resolverFortificar(){
+  const ganho = 1 + Math.floor(S.player.forca/4) + Math.floor(S.player.inteligencia/5);
+  S.base.barricadas += ganho;
+  log(`Barricadas reforçadas (+${ganho}). Total: ${S.base.barricadas}.`, 'bom');
+}
+
+/* ---- Caçar / água ---- */
+function acaoCacar(){
+  if(!podeAgir(20)) return;
+  const dur = 9*20;
+  S.player.energia -= 20;
+  S.base.ameaca += 10;
+  S.acao = { tipo:'cacar', nome:'Caçar e buscar água', fim:S.tempoTotal+dur, dur };
+  log('Você pega a lança improvisada e segue para o riacho.', 'info');
+}
+
+function resolverCacar(){
+  const c = rnd(3,8) + Math.floor(S.player.resistencia/2);
+  const a = rnd(3,8) + Math.floor(S.player.resistencia/2);
+  S.recursos.comida += c;
+  S.recursos.agua += a;
+  log(`Você voltou com +${c} comida e +${a} água.`, 'bom');
+  if(Math.random() < 0.22){
+    log('Algo se moveu entre as árvores. Você não esperou pra descobrir o quê.', 'ruim');
+    S.player.energia -= 10;
+  }
+}
+
+/* ---- Descansar ---- */
+function acaoDescansar(){
+  const dur = 6*20;
+  S.acao = { tipo:'descansar', nome:'Descansar', fim:S.tempoTotal+dur, dur };
+  log('Você tranca a porta do quarto e fecha os olhos por um instante.', 'info');
+}
+
+function resolverDescansar(){
+  const cura = 12 + Math.floor(S.player.resistencia*1.5);
+  S.player.vida = Math.min(S.player.vidaMax, S.player.vida + cura);
+  S.player.energia = clamp(S.player.energia + 35, 0, 100);
+  S.player.fome += 4;
+  S.player.sede += 4;
+  log(`Você recuperou ${cura} de vida e parte da energia.`, 'bom');
+  if(Math.random() < 0.35){
+    setTimeout(()=>{ if(S && S.vivo && !S.pausado && !S.acao) eventoAleatorio(); }, 250);
+  }
+}
+
+/* ---- Procurar sobreviventes ---- */
+function acaoProcurar(){
+  if(!podeAgir(20)) return;
+  const dur = 12*20;
+  S.player.energia -= 20;
+  S.base.ameaca += 12;
+  S.acao = { tipo:'procurar', nome:'Procurar sobreviventes', fim:S.tempoTotal+dur, dur };
+  log('Você sobe nos telhados e procura sinais de vida — fumaça, luz, movimento.', 'info');
+}
+
+function acaoFamilia(){
+  if(!podeAgir(10)) return;
+  const dur = 18*20;
+  S.player.energia -= 10;
+  S.acao = { tipo:'familia', nome:'Cuidar da família', fim:S.tempoTotal+dur, dur };
+  log('Você separa algumas horas para ouvir, ensinar e cuidar dos seus.', 'info');
+}
+
+function acaoAjudar(){
+  if(!podeAgir(8)) return;
+  const dur = 6*20;
+  S.player.energia -= 8;
+  S.acao = { tipo:'ajudar', nome:'Ajudar no acampamento', fim:S.tempoTotal+dur, dur };
+  log('Você ajuda a buscar água, separar comida e aprender como a comunidade funciona.', 'info');
+}
+
+function resolverAjudar(){
+  S.base.moral = clamp(S.base.moral + 3, 0, 100);
+  log('O acampamento começa a confiar mais em você.', 'bom');
+}
+
+function resolverProcurar(){
+  const chance = 0.42 + S.player.carisma*0.05 + traco('sociabilidade')*0.025;
+  if(Math.random() < chance && S.sobreviventes.filter(s=>s.vivo).length < 8){
+    const identidade = gerarIdentidadeNpc();
+    const nome = identidade.nome;
+    const s = novoSobrevivente(nome, identidade.genero);
+    S.sobreviventes.push(s);
+    log(`${nome} estava escondido num mercado. Aceitou vir com você.`, 'bom');
+  } else {
+    log('Nada. Nem um som. Às vezes o silêncio é pior.', 'info');
+  }
+}
+
+/* ---- Resolver ação ---- */
+function resolverAcao(){
+  const a = S.acao;
+  S.acao = null;
+  if(!a) return;
+
+  switch(a.tipo){
+    case 'comer':       resolverComer(); break;
+    case 'beber':       resolverBeber(); break;
+    case 'perto':      resolverPerto(); break;
+    case 'expedicao':  resolverExpedicao(a); break;
+    case 'fortificar': resolverFortificar(); break;
+    case 'cacar':      resolverCacar(); break;
+    case 'descansar':  resolverDescansar(); break;
+    case 'procurar':   resolverProcurar(); break;
+    case 'familia':    resolverFamilia(); break;
+    case 'ajudar':     resolverAjudar(); break;
+    case 'interacao':  resolverInteracao(a); break;
+  }
+  if(a.tipo !== 'comer' && a.tipo !== 'beber' && !S.pularNivelNesteTick) ganharExperiencia(1);
+  S.pularNivelNesteTick = false;
+}
+
+function resolverFamilia(){
+  const atual = membroAtual();
+  if(!atual) return;
+  if(atual.idade < 16){
+    resolverAjudar();
+    return;
+  }
+  if(!atual.parceiro){
+    const parceiro = novoMembroFamilia(pick(NOMES), 'Parceiro(a)', rnd(22,38), [], atual.geracao);
+    parceiro.parceiro = atual.id;
+    atual.parceiro = parceiro.id;
+    S.sobreviventes.push({...parceiro, familiaId:parceiro.id, tarefa:'guarda', forca:rnd(2,5), ferido:false});
+    log(`${parceiro.nome} decidiu construir uma vida ao seu lado.`, 'bom');
+    return;
+  }
+  if(S.familia.gravidez){
+    log('Vocês já estão esperando uma resposta. É cedo para tentar de novo.', 'info');
+    return;
+  }
+  if(atual.filhos.length >= 3 || S.recursos.comida < 2 || S.recursos.agua < 2){
+    log('Não há espaço ou recursos suficientes para aumentar a família.', 'ruim');
+    return;
+  }
+  const parceiro = S.familia.membros.find(m=>m.id === atual.parceiro);
+  if(!parceiro || atual.genero === parceiro.genero){
+    log('Para tentar ter um bebê, é preciso haver uma pessoa masculina e uma feminina no casal.', 'info');
+    return;
+  }
+  const gestante = [atual, parceiro].find(m=>m?.genero === 'feminino');
+  const outroGenitor = gestante?.id === atual.id ? parceiro : atual;
+  if(!gestante){
+    log('Vocês decidem aumentar a família de outra forma. Esta tentativa não pode gerar uma gravidez.', 'info');
+    return;
+  }
+  S.recursos.comida -= 2;
+  S.recursos.agua -= 2;
+  const chance = clamp(0.5 * gestante.fertilidade * (outroGenitor?.fertilidade || 1), 0.05, 0.9);
+  const sucesso = Math.random() < chance;
+  abrirModal('Uma decisão íntima',
+    `<img class="eventoImagem" src="${IMAGENS_EVENTOS.tentativaBebe}" alt="Um casal tentando formar uma família" onerror="this.hidden=true">
+     Vocês encontram um pouco de privacidade e decidem tentar trazer uma nova vida para o acampamento.`,
+    [{ texto:'Esperar para ver o que acontece', fn:()=>{
+      if(sucesso){
+        S.familia.gravidez = { maeId:gestante.id, paiId:outroGenitor?.id || null, inicio:S.tempoTotal, parto:S.tempoTotal + 280*1440, ultimoRisco:0, prematuro:false };
+        log('Agora só resta esperar. Talvez a família cresça.', 'info');
+      } else {
+        log('Os dias passam, mas nenhuma gravidez acontece desta vez.', 'info');
+      }
+    }}]);
+}
+
+function atualizarGestacao(){
+  const g = S.familia.gravidez;
+  if(!g || S.pausado) return;
+  const dias = Math.floor((S.tempoTotal - g.inicio) / 1440);
+  if(dias >= 280) return concluirGestacao(false);
+  if(g.ultimoRisco === S.dia) return;
+  g.ultimoRisco = S.dia;
+  const mae = S.familia.membros.find(m=>m.id === g.maeId);
+  const riscoPerda = (dias < 94 ? 0.012 : 0.004) + (S.player.moral < 35 ? 0.006 : 0);
+  if(Math.random() < riscoPerda) return perderGestacao();
+  if(dias >= 196 && Math.random() < 0.018){
+    g.prematuro = true;
+    return concluirGestacao(true);
+  }
+  if([94,187].includes(dias)) log(`${mae?.nome || 'A gestante'} entrou no ${dadosGravidez().nome.toLowerCase()}.`, 'info');
+}
+
+function perderGestacao(){
+  const g = S.familia.gravidez;
+  const mae = S.familia.membros.find(m=>m.id === g.maeId);
+  S.familia.gravidez = null;
+  S.pularNivelNesteTick = true;
+  S.base.moral = Math.max(0, S.base.moral - 10);
+  S.player.moral = Math.max(0, S.player.moral - 12);
+  abrirModal('Uma perda',`${mae?.nome || 'A gestante'} perdeu o bebê. O acampamento fica em silêncio por um longo tempo.`,[{texto:'Continuar',fn:()=>log('A perda ficará marcada na família.','ruim')}]);
+}
+
+function concluirGestacao(prematuro){
+  const g = S.familia.gravidez;
+  const mae = S.familia.membros.find(m=>m.id === g.maeId);
+  const nomeMae = mae?.nome || 'A gestante';
+  S.familia.gravidez = null;
+  S.pularNivelNesteTick = true;
+  abrirModal(prematuro ? 'Nascimento prematuro' : 'O bebê nasceu',
+    `<img class="eventoImagem" src="${IMAGENS_EVENTOS.gravidez}" alt="Nascimento" onerror="this.hidden=true">
+     ${nomeMae} entrou em trabalho de parto. ${prematuro ? 'A criança nasceu antes da hora e vai precisar de cuidados extras.' : 'Depois de 280 dias, a criança finalmente chegou.'}`,
+    [{texto:'Cuidar da criança',fn:()=>{
+      const identidade = gerarIdentidadeNpc();
+      const filho = novoMembroFamilia(identidade.nome,'Filho(a)',0,[g.paiId,g.maeId],null,identidade.genero);
+      filho.jogavel = true;
+      if(prematuro) filho.stats = {forca:1,agilidade:1,inteligencia:2,carisma:2,resistencia:1};
+      S.sobreviventes.push({...filho,familiaId:filho.id,tarefa:'ocioso',forca:filho.stats.forca,ferido:prematuro});
+      log(`${filho.nome} nasceu. A casa ficou mais barulhenta, e mais importante.`,'bom');
+    }}]);
+}
+
+/* ============================================================
+   LOOT
+============================================================ */
+function gerarLoot(tabela, bonus){
+  const g = {};
+  for(const k in tabela){
+    const [a,b] = tabela[k];
+    const v = Math.round(rnd(a,b) * bonus);
+    if(v > 0) g[k] = v;
+  }
+  return g;
+}
+
+function aplicarGanhos(g){
+  const partes = [];
+  for(const k in g){
+    if(g[k] > 0){
+      S.recursos[k] += g[k];
+      partes.push(`+${g[k]} ${NOMES_REC[k]}`);
+    }
+  }
+  if(partes.length) log('Saque: ' + partes.join(', ') + '.', 'bom');
+  else log('Não encontrou nada de útil.', 'info');
+}
+
+/* ============================================================
+   COMBATE
+============================================================ */
+function combate(qtdZumbis){
+  const p = S.player;
+  let poder = p.forca*2 + p.agilidade*1.5 + p.armaBonus;
+  let usouMunicao = false;
+
+  if(S.recursos.municao > 0 && p.armaBonus >= 4){
+    poder += 4;
+    S.recursos.municao -= 1;
+    usouMunicao = true;
+  }
+
+  poder *= 0.85 + Math.random()*0.3 + traco('cautela')*0.015;
+  const poderZ = qtdZumbis * 3.2;
+
+  if(usouMunicao) log('O estampido do tiro rasga o silêncio. Isso vai atrair mais.', 'ruim');
+
+  if(poder >= poderZ){
+    const dano = Math.max(1, Math.round(qtdZumbis * (0.7 + Math.random()*0.9)));
+    p.vida -= dano;
+    log(`Você elimina ${qtdZumbis} walker${qtdZumbis>1?'s':''}. Perdeu ${dano} de vida.`, 'bom');
+    return true;
+  } else {
+    const dano = Math.round(poderZ * (0.5 + Math.random()*0.6));
+    p.vida -= dano;
+    log(`São muitos. Você recua sangrando. -${dano} de vida.`, 'sangue');
+    return false;
+  }
+}
+
+/* ============================================================
+   ATAQUE À BASE
+============================================================ */
+function calcularDefesa(){
+  const p = S.player;
+  let d = S.base.barricadas * 2.5;
+  d += p.forca * 2 + p.agilidade * 1.5 + p.armaBonus;
+  d += traco('disciplina') * 0.8;
+  if(S.recursos.municao > 0) d += 5;
+
+  S.sobreviventes.filter(s=>s.vivo).forEach(s=>{
+    d += s.tarefa === 'guarda' ? (s.emTurno ? 5 : 1) : 2;
+    if(s.ferido) d -= 1.5;
+  });
+  return Math.max(0, d);
+}
+
+function ataqueHorda(){
+  const n = Math.round(4 + S.dia*1.8 + rnd(0,5));
+  log(`UMA HORDA SE APROXIMA — ${n} walkers cambaleiam em direção à base.`, 'sangue');
+
+  const defesa = calcularDefesa();
+  const poder = n * 2.0 * (0.85 + Math.random()*0.3);
+  const p = S.player;
+
+  if(defesa >= poder){
+    const perda = Math.max(0, Math.round(n*0.15));
+    S.base.barricadas = Math.max(0, S.base.barricadas - perda);
+    p.vida -= Math.max(0, n*0.3);
+    if(S.recursos.municao > 0) S.recursos.municao -= 1;
+    log(`Você e o grupo repelem o ataque. ${perda} barricada(s) destruída(s).`, 'bom');
+  } else {
+    S.base.barricadas = Math.max(0, S.base.barricadas - 3);
+    const perdido = [];
+    ['comida','agua','materiais','remedios','municao'].forEach(k=>{
+      const q = Math.floor(S.recursos[k]*0.3);
+      if(q > 0){ S.recursos[k] -= q; perdido.push(`${q} ${NOMES_REC[k]}`); }
+    });
+    const dano = 8 + n*0.5;
+    p.vida -= dano;
+    log(`OS WALKERS INVADEM A BASE. Você perde ${Math.round(dano)} de vida.`, 'sangue');
+    if(perdido.length) log('Recursos perdidos: ' + perdido.join(', ') + '.', 'ruim');
+
+    const vivos = S.sobreviventes.filter(s=>s.vivo);
+    if(vivos.length && Math.random() < 0.65){
+      const s = pick(vivos);
+      if(Math.random() < 0.5){
+        s.vivo = false;
+        log(`${s.nome} foi cercado no corredor. Não houve tempo.`, 'sangue');
+      } else {
+        s.ferido = true;
+        log(`${s.nome} foi ferido. Está sangrando.`, 'ruim');
+      }
+    }
+    S.base.moral = Math.max(0, S.base.moral - 8);
+  }
+}
+
+/* ============================================================
+   SOBREVIVENTES
+============================================================ */
+function novoSobrevivente(nome, genero=null){
+  const identidade = gerarIdentidadeNpc(genero);
+  const perfil = gerarPerfilNpc(identidade.genero);
+  return {
+    nome: nome || identidade.nome,
+    genero:identidade.genero,
+    especialidade:perfil.especialidade,
+    skills:perfil.skills,
+    forca:perfil.skills.forca,
+    agilidade:perfil.skills.agilidade,
+    inteligencia:perfil.skills.inteligencia,
+    carisma:perfil.skills.carisma,
+    resistencia:perfil.skills.resistencia,
+    nivel:1,
+    experiencia:0,
+    perks:[],
+    moral:70,
+    relacao:{amizade:50,respeito:50,romance:0},
+    rotina:'guarda',
+    emTurno:true,
+    tarefa: 'guarda',
+    ferido: false,
+    vivo: true
+  };
+}
+
+function ciclarTarefa(i){
+  const s = S.sobreviventes[i];
+  if(!s || !s.vivo) return;
+  const ordem = ['guarda','coletor','oficina','ocioso'];
+  const atual = ordem.indexOf(s.tarefa);
+  s.tarefa = ordem[(atual+1) % ordem.length];
+  render();
+}
+
+const PERKS = [
+  {nome:'Pulso firme', desc:'+1 força', skill:'forca'},
+  {nome:'Olhos atentos', desc:'+1 agilidade', skill:'agilidade'},
+  {nome:'Memória técnica', desc:'+1 inteligência', skill:'inteligencia'},
+  {nome:'Voz que acalma', desc:'+1 carisma', skill:'carisma'},
+  {nome:'Corpo resistente', desc:'+1 resistência', skill:'resistencia'}
+];
+
+function ganharExperiencia(valor){
+  S.player.experiencia = (S.player.experiencia || 0) + valor;
+  const novoNivel = 1 + Math.floor(S.player.experiencia / 10);
+  if(novoNivel <= (S.player.nivel || 1)) return;
+  S.player.nivel = novoNivel;
+  abrirModal('Você subiu de nível',`A experiência acumulada mudou você. Escolha um pequeno aperfeiçoamento para ${esc(S.player.nome)}.`,PERKS.map(perk=>({texto:`${perk.nome} — ${perk.desc}`,fn:()=>{S.player[perk.skill] += 1; S.player.perks.push(perk.nome); log(`Novo perk: ${perk.nome}.`,'bom');}})));
+}
+
+function ganharExperienciaPessoa(pessoa, valor){
+  pessoa.experiencia = (pessoa.experiencia || 0) + valor;
+  const novoNivel = 1 + Math.floor(pessoa.experiencia / 10);
+  if(novoNivel <= (pessoa.nivel || 1)) return;
+  pessoa.nivel = novoNivel;
+  const skill = skillDaEspecialidade(pessoa.especialidade);
+  pessoa[skill] = (pessoa[skill] || 2) + 1;
+  if(pessoa.skills) pessoa.skills[skill] = pessoa[skill];
+  pessoa.perks = pessoa.perks || [];
+  pessoa.perks.push(`Prática: ${skill}`);
+  log(`${pessoa.nome} subiu para o nível ${pessoa.nivel} e melhorou ${skill}.`, 'bom');
+}
+
+function rotacionarGuardas(){
+  const guardas = S.sobreviventes.filter(s=>s.vivo && s.tarefa === 'guarda');
+  if(guardas.length <= 1){ guardas.forEach(s=>s.emTurno=true); return; }
+  guardas.forEach((s,i)=>s.emTurno = i % 2 === (S.dia % 2));
+  log(`Rotina de guarda reorganizada: ${guardas.filter(s=>s.emTurno).length} em turno e ${guardas.filter(s=>!s.emTurno).length} em folga.`, 'info');
+}
+
+/* ============================================================
+   EVENTOS ALEATÓRIOS
+============================================================ */
+function eventoAleatorio(){
+  if(!S || !S.vivo || S.pausado) return;
+  const evs = [evSobrevivente, evComerciante, evManada, evDoenca, evSaqueadores, evBriga, evAjudaMedica, evGuardaCansado];
+  pick(evs)();
+}
+
+function alterarRelacao(pessoa, efeitos){
+  if(!pessoa) return;
+  const rel = pessoa.relacao || (pessoa.relacao = {amizade:50,respeito:50,romance:0});
+  Object.keys(efeitos).forEach(k=>rel[k] = clamp((rel[k] || 0) + efeitos[k],0,100));
+}
+
+function evBriga(){
+  const vivos = S.sobreviventes.filter(s=>s.vivo);
+  if(vivos.length < 2) return;
+  const [a,b] = vivos.sort(()=>Math.random()-.5).slice(0,2);
+  abrirModal('Uma briga no acampamento',`${a.nome} e ${b.nome} estão discutindo aos gritos. A tensão acumulada finalmente encontrou uma saída.`,[
+    {texto:'Separar os dois',fn:()=>{alterarRelacao(a,{respeito:3}); alterarRelacao(b,{respeito:3}); a.moral=clamp(a.moral+2,0,100); b.moral=clamp(b.moral+2,0,100); S.player.moral=clamp(S.player.moral+2,0,100); log(`Você separou ${a.nome} e ${b.nome} antes que alguém se machucasse.`,'bom');}},
+    {texto:'Deixar que resolvam',fn:()=>{a.moral=clamp(a.moral-6,0,100); b.moral=clamp(b.moral-6,0,100); S.base.moral=Math.max(0,S.base.moral-3); log(`A briga entre ${a.nome} e ${b.nome} deixou o acampamento mais pesado.`,'ruim');}}
+  ]);
+}
+
+function evAjudaMedica(){
+  const pessoa = pick(S.sobreviventes.filter(s=>s.vivo && !s.ferido));
+  if(!pessoa) return;
+  pessoa.ferido = true;
+  const podeMedicar = S.player.inteligencia >= 5 || /Médic/i.test(S.player.especialidade || '');
+  abrirModal('Alguém precisa de ajuda',`${pessoa.nome} se feriu enquanto ajudava na base. ${podeMedicar ? 'Você reconhece o que precisa ser feito.' : 'Você não tem certeza do que fazer.'}`,[
+    {texto:podeMedicar ? 'Tratar os ferimentos' : 'Tentar ajudar mesmo assim',fn:()=>{pessoa.ferido=false; alterarRelacao(pessoa,{amizade:podeMedicar?8:3,respeito:podeMedicar?8:1}); pessoa.moral=clamp(pessoa.moral+8,0,100); log(`Você cuidou de ${pessoa.nome}.`,'bom');}},
+    {texto:'Chamar outra pessoa',fn:()=>{S.base.moral=Math.max(0,S.base.moral-1); log(`${pessoa.nome} foi levado para descansar e se recuperar.`,'info');}}
+  ]);
+}
+
+function evGuardaCansado(){
+  const guarda = pick(S.sobreviventes.filter(s=>s.vivo && s.tarefa === 'guarda' && s.emTurno));
+  if(!guarda) return;
+  abrirModal('A vigília pesa',`${guarda.nome} está de guarda há tempo demais. Os olhos dele mal conseguem ficar abertos.`,[
+    {texto:'Mandar descansar',fn:()=>{guarda.emTurno=false; guarda.moral=clamp(guarda.moral+6,0,100); alterarRelacao(guarda,{amizade:2,respeito:4}); log(`${guarda.nome} deixou o posto para descansar.`,'bom');}},
+    {texto:'Pedir que aguente mais um pouco',fn:()=>{guarda.moral=clamp(guarda.moral-8,0,100); log(`${guarda.nome} continua na guarda, mas não esquece o pedido.`,'ruim');}}
+  ]);
+}
+
+function evSobrevivente(){
+  const identidade = gerarIdentidadeNpc();
+  const nome = identidade.nome;
+  abrirModal('Um estranho se aproxima',
+    `${nome} está na calçada, exausto, com uma barra de ferro na mão. ${identidade.genero === 'feminino' ? 'Ela diz' : 'Ele diz'} que sabe lutar e que não come muito. Os olhos não param quietos.`,
+    [
+      { texto:'Aceitar no grupo', fn: ()=>{
+          S.sobreviventes.push(novoSobrevivente(nome, identidade.genero));
+          S.recursos.comida = Math.max(0, S.recursos.comida - 1);
+          log(`${nome} entrou no grupo.`, 'bom');
+      }},
+      { texto:'Recusar e mandar embora', fn: ()=>{
+          log(`Você mandou ${nome} embora. Ele não discutiu.`, 'info');
+      }},
+      { texto:'Roubar os pertences dele', fn: ()=>{
+          const m = rnd(2,6), c = rnd(1,4);
+          S.recursos.municao += m;
+          S.recursos.comida += c;
+          S.base.moral -= 15;
+          log(`Você tomou ${m} munição e ${c} comida de ${nome}. O grupo viu.`, 'ruim');
+      }}
+    ]);
+}
+
+function evComerciante(){
+  abrirModal('Comerciante de passagem',
+    'Um homem magro empurra um carrinho de supermercado cheio de tralha. Ele quer materiais e tem comida e remédios para trocar. Não pergunta de onde vieram as coisas.',
+    [
+      { texto:'Trocar 5 materiais por 9 comida', fn: ()=>{
+          if(S.recursos.materiais >= 5){
+            S.recursos.materiais -= 5; S.recursos.comida += 9;
+            log('Troca feita: +9 comida.', 'bom');
+          } else log('Você não tem materiais suficientes.', 'ruim');
+      }},
+      { texto:'Trocar 5 materiais por 4 remédios', fn: ()=>{
+          if(S.recursos.materiais >= 5){
+            S.recursos.materiais -= 5; S.recursos.remedios += 4;
+            log('Troca feita: +4 remédios.', 'bom');
+          } else log('Você não tem materiais suficientes.', 'ruim');
+      }},
+      { texto:'Trocar 6 comida por 10 munição', fn: ()=>{
+          if(S.recursos.comida >= 6){
+            S.recursos.comida -= 6; S.recursos.municao += 10;
+            log('Troca feita: +10 munição.', 'bom');
+          } else log('Você não tem comida suficiente.', 'ruim');
+      }},
+      { texto:'Recusar e fechar a porta', fn: ()=>{
+          log('Você fechou a porta. Ele xingou e foi embora.', 'info');
+      }}
+    ]);
+}
+
+function evManada(){
+  abrirModal('Uma manada passa perto',
+    'Dezenas de walkers atravessam a avenida a duas quadras de distância. Eles andam devagar, tropeçando uns nos outros. Ainda não notaram vocês.',
+    [
+      { texto:'Silêncio absoluto. Ninguém respira.', fn: ()=>{
+          if(Math.random() < 0.78){
+            S.base.ameaca = Math.max(0, S.base.ameaca - 12);
+            log('A manada passou. Ninguém se moveu por vinte minutos.', 'bom');
+          } else {
+            S.base.ameaca += 28;
+            log('Alguém derruba uma lata. Dezenas de cabeças viram ao mesmo tempo.', 'ruim');
+          }
+      }},
+      { texto:'Atacar enquanto estão distraídos', fn: ()=>{
+          const n = rnd(3,6);
+          log(`Você avança contra ${n} walkers separados do grupo.`, 'sangue');
+          combate(n);
+          S.base.ameaca += 22;
+      }}
+    ]);
+}
+
+function evDoenca(){
+  const vivos = S.sobreviventes.filter(s=>s.vivo && !s.ferido);
+  if(!vivos.length) return;
+  const s = pick(vivos);
+  abrirModal('Febre',
+    `${s.nome} está suando e tremendo. A testa queima. Pode ser só uma gripe. Pode ser uma mordida que ele escondeu.`,
+    [
+      { texto:'Usar 3 remédios', fn: ()=>{
+          if(S.recursos.remedios >= 3){
+            S.recursos.remedios -= 3;
+            log(`${s.nome} se recuperou com os remédios.`, 'bom');
+          } else {
+            log('Você não tem remédios suficientes. Ele piora.', 'ruim');
+            s.ferido = true;
+          }
+      }},
+      { texto:'Isolar no quarto e esperar', fn: ()=>{
+          if(Math.random() < 0.48){
+            s.vivo = false;
+            log(`${s.nome} não resistiu durante a noite.`, 'sangue');
+          } else {
+            log(`${s.nome} amanheceu melhor. Foi só uma gripe.`, 'bom');
+          }
+      }},
+      { texto:'Expulsar do grupo agora', fn: ()=>{
+          s.vivo = false;
+          S.base.moral -= 10;
+          log(`${s.nome} foi deixado do lado de fora. Você não olhou para trás.`, 'ruim');
+      }}
+    ]);
+}
+
+function evSaqueadores(){
+  abrirModal('Saqueadores',
+    'Três homens armados na porta. O da frente sorri sem mostrar os dentes. "Vocês têm comida. Nós temos armas. Vamos fazer isso do jeito fácil."',
+    [
+      { texto:'Entregar metade da comida', fn: ()=>{
+          const q = Math.floor(S.recursos.comida/2);
+          S.recursos.comida -= q;
+          S.recursos.agua = Math.floor(S.recursos.agua*0.6);
+          log(`Você entregou ${q} de comida e parte da água.`, 'ruim');
+      }},
+      { texto:'Lutar', fn: ()=>{
+          const poder = calcularDefesa();
+          const inimigo = 22 + Math.random()*18;
+          if(poder > inimigo){
+            log('Você e o grupo expulsam os saqueadores. Um deles deixou a mochila.', 'bom');
+            S.recursos.municao += rnd(3,9);
+            S.player.vida -= rnd(5,15);
+          } else {
+            log('Os saqueadores levam quase tudo. Um dos seus caiu.', 'sangue');
+            ['comida','agua','remedios','municao','materiais'].forEach(k=>{
+              S.recursos[k] = Math.floor(S.recursos[k]*0.2);
+            });
+            S.player.vida -= rnd(15,30);
+            const vivos = S.sobreviventes.filter(s=>s.vivo);
+            if(vivos.length){ pick(vivos).vivo = false; }
+            S.base.moral = Math.max(0, S.base.moral - 12);
+          }
+      }},
+      { texto:'Fugir para o andar de cima', fn: ()=>{
+          if(Math.random() < 0.6){
+            S.recursos.comida = Math.floor(S.recursos.comida*0.5);
+            log('Você se esconde até eles irem embora. Levaram metade da comida.', 'info');
+          } else {
+            log('Eles arrombaram a porta. Você levou a pior.', 'sangue');
+            S.player.vida -= rnd(12,26);
+            S.recursos.comida = Math.floor(S.recursos.comida*0.3);
+          }
+      }}
+    ]);
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+function abrirModal(titulo, texto, opcoes){
+  S.pausado = true;
+  const m = document.getElementById('modal');
+  m.hidden = false;
+  m.innerHTML = `<div class="modalBox">
+      <h2>${titulo}</h2>
+      <p>${texto}</p>
+      <div class="modalOps"></div>
+    </div>`;
+  const box = m.querySelector('.modalOps');
+  opcoes.forEach(o=>{
+    const b = document.createElement('button');
+    b.textContent = o.texto;
+    b.onclick = ()=>{
+      fecharModal();
+      o.fn();
+      render();
+    };
+    box.appendChild(b);
+  });
+}
+
+function fecharModal(){
+  document.getElementById('modal').hidden = true;
+  if(S && S.vivo) S.pausado = false;
+}
+
+/* ============================================================
+   GAME OVER
+============================================================ */
+function gameOver(motivo){
+  if(!S.vivo) return;
+  S.vivo = false;
+  clearInterval(loopId);
+  log(motivo, 'sangue');
+  render();
+
+  const descendentes = S.familia.membros
+    .filter(m=>m.vivo && m.jogavel && m.id !== S.familia.atual)
+    .filter(m=>avaliarLideranca(m).apto)
+    .sort((a,b)=>avaliarLideranca(b).pontuacao-avaliarLideranca(a).pontuacao);
+  if(descendentes.length){
+    const herdeiro = descendentes[0];
+    abrirModal('FIM DE LINHA',
+      `${motivo}<br><br>
+       ${herdeiro.nome} tem idade e preparo suficientes para assumir a liderança.<br>
+       A família pode continuar através dele(a).`,
+      [{ texto:`Continuar como ${herdeiro.nome}`, fn:()=> assumirDescendente(herdeiro.id) },
+       { texto:'Deixar o acampamento votar', fn:()=> abrirVotacaoSucessao() },
+       { texto:'Recomeçar', fn:()=> location.reload() }]);
+    return;
+  }
+  const dependentes = S.familia.membros
+    .filter(m=>m.vivo && m.jogavel && m.id !== S.familia.atual && idadeMembro(m) < 16);
+  if(dependentes.length){
+    const dependente = dependentes[0];
+    abrirModal('Uma liderança improvável',
+      `${dependente.nome} ainda é jovem demais para comandar sozinho. O acampamento pode proteger a criança ou escolher outra pessoa para liderar.`,
+      [{ texto:`Continuar como ${dependente.nome}`, fn:()=> assumirDescendente(dependente.id) },
+       { texto:'Deixar o acampamento votar', fn:()=> abrirVotacaoSucessao() },
+       { texto:'Recomeçar', fn:()=> location.reload() }]);
+    return;
+  }
+  abrirVotacaoSucessao();
+}
+
+function avaliarLideranca(membro){
+  const stats = membro.stats || {};
+  const pontuacao = (stats.forca||0) + (stats.agilidade||0) +
+    (stats.inteligencia||0) + (stats.resistencia||0) + (stats.carisma||0)*2;
+  return { pontuacao, apto:idadeMembro(membro) >= 16 && pontuacao >= 18 };
+}
+
+function abrirVotacaoSucessao(){
+  const candidatos = S.sobreviventes.filter(s=>{
+    if(!s.vivo) return false;
+    const membro = s.familiaId ? S.familia.membros.find(m=>m.id === s.familiaId) : null;
+    return !membro || idadeMembro(membro) >= 16;
+  });
+  if(!candidatos.length){
+    abrirModal('FIM DE LINHA',
+      'Nenhum adulto está em condições de liderar o acampamento.',
+      [{ texto:'Recomeçar', fn:()=> location.reload() }]);
+    return;
+  }
+  abrirModal('O acampamento decide',
+    'Seu descendente ainda é jovem ou não demonstrou o que era preciso. As pessoas se reúnem e votam em quem deve assumir.',
+    [{ texto:'Realizar votação', fn:()=>{
+      const votos = candidatos.map(c=>({
+        candidato:c,
+        votos:Math.max(1, Math.round((c.forca||2) + (c.inteligencia||2) + Math.random()*6))
+      })).sort((a,b)=>b.votos-a.votos);
+      const eleito = votos[0].candidato;
+      log(`Votação concluída: ${eleito.nome} recebeu ${votos[0].votos} votos e assumiu o acampamento.`, 'sistema');
+      assumirMembroComunidade(eleito);
+    }},
+    { texto:'Recomeçar', fn:()=> location.reload() }]);
+}
+
+function assumirDescendente(id){
+  const membro = S.familia.membros.find(m=>m.id === id && m.vivo && m.jogavel);
+  if(!membro) return;
+  const antigo = S.familia.membros.find(m=>m.id === S.familia.atual);
+  if(antigo) antigo.vivo = false;
+  S.familia.atual = membro.id;
+  const s = S.sobreviventes.find(sobrevivente=>sobrevivente.familiaId === membro.id);
+  if(s) s.vivo = true;
+  S.sobreviventes = S.sobreviventes.filter(sobrevivente=>sobrevivente.familiaId !== membro.id);
+  const stats = membro.stats || { forca:2, agilidade:2, inteligencia:2, carisma:2, resistencia:2 };
+  S.player = {
+    ...stats, nome:membro.nome, genero:membro.genero, idade:idadeMembro(membro), experiencia:membro.experiencia || 0,
+    especialidade:membro.especialidade, comportamento:{}, nivel:membro.nivel || 1, perks:[], moral:membro.moral || 70,
+    arma:'Nenhuma', armaBonus:0, bonusLoot:0,
+    vida:100, vidaMax:100, fome:15, sede:15, energia:100
+  };
+  membro.vivo = true;
+  S.familia.lideranca = null;
+  S.vivo = true;
+  S.pausado = false;
+  S.acao = null;
+  log(`${membro.nome} assumiu a responsabilidade pela família.`, 'sistema');
+  construirAcoes();
+  iniciarLoop();
+  fecharModal();
+  render();
+}
+
+function assumirMembroComunidade(sobrevivente){
+  const antigo = membroAtual();
+  if(antigo) antigo.vivo = false;
+  S.sobreviventes = S.sobreviventes.filter(s=>s !== sobrevivente);
+  S.familia.atual = null;
+  S.familia.lideranca = { nome:sobrevivente.nome, comunidade:true };
+  S.player = {
+    forca:sobrevivente.forca || 2, agilidade:sobrevivente.agilidade || 2, inteligencia:sobrevivente.inteligencia || 2,
+    carisma:sobrevivente.carisma || 2, resistencia:sobrevivente.resistencia || 2,
+    nome:sobrevivente.nome, genero:sobrevivente.genero, especialidade:sobrevivente.especialidade,
+    idade:18, experiencia:sobrevivente.experiencia || 0, comportamento:{}, nivel:sobrevivente.nivel || 1, perks:[], moral:sobrevivente.moral || 70,
+    arma:'Nenhuma', armaBonus:0, bonusLoot:0,
+    vida:100, vidaMax:100, fome:15, sede:15, energia:100
+  };
+  S.vivo = true;
+  S.pausado = false;
+  S.acao = null;
+  construirAcoes();
+  log(`${sobrevivente.nome} assumiu a liderança por decisão do acampamento.`, 'sistema');
+  iniciarLoop();
+  fecharModal();
+  render();
+}
+
+/* ============================================================
+   LOG
+============================================================ */
+function log(msg, tipo='info'){
+  const box = document.getElementById('logBox');
+  if(!box) return;
+
+  const d = new Date();
+  const hora = S ? formatarHora(S.tempoTotal) : '';
+
+  const el = document.createElement('div');
+  el.className = 'entrada ' + tipo;
+  el.innerHTML = `<span class="hora">${hora}</span>${msg}`;
+  box.appendChild(el);
+
+  // Limita o tamanho do log
+  while(box.children.length > 180) box.removeChild(box.firstChild);
+  box.scrollTop = box.scrollHeight;
+}
+
+function formatarHora(t){
+  const h = Math.floor((t % 1440)/60);
+  const m = t % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
+/* ============================================================
+   RENDERIZAÇÃO
+============================================================ */
+function render(){
+  if(!S) return;
+  renderTopo();
+  renderStatus();
+  renderBase();
+  renderSobreviventes();
+  renderFamilia();
+  renderProgresso();
+  renderBotoes();
+}
+
+function renderTopo(){
+  const h = Math.floor((S.tempoTotal % 1440)/60);
+  const m = S.tempoTotal % 60;
+  const periodo = h < 6 ? 'Madrugada' : h < 12 ? 'Manhã' : h < 18 ? 'Tarde' : 'Noite';
+
+  document.getElementById('tempo').innerHTML =
+    `DIA ${S.dia} &nbsp;·&nbsp; ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}
+     <small>${periodo}</small>`;
+
+  const r = S.recursos;
+  document.getElementById('recursos').innerHTML =
+    Object.keys(NOMES_REC).map(k=>
+      `<span class="recItem">${ICONES[k]} <b>${r[k]}</b></span>`
+    ).join('');
+}
+
+function renderStatus(){
+  const p = S.player;
+  const membroAtual = S.familia.membros.find(m=>m.id === S.familia.atual);
+  const nomeAtual = membroAtual?.nome || S.familia.lideranca?.nome || 'Sobrevivente';
+  const gravidezAtual = S.familia.gravidez && membroAtual && S.familia.gravidez.maeId === membroAtual.id ? dadosGravidez() : null;
+  const bar = (v, max, cor) =>
+    `<div class="barraMini"><div style="width:${clamp(v/max*100,0,100)}%;background:${cor}"></div></div>`;
+
+  document.getElementById('statusJogador').innerHTML = `
+    <h3><button class="nomePerfil" onclick="abrirPerfilPrincipal()">${esc(nomeAtual)}</button></h3>
+    <div class="statLinha"><span>Idade</span><b>${p.idade || idadeAtual()} anos</b></div>
+    <div class="statLinha"><span>Experiência</span><b>${p.experiencia || 0}</b></div>
+    <div class="statLinha"><span>Nível</span><b>${p.nivel || 1}</b></div>
+    <div class="statLinha"><span>Ânimo</span><b>${Math.round(p.moral || 70)}</b></div>
+    <div class="statLinha"><span>Perks</span><b>${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</b></div>
+    <div class="statLinha"><span>Comportamento</span><b>${esc(comportamentoTexto(p.comportamento || {}))}</b></div>
+    ${gravidezAtual ? `<div class="gravidezPainel" onclick="abrirEstagioGravidez()"><strong>${gravidezAtual.nome}</strong><span>${gravidezAtual.dias}/280 dias · clique para acompanhar</span></div>` : ''}
+    <div class="statLinha"><span>Vida</span><b>${Math.round(p.vida)}/${p.vidaMax}</b></div>
+    ${bar(p.vida, p.vidaMax, '#a83232')}
+    <div class="statLinha"><span>Energia</span><b>${Math.round(p.energia)}</b></div>
+    ${bar(p.energia, 100, '#c9a227')}
+    <div class="statLinha"><span>Fome</span><b>${Math.round(p.fome)}</b></div>
+    ${bar(p.fome, 100, '#d4793f')}
+    <div class="statLinha"><span>Sede</span><b>${Math.round(p.sede)}</b></div>
+    ${bar(p.sede, 100, '#3f7fd4')}
+    <div class="statLinha" style="margin-top:10px;border-top:1px solid #2b332e;padding-top:8px">
+      <span>Arma</span><b>${p.arma}</b></div>
+    <div class="statLinha"><span>Força</span><b>${p.forca}</b></div>
+    <div class="statLinha"><span>Agilidade</span><b>${p.agilidade}</b></div>
+    <div class="statLinha"><span>Inteligência</span><b>${p.inteligencia}</b></div>
+    <div class="statLinha"><span>Carisma</span><b>${p.carisma}</b></div>
+    <div class="statLinha"><span>Resistência</span><b>${p.resistencia}</b></div>
+  `;
+}
+
+function renderBase(){
+  const defesa = calcularDefesa();
+  const ameaca = clamp(S.base.ameaca, 0, 100);
+  const cor = ameaca > 70 ? '#c0392b' : ameaca > 40 ? '#c9a227' : '#6a9c5a';
+
+  document.getElementById('painelBase').innerHTML = `
+    <h3>Base</h3>
+    <div class="statLinha"><span>🧱 Barricadas</span><b>${S.base.barricadas}</b></div>
+    <div class="statLinha"><span>🛡 Defesa total</span><b>${Math.round(defesa)}</b></div>
+    <div class="statLinha"><span>👥 Pessoas</span><b>${1 + S.sobreviventes.filter(s=>s.vivo).length}</b></div>
+    <div class="statLinha"><span>🎭 Moral</span><b>${Math.round(S.base.moral)}</b></div>
+    <div class="statLinha" style="margin-top:8px"><span>☠ Ameaça</span><b>${Math.round(ameaca)}%</b></div>
+    <div class="barraMini"><div style="width:${ameaca}%;background:${cor}"></div></div>
+  `;
+}
+
+function renderSobreviventes(){
+  const el = document.getElementById('painelSobreviventes');
+  const vivos = S.sobreviventes.filter(s=>s.vivo);
+  const emTurno = vivos.filter(s=>s.tarefa === 'guarda' && s.emTurno).length;
+  el.innerHTML = `<div class="painelResumoAcao"><h3>Grupo (${vivos.length})</h3><button class="botaoVisualizar" onclick="abrirGrupo()">Visualizar</button></div>
+    <div class="statLinha"><span>Em guarda</span><b>${emTurno}</b></div>
+    <div class="statLinha"><span>Ociosos</span><b>${vivos.filter(s=>s.tarefa === 'ocioso').length}</b></div>`;
+}
+
+const ROTULOS_TAREFA = { guarda:'Guarda', coletor:'Coletor', oficina:'Oficina', ocioso:'Sem função' };
+
+function barraRelacao(nome, valor, classe=''){
+  return `<div class="relBar ${classe}"><span>${nome}</span><i><b style="width:${clamp(valor,0,100)}%"></b></i><b>${Math.round(valor)}</b></div>`;
+}
+
+function abrirGrupo(){
+  const vivos = S.sobreviventes.filter(s=>s.vivo);
+  const grupos = ['guarda','coletor','oficina','ocioso'].map(tarefa=>{
+    const pessoas = vivos.map((s,i)=>({s,i})).filter(({s})=>s.tarefa === tarefa);
+    if(!pessoas.length) return '';
+    return `<div class="grupoSecao"><h4>${ROTULOS_TAREFA[tarefa]}</h4>${pessoas.map(({s,i})=>`
+      <button class="acaoRelacao" onclick="abrirInteracoes(${S.sobreviventes.indexOf(s)})">
+        <strong>${esc(s.nome)}</strong> · Nível ${s.nivel || 1}<br>
+        <span class="pessoaMeta">${esc(s.especialidade || 'Sobrevivente')} · ${s.emTurno ? 'em turno' : 'folga'} · ânimo ${Math.round(s.moral || 70)}</span>
+      </button>`).join('')}</div>`;
+  }).join('');
+  abrirModal('Grupo do acampamento', grupos || '<span class="idle">Ninguém além de você.</span>', [{texto:'Fechar grupo',fn:()=>{}}]);
+}
+
+function abrirInteracoes(i){
+  const pessoa = S.sobreviventes[i];
+  if(!pessoa || !pessoa.vivo) return;
+  const rel = pessoa.relacao || (pessoa.relacao = {amizade:50,respeito:50,romance:0});
+  const familia = pessoa.familiaId ? S.familia.membros.find(m=>m.id === pessoa.familiaId) : null;
+  const parceiroValido = familia && familia.parentesco === 'Parceiro(a)' && membroAtual()?.genero !== familia.genero;
+  const opcoes = [
+    {texto:'Conversar', fn:()=>iniciarInteracao(i,'conversar')},
+    {texto:'Treinar junto', fn:()=>iniciarInteracao(i,'treinar')},
+    {texto:'Passar um tempo juntos', fn:()=>iniciarInteracao(i,'divertir')}
+  ];
+  if(pessoa.ferido) opcoes.push({texto:'Ajudar o ferido',fn:()=>iniciarInteracao(i,'ajudar')});
+  if(parceiroValido) opcoes.push({texto:'Tentar ter um bebê',fn:()=>iniciarInteracao(i,'bebe')});
+  opcoes.push({texto:'Alterar rotina',fn:()=>alternarRotina(i)});
+  abrirModal(`Conversar com ${esc(pessoa.nome)}`,`
+    <div class="pessoaModal"><strong>${esc(pessoa.nome)}</strong><span class="pessoaMeta">${rotuloGenero(pessoa.genero)} · ${esc(pessoa.especialidade || 'Sobrevivente')} · Nível ${pessoa.nivel || 1}</span>
+      ${barraRelacao('Amizade',rel.amizade)}${barraRelacao('Respeito',rel.respeito,'respeito')}${barraRelacao('Romance',rel.romance,'romance')}
+    </div>
+    <p>Ânimo: <b>${Math.round(pessoa.moral || 70)}</b> · Rotina: <b>${ROTULOS_TAREFA[pessoa.tarefa]}</b></p>`,
+    opcoes.concat([{texto:'Voltar ao grupo',fn:()=>abrirGrupo()}]));
+}
+
+function alternarRotina(i){
+  const pessoa = S.sobreviventes[i];
+  if(!pessoa || !pessoa.vivo) return;
+  const ordem = ['guarda','coletor','oficina','ocioso'];
+  pessoa.tarefa = ordem[(ordem.indexOf(pessoa.tarefa)+1) % ordem.length];
+  pessoa.rotina = pessoa.tarefa;
+  if(pessoa.tarefa === 'guarda') pessoa.emTurno = true;
+  log(`${pessoa.nome} agora está em: ${ROTULOS_TAREFA[pessoa.tarefa]}.`, 'info');
+  render();
+}
+
+function iniciarInteracao(i, tipo){
+  if(S.acao) return;
+  const pessoa = S.sobreviventes[i];
+  if(!pessoa || !pessoa.vivo) return;
+  if(tipo === 'bebe') return tentarBebeComPessoa(pessoa);
+  const duracoes = {conversar:20, treinar:60, divertir:40, ajudar:40};
+  S.acao = {tipo:'interacao', interacao:tipo, pessoaId:i, nome:`${tipo === 'treinar' ? 'Treinar com' : tipo === 'ajudar' ? 'Ajudar' : tipo === 'divertir' ? 'Passar tempo com' : 'Conversar com'} ${pessoa.nome}`, fim:S.tempoTotal+duracoes[tipo], dur:duracoes[tipo]};
+  log(`Você começa a interagir com ${pessoa.nome}.`, 'info');
+}
+
+function resolverInteracao(a){
+  const pessoa = S.sobreviventes[a.pessoaId];
+  if(!pessoa || !pessoa.vivo) return;
+  const rel = pessoa.relacao || (pessoa.relacao = {amizade:50,respeito:50,romance:0});
+  if(a.interacao === 'conversar'){
+    if(pessoa.tarefa === 'guarda' && Math.random() < 0.3){
+      log(`${pessoa.nome} não quer conversar enquanto está de guarda.`, 'info');
+      return;
+    }
+    rel.amizade += 4; rel.respeito += 1;
+    if(rel.amizade >= 65) rel.romance += 1;
+    pessoa.moral = clamp((pessoa.moral || 70)+2,0,100); S.player.moral = clamp(S.player.moral+2,0,100);
+    log(`${pessoa.nome} baixou a guarda e conversou com você.`, 'bom');
+  } else if(a.interacao === 'treinar'){
+    const skill = skillDaEspecialidade(pessoa.especialidade);
+    pessoa[skill] = (pessoa[skill] || 2) + 1;
+    pessoa.skills[skill] = pessoa[skill];
+    S.player[skill] = (S.player[skill] || 2) + 1;
+    rel.respeito += 5; rel.amizade += 2; ganharExperienciaPessoa(pessoa, 2);
+    log(`Você treinou com ${pessoa.nome}. ${skill} melhorou para os dois.`, 'bom');
+    ganharExperiencia(2);
+  } else if(a.interacao === 'divertir'){
+    rel.amizade += 5; rel.romance += rel.amizade >= 60 ? 3 : 0; pessoa.moral = clamp((pessoa.moral || 70)+8,0,100); S.player.moral = clamp(S.player.moral+6,0,100);
+    log(`Você e ${pessoa.nome} conseguiram rir por alguns minutos.`, 'bom');
+  } else if(a.interacao === 'ajudar'){
+    pessoa.ferido = false; rel.amizade += 6; rel.respeito += 5; pessoa.moral = clamp((pessoa.moral || 70)+10,0,100);
+    log(`Você cuidou dos ferimentos de ${pessoa.nome}. A confiança entre vocês aumentou.`, 'bom');
+  }
+}
+
+function skillDaEspecialidade(especialidade){
+  if(/Médic|Organiz|Líder/.test(especialidade || '')) return 'inteligencia';
+  if(/Caçador|Batedor/.test(especialidade || '')) return 'agilidade';
+  if(/Mecân|Guarda|Veterano/.test(especialidade || '')) return 'forca';
+  return 'resistencia';
+}
+
+function tentarBebeComPessoa(pessoa){
+  const familia = S.familia.membros.find(m=>m.id === pessoa.familiaId);
+  const atual = membroAtual();
+  if(!familia || !atual || atual.genero === familia.genero){
+    log('É preciso haver uma pessoa masculina e uma feminina no casal.', 'info');
+    return;
+  }
+  if(S.familia.gravidez || S.recursos.comida < 2 || S.recursos.agua < 2){
+    log('Ainda não há condições para tentar ter um bebê.', 'ruim');
+    return;
+  }
+  const gestante = atual.genero === 'feminino' ? atual : familia;
+  const outro = gestante.id === atual.id ? familia : atual;
+  S.recursos.comida -= 2; S.recursos.agua -= 2;
+  const sucesso = Math.random() < clamp(0.5 * gestante.fertilidade * outro.fertilidade,0.05,0.9);
+  abrirModal('Uma decisão íntima',`<img class="eventoImagem" src="${IMAGENS_EVENTOS.tentativaBebe}" alt="Um casal tentando formar uma família" onerror="this.hidden=true">Vocês decidem tentar trazer uma nova vida para o acampamento.`,[{texto:'Esperar para ver o que acontece',fn:()=>{ if(sucesso){S.familia.gravidez={maeId:gestante.id,paiId:outro.id,inicio:S.tempoTotal,parto:S.tempoTotal+280*1440,ultimoRisco:0,prematuro:false}; log('Agora começa uma gestação de 280 dias.','info');} else log('Os dias passam, mas nenhuma gravidez acontece desta vez.','info'); }}]);
+}
+
+function renderFamilia(){
+  const el = document.getElementById('painelFamilia');
+  if(!el || !S.familia) return;
+  el.classList.add('painelFamiliaClicavel');
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-label', 'Abrir árvore genealógica');
+  el.onclick = abrirArvore;
+  el.onkeydown = evento => { if(evento.key === 'Enter' || evento.key === ' ') abrirArvore(); };
+  const atual = membroAtual();
+  S.familia.membros.forEach(m=>{
+    if(m.id === S.familia.atual) m.vivo = S.vivo;
+    const s = S.sobreviventes.find(sobrevivente=>sobrevivente.familiaId === m.id);
+    if(s) m.vivo = s.vivo;
+  });
+  const grupos = {};
+  S.familia.membros.forEach(m=>{
+    if(!grupos[m.geracao]) grupos[m.geracao] = [];
+    grupos[m.geracao].push(m);
+  });
+  const linhas = Object.keys(grupos).sort((a,b)=>a-b).map(geracao=>{
+    const nos = grupos[geracao].map(m=>{
+    const classe = [m.id === S.familia.atual ? 'atual' : '', !m.vivo ? 'morto' : ''].join(' ');
+    const idade = idadeMembro(m);
+    const marca = m.id === S.familia.atual ? '<small>LÍDER ATUAL</small>' : m.filhos.length ? `<small>${m.filhos.length} descendente(s)</small>` : '';
+    return `<span class="noFamilia ${classe}" role="button" tabindex="0" onclick="abrirPerfilFamilia(${m.id})" onkeydown="if(event.key==='Enter'||event.key===' ')abrirPerfilFamilia(${m.id})"><strong>${esc(m.nome)}</strong><span>${esc(m.parentesco)} · ${idade} anos</span>${marca}</span>`;
+    }).join('');
+    return `<div class="arvoreGeracao"><span class="geracaoNome">G${Number(geracao)+1}</span>${nos}</div>`;
+  }).join('');
+  const nomeLider = atual?.nome || S.familia.lideranca?.nome || 'Sem sucessor';
+  el.innerHTML = `<div class="painelResumoAcao"><h3>Família</h3><button class="botaoVisualizar" onclick="event.stopPropagation();abrirArvore()">Visualizar</button></div>
+    <div class="familiaAtual"><strong>${esc(nomeLider)}</strong><span>${atual ? 'Linhagem ativa' : 'Liderança da comunidade'} · ${S.familia.membros.filter(m=>m.vivo).length} vivos</span></div>
+    <div class="arvore">${linhas || '<span class="idle">A linhagem começa aqui.</span>'}</div>`;
+}
+
+function montarArvoreCompleta(){
+  const grupos = {};
+  S.familia.membros.forEach(m=>{
+    if(!grupos[m.geracao]) grupos[m.geracao] = [];
+    grupos[m.geracao].push(m);
+  });
+
+  return Object.keys(grupos).sort((a,b)=>a-b).map(geracao=>{
+    const membros = grupos[geracao].map(m=>{
+      const classe = [m.id === S.familia.atual ? 'atual' : '', !m.vivo ? 'morto' : ''].join(' ');
+      const parceiro = m.parceiro ? S.familia.membros.find(p=>p.id === m.parceiro) : null;
+      const pais = m.pais.map(id=>S.familia.membros.find(p=>p.id === id)?.nome).filter(Boolean);
+      const filhos = m.filhos.map(id=>S.familia.membros.find(f=>f.id === id)?.nome).filter(Boolean);
+      const relacoes = [];
+      if(pais.length) relacoes.push(`<b>Pais:</b> ${pais.map(esc).join(' e ')}`);
+      if(parceiro) relacoes.push(`<b>Parceiro:</b> ${esc(parceiro.nome)}`);
+      if(filhos.length) relacoes.push(`<b>Filhos:</b> ${filhos.map(esc).join(', ')}`);
+      const marca = m.id === S.familia.atual ? '<small>LÍDER ATUAL</small>' : '';
+      const skills = m.skills || m.stats || {};
+      return `<div class="noFamilia ${classe}" role="button" tabindex="0" onclick="abrirPerfilFamilia(${m.id})" onkeydown="if(event.key==='Enter'||event.key===' ')abrirPerfilFamilia(${m.id})">
+        <strong>${esc(m.nome)}</strong>
+        <span>${esc(m.parentesco)} · ${idadeMembro(m)} anos</span>
+        <span>${rotuloGenero(m.genero)} · ${esc(m.especialidade || 'Membro da família')}</span>
+        <span>FOR ${skills.forca ?? 2} · AGI ${skills.agilidade ?? 2} · INT ${skills.inteligencia ?? 2} · CAR ${skills.carisma ?? 2} · RES ${skills.resistencia ?? 2}</span>
+        ${marca}
+        ${relacoes.length ? `<div class="familiaVinculo">${relacoes.join('<br>')}</div>` : ''}
+      </div>`;
+    }).join('');
+    return `<div class="arvoreGeracao"><span class="geracaoNome">G${Number(geracao)+1}</span>${membros}</div>`;
+  }).join('');
+}
+
+function abrirArvore(){
+  if(!S || !S.vivo || !S.familia) return;
+  abrirModal('Árvore genealógica',
+    `<div class="arvoreModal">${montarArvoreCompleta() || '<span class="idle">A linhagem começa aqui.</span>'}</div>`,
+    [{ texto:'Fechar árvore', fn:()=>{} }]);
+}
+
+function abrirPerfilFamilia(id){
+  const membro = S?.familia?.membros.find(m=>m.id === id);
+  if(!membro) return;
+  const imagem = caminhoImagemMembro(membro);
+  const skills = membro.skills || membro.stats || {};
+  abrirModal(`Perfil de ${esc(membro.nome)}`,
+    `<img class="perfilImagem" src="${imagem}" alt="Imagem de ${esc(membro.nome)}" onerror="this.hidden=true;mostrarFallbackImagem(${membro.id})">
+     <div id="fallbackImagem${membro.id}" class="imagemFallback" hidden>Imagem ainda não adicionada.<br>${imagem}</div>
+     <p><b>Gênero:</b> ${rotuloGenero(membro.genero)}<br>
+     <b>Idade:</b> ${idadeMembro(membro)} anos<br>
+     <b>Parentesco:</b> ${esc(membro.parentesco)}<br>
+     <b>Especialidade:</b> ${esc(membro.especialidade || 'Membro da comunidade')}</p>
+     <p><b>Skills</b><br>
+     Força ${skills.forca ?? 2} · Agilidade ${skills.agilidade ?? 2}<br>
+     Inteligência ${skills.inteligencia ?? 2} · Carisma ${skills.carisma ?? 2}<br>
+     Resistência ${skills.resistencia ?? 2}</p>`,
+    [{ texto:'Voltar para a árvore', fn:()=>abrirArvore() }]);
+}
+
+function abrirPerfilPrincipal(){
+  if(!S) return;
+  const membro = membroAtual();
+  const p = S.player;
+  const nome = membro?.nome || S.familia.lideranca?.nome || p.nome || 'Sobrevivente';
+  const imagem = p.imagem || (S.familia.gravidez && membro && S.familia.gravidez.maeId === membro.id
+    ? caminhoImagemGravidez()
+    : `assets/MC/${p.genero || 'feminino'}/${faixaIdadeMC(p.idade || idadeAtual())}/personagem.webp`);
+  abrirModal(`Perfil de ${esc(nome)}`,`
+    <img class="perfilPrincipalImagem" src="${imagem}" alt="Aparência de ${esc(nome)}" onerror="this.hidden=true">
+    <p><b>Gênero:</b> ${rotuloGenero(p.genero)}<br><b>Idade:</b> ${p.idade || idadeAtual()} anos<br><b>Especialidade:</b> ${esc(p.especialidade || 'Sobrevivente')}</p>
+    <p><b>Nível ${p.nivel || 1}</b> · Experiência ${p.experiencia || 0}<br><b>Ânimo:</b> ${Math.round(p.moral || 70)}</p>
+    <p><b>Força</b> ${p.forca} · <b>Agilidade</b> ${p.agilidade}<br><b>Inteligência</b> ${p.inteligencia} · <b>Carisma</b> ${p.carisma}<br><b>Resistência</b> ${p.resistencia}</p>
+    <p><b>Comportamento:</b> ${esc(comportamentoTexto(p.comportamento || {}))}<br><b>Perks:</b> ${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</p>`,
+    [{texto:'Fechar perfil',fn:()=>{}}]);
+}
+
+function renderProgresso(){
+  const el = document.getElementById('progresso');
+  if(!S.acao){
+    el.innerHTML = `<span class="idle">Sem ação em andamento. As ruas estão quietas — por enquanto.</span>`;
+    return;
+  }
+  const a = S.acao;
+  const restante = Math.max(0, a.fim - S.tempoTotal);
+  const pct = clamp((1 - restante/a.dur) * 100, 0, 100);
+
+  el.innerHTML = `
+    <div class="progNome">${a.nome}</div>
+    <div class="barra"><div style="width:${pct}%"></div></div>
+    <div class="progInfo">${Math.round(pct)}% · faltam ${restante} min</div>
+  `;
+}
+
+function renderBotoes(){
+  document.querySelectorAll('.acaoBtn').forEach(b=>{
+    b.disabled = !!S.acao || !S.vivo;
+  });
+}
+
+/* ============================================================
+   INICIALIZAÇÃO
+============================================================ */
+const videoCriacaoInicial = document.getElementById('videoCriacao');
+videoCriacaoInicial.volume = 0.5;
+videoCriacaoInicial.muted = true;
+videoCriacaoInicial.play().catch(()=>{});
+renderCriacao();
+</script>
+</body>
+</html>
