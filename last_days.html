@@ -86,10 +86,13 @@ body{
 .btnAbertura{
   margin-top:0; padding:15px 28px; background:transparent;
   border:1px solid #8b1a1a; color:#d9e0da; border-radius:5px;
-  font:700 14px inherit; letter-spacing:2px; cursor:pointer; transition:.2s;
+  font-family:inherit; font-size:14px; font-weight:700; letter-spacing:2px; cursor:pointer; transition:.2s;
 }
 .btnAbertura:hover{ background:#5e1010; border-color:#c0392b; }
-.botoesAbertura{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:42px}
+.botoesAbertura{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;width:min(100%,520px);margin:42px auto 0}
+.botoesAbertura .btnAbertura{flex:1 1 210px;min-width:0}
+.aberturaUpload{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;border-style:dashed;color:#c58d91;background:rgba(27,32,29,.78)}
+#saveStatusAbertura{min-height:18px;margin-top:10px;color:var(--txt2);font-size:12px}
 @media(max-width:520px){.botoesAbertura{flex-direction:column;width:min(100%,280px)}.botoesAbertura .btnAbertura{width:100%}}
 @keyframes fade{ from{opacity:0; transform:translateY(10px)} to{opacity:1;transform:none} }
 
@@ -134,7 +137,7 @@ body{
 .resumoBox p b{ color:#b9c7bb; }
 
 .campoNome{
-  display:block; width:100%; margin:14px 0 4px; padding:12px 13px;
+  display:block; width:100%; margin:7px 0 4px; padding:12px 13px;
   background:#0a0c0b; border:1px solid var(--borda); border-radius:5px;
   color:var(--txt); font:inherit;
 }
@@ -146,7 +149,9 @@ body{
 .aparenciaOpcao img{ display:block; width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:3px; margin-bottom:5px; background:#171c19; }
 .uploadFoto{ display:block; margin-top:10px; padding:10px; border:1px dashed #5e3034; border-radius:5px; color:#c58d91; font-size:12px; cursor:pointer; }
 .uploadFoto input{ display:block; width:100%; margin-top:6px; color:var(--txt2); font:inherit; font-size:11px; }
+#criacaoStatus{min-height:18px;margin:8px 0 0;color:var(--txt2);font-size:12px;line-height:1.4}
 .campoLabel{ display:block; color:var(--txt2); font-size:12px; margin-top:12px; }
+.identidadeGrid > .campoLabel{margin-top:0}
 .linhaTempo{
   display:flex; gap:7px; align-items:center; margin:0 0 18px;
   color:#8b9d90; font-size:11px; overflow-x:auto; padding-bottom:3px;
@@ -166,9 +171,9 @@ body{
 .adultoEscolhas{ display:grid; gap:9px; }
 .acoesCriacao{display:flex;gap:10px;align-items:center;margin-top:18px}
 .acoesCriacao .btnIniciar{margin-top:0;flex:1}
-.btnSecundario{padding:14px 16px;background:transparent;border:1px solid var(--borda);color:var(--txt2);border-radius:6px;cursor:pointer;font:700 12px inherit;letter-spacing:1px;transition:.15s}
+.btnSecundario{padding:14px 16px;background:transparent;border:1px solid var(--borda);color:var(--txt2);border-radius:6px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;letter-spacing:1px;transition:.15s}
 .btnSecundario:hover{border-color:#8b1a1a;color:var(--txt);background:#211716}
-.campoTitulo{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--txt2);font-size:12px;margin-top:12px}
+.campoTitulo{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--txt2);font-size:12px;font-weight:600;line-height:1.2;margin:0;min-height:28px}
 .btnDado{width:28px;height:28px;padding:0;border:1px solid #7d2929;border-radius:5px;background:#211516;color:#e45b5b;cursor:pointer;font-size:16px;line-height:1}
 .btnDado:hover{background:#3a1f1f;color:#ff9b9b}
 .adultoContador{font-size:12px;color:var(--txt2);margin:4px 0 10px}
@@ -423,6 +428,21 @@ body{
 .controleSom button{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;padding:3px;border:0;background:transparent;color:#d44949;cursor:pointer}
 .controleSom button:hover{color:#ff7777}.controleSom svg{width:20px;height:20px;fill:currentColor}
 .controleSom input{width:86px;accent-color:#b83232;cursor:pointer}.controleSom output{min-width:34px;text-align:right;font-size:11px;color:#e99b9b}
+.configAudioGlobal{position:fixed;top:14px;right:14px;z-index:1000}
+.botaoConfigAudio{width:40px;height:40px;display:grid;place-items:center;border:1px solid #6f2525;border-radius:7px;background:rgba(33,21,22,.94);color:#e05b5b;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+.botaoConfigAudio:hover,.botaoConfigAudio[aria-expanded="true"]{background:#3a1f1f;color:#ff9b9b;border-color:#a83232}
+.botaoConfigAudio svg{width:21px;height:21px;fill:currentColor}
+.painelConfigAudio{position:absolute;top:48px;right:0;width:238px;padding:12px;border:1px solid #6f2525;border-radius:7px;background:#121614;box-shadow:0 8px 28px rgba(0,0,0,.55)}
+.painelConfigAudio h3{margin:0 0 9px;color:#d9b0b0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+.painelConfigAudio .controleSom{justify-content:space-between}
+.miniPlayerTema{margin-top:12px;padding-top:10px;border-top:1px solid var(--borda)}
+.miniPlayerTema label{display:block;margin-bottom:6px;color:var(--txt2);font-size:11px}
+.miniPlayerTema select{width:100%;padding:7px 8px;border:1px solid var(--borda);border-radius:4px;background:#0a0c0b;color:var(--txt);font:inherit;font-size:12px}
+.controlesTema{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:6px;margin-top:8px}
+.controlesTema button{padding:6px;border:1px solid var(--borda);border-radius:4px;background:var(--painel2);color:#d9b0b0;cursor:pointer;font:inherit;font-size:15px;line-height:1}
+.controlesTema button:hover{border-color:#a83232;background:#3a1f1f;color:#fff}
+#temaStatus{display:block;margin-top:7px;color:var(--txt2);font-size:10px;text-align:center}
+@media(max-width:520px){.configAudioGlobal{top:9px;right:9px}.painelConfigAudio{right:-2px;width:min(238px,calc(100vw - 18px))}}
 #saveStatus{color:var(--txt2);font-size:12px}
 .modalTexto{color:#a9b5ac;font-size:14px;line-height:1.7;margin-bottom:20px}
 .simboloEvento{font-size:48px;text-align:center;margin-bottom:12px}
@@ -450,6 +470,35 @@ body{
   </video>
 </div>
 
+<div id="configAudioGlobal" class="configAudioGlobal">
+  <button id="botaoConfigAudio" class="botaoConfigAudio" type="button" onclick="alternarPainelAudio(event)" aria-label="Abrir configurações de áudio" aria-expanded="false" title="Configurações de áudio">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.43 12.98c.04-.32.07-.65.07-.98s-.02-.66-.07-.98l2.11-1.65-2-3.46-2.49 1a7.3 7.3 0 0 0-1.69-.98L15 3h-4l-.36 2.94c-.6.25-1.16.58-1.69.98l-2.49-1-2 3.46 2.11 1.65c-.04.32-.08.65-.08.98s.03.66.08.98l-2.11 1.65 2 3.46 2.49-1c.52.4 1.09.73 1.69.98L11 21h4l.36-2.94c.6-.25 1.17-.58 1.69-.98l2.49 1 2-3.46-2.11-1.64zM13 15.5A3.5 3.5 0 1 1 13 8a3.5 3.5 0 0 1 0 7.5z"/></svg>
+  </button>
+  <div id="painelConfigAudio" class="painelConfigAudio" role="dialog" aria-label="Configurações de áudio" hidden>
+    <h3>Configurações de áudio</h3>
+    <div class="controleSom">
+      <button id="botaoSom" type="button" onclick="alternarSom()" aria-label="Silenciar áudio" title="Silenciar áudio">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.1-3.8v7.6a4.5 4.5 0 0 0 2.1-3.8zm0-9.2v2.1c2.9 1.2 5 4 5 7.1s-2.1 5.9-5 7.1v2.1c4.1-1.3 7-5 7-9.2s-2.9-7.9-7-9.2z"/></svg>
+      </button>
+      <input id="volumeSom" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume geral" oninput="definirVolumeAudio(this.value)">
+      <output id="valorVolume">70%</output>
+    </div>
+    <div class="miniPlayerTema">
+      <label for="temaSelect">Música tema</label>
+      <select id="temaSelect" onchange="selecionarTema(this.value)" aria-label="Escolher música tema">
+        <option value="0">Tema 1</option>
+        <option value="1">Tema 2</option>
+      </select>
+      <div class="controlesTema">
+        <button type="button" onclick="temaAnterior()" aria-label="Música tema anterior" title="Anterior">‹</button>
+        <button id="temaPlayPause" type="button" onclick="alternarTema()" aria-label="Tocar música tema" title="Tocar música tema">▶</button>
+        <button type="button" onclick="temaProxima()" aria-label="Próxima música tema" title="Próxima">›</button>
+      </div>
+      <span id="temaStatus" role="status" aria-live="polite">Pronto para tocar</span>
+    </div>
+  </div>
+</div>
+
 <!-- ============ ABERTURA ============ -->
 <div id="abertura" class="abertura">
   <div class="aberturaFrase">Foi assim que você encontrou sua morte.</div>
@@ -458,7 +507,7 @@ body{
     <button class="btnAbertura" onclick="abrirCriacao()">NOVO JOGO</button>
     <button id="continuarSave" class="btnAbertura" hidden onclick="carregarJogo()">CONTINUAR PARTIDA</button>
   </div>
-  <label class="uploadSave">Carregar partida<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label>
+  <label class="uploadSave aberturaUpload">Carregar partida<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label>
   <p id="saveStatusAbertura" role="status" aria-live="polite"></p>
 </div>
 
@@ -474,7 +523,7 @@ body{
   <header id="topo">
     <div id="tempo"></div>
     <div id="recursos"></div>
-    <div class="controlesSave"><button onclick="salvarJogo(true)">Salvar</button><button onclick="exportarJogo()">Exportar partida</button><label class="uploadSave">Carregar partida<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label><div class="controleSom" title="Volume dos sons e músicas"><button id="botaoSom" onclick="alternarSom()" aria-label="Silenciar áudio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.1-3.8v7.6a4.5 4.5 0 0 0 2.1-3.8zm0-9.2v2.1c2.9 1.2 5 4 5 7.1s-2.1 5.9-5 7.1v2.1c4.1-1.3 7-5 7-9.2s-2.9-7.9-7-9.2z"/></svg></button><input id="volumeSom" type="range" min="0" max="1" step="0.01" value="0.7" aria-label="Volume geral" oninput="definirVolumeAudio(this.value)"><output id="valorVolume">70%</output></div><span id="saveStatus" role="status" aria-live="polite"></span></div>
+    <div class="controlesSave"><button onclick="salvarJogo(true)">Salvar</button><button onclick="exportarJogo()">Exportar partida</button><label class="uploadSave">Carregar partida<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label><span id="saveStatus" role="status" aria-live="polite"></span></div>
   </header>
   <div id="grid">
     <aside>
@@ -697,6 +746,7 @@ function renderCriacao(){
       <label class="uploadFoto">Ou envie uma foto própria
         <input id="fotoPersonagem" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
       </label>
+      <p id="criacaoStatus" role="status" aria-live="polite"></p>
       <div class="acoesCriacao"><button type="button" class="btnSecundario" onclick="voltarCriacao()">VOLTAR</button><button class="btnIniciar" onclick="confirmarIdentidade()">COMEÇAR MINHA HISTÓRIA</button></div>
     </div>`;
     box.querySelectorAll('[data-genero]').forEach(btn=>{
@@ -829,8 +879,8 @@ function voltarCriacao(){
 }
 
 function confirmarIdentidade(){
-  const nome = document.getElementById('nomeInicial').value.trim();
-  const sobrenome = document.getElementById('sobrenomeInicial').value.trim();
+  const nome = document.getElementById('nomeInicial').value.trim().slice(0,20);
+  const sobrenome = document.getElementById('sobrenomeInicial').value.trim().slice(0,24);
   if(!nome || !sobrenome){
     document.getElementById('criacaoBox').querySelector('.dica').textContent = 'Informe nome e sobrenome para continuar.';
     return;
@@ -846,8 +896,8 @@ function guardarIdentidade(){
   if(criacao.identidadePronta) return;
   const nome = document.getElementById('nomeInicial');
   const sobrenome = document.getElementById('sobrenomeInicial');
-  if(nome) criacao.build.nome = nome.value;
-  if(sobrenome) criacao.build.sobrenome = sobrenome.value;
+  if(nome) criacao.build.nome = nome.value.trim().slice(0,20);
+  if(sobrenome) criacao.build.sobrenome = sobrenome.value.trim().slice(0,24);
 }
 
 function sortearIdentidade(){
@@ -869,15 +919,24 @@ function selecionarAparencia(aparencia){
 function selecionarFotoPersonagem(evento){
   guardarIdentidade();
   const arquivo = evento.target.files?.[0];
-  if(!arquivo || !['image/png','image/jpeg','image/webp','image/gif'].includes(arquivo.type)) return;
-  if(arquivo.size > 1500000){ alert('Escolha uma imagem de até 1,5 MB para permitir o salvamento.'); return; }
+  const tiposImagem = ['image/png','image/jpeg','image/webp','image/gif'];
+  if(!arquivo) return;
+  if(!tiposImagem.includes(arquivo.type.toLowerCase())){ statusCriacao('Formato inválido. Use PNG, JPG, WEBP ou GIF.'); evento.target.value=''; return; }
+  if(arquivo.size > 1500000){ statusCriacao('A imagem deve ter no máximo 1,5 MB para ser salva na partida.'); evento.target.value=''; return; }
   const leitor = new FileReader();
   leitor.onload = () => {
     criacao.build.imagemUpload = leitor.result;
     criacao.build.aparencia = 'upload';
     renderCriacao();
+    statusCriacao('Imagem carregada. Ela aparecerá no retrato e será incluída no arquivo salvo.');
   };
+  leitor.onerror = () => { statusCriacao('Não foi possível ler a imagem. Tente outro arquivo.'); evento.target.value=''; };
   leitor.readAsDataURL(arquivo);
+}
+
+function statusCriacao(texto){
+  const el=document.getElementById('criacaoStatus');
+  if(el) el.textContent=texto;
 }
 
 function comportamentoTexto(comportamento){
@@ -942,14 +1001,17 @@ let expedicaoAudio = null;
 let prologoAudio = null;
 let prologoFaixa = '';
 let temaAudio = null;
-let temaIndice = 0;
 const TEMAS_JOGO = ['assets/snd/themes/theme1.mp3','assets/snd/themes/theme2.mp3'];
 const AUDIO_VOLUME_KEY = 'lastDaysVolume';
+const AUDIO_TEMA_KEY = 'lastDaysTheme';
 let volumeAudio = .7;
 let volumeAudioAnterior = .7;
+let temaIndice = 0;
 try{
   const salvo=Number(localStorage.getItem(AUDIO_VOLUME_KEY));
   if(Number.isFinite(salvo))volumeAudio=clamp(salvo,0,1);
+  const temaSalvo=Number(localStorage.getItem(AUDIO_TEMA_KEY));
+  if(Number.isInteger(temaSalvo) && temaSalvo>=0)temaIndice=temaSalvo%TEMAS_JOGO.length;
 }catch(e){}
 if(volumeAudio>0)volumeAudioAnterior=volumeAudio;
 
@@ -970,6 +1032,7 @@ function atualizarControleSom(){
   if(faixa)faixa.value=String(volumeAudio);
   if(valor)valor.textContent=`${Math.round(volumeAudio*100)}%`;
   if(botao){botao.setAttribute('aria-label',volumeAudio===0?'Ativar áudio':'Silenciar áudio');botao.title=volumeAudio===0?'Ativar áudio':'Silenciar áudio';}
+  atualizarPlayerTema();
 }
 function definirVolumeAudio(valor){
   volumeAudio=clamp(Number(valor)||0,0,1);
@@ -978,6 +1041,22 @@ function definirVolumeAudio(valor){
   aplicarVolumeAudio();
 }
 function alternarSom(){definirVolumeAudio(volumeAudio>0?0:(volumeAudioAnterior||.7));}
+function alternarPainelAudio(evento){
+  evento?.stopPropagation();
+  const painel=document.getElementById('painelConfigAudio'),botao=document.getElementById('botaoConfigAudio');
+  if(!painel || !botao)return;
+  const abrir=painel.hidden;
+  painel.hidden=!abrir;
+  botao.setAttribute('aria-expanded',String(abrir));
+}
+function fecharPainelAudio(){
+  const painel=document.getElementById('painelConfigAudio'),botao=document.getElementById('botaoConfigAudio');
+  if(!painel || painel.hidden)return;
+  painel.hidden=true;
+  botao?.setAttribute('aria-expanded','false');
+}
+document.addEventListener('click',evento=>{if(!evento.target.closest('#configAudioGlobal'))fecharPainelAudio();});
+document.addEventListener('keydown',evento=>{if(evento.key==='Escape')fecharPainelAudio();});
 
 function tocarAudioExpedicao(){
   if(expedicaoAudio)return;
@@ -994,16 +1073,46 @@ function tocarTemaJogo(){
   if(temaAudio || !TEMAS_JOGO.length)return;
   const faixa=TEMAS_JOGO[temaIndice%TEMAS_JOGO.length];
   temaAudio=new Audio(faixa);temaAudio.volume=.26*volumeAudio;
-  temaAudio.onended=()=>{temaAudio=null;temaIndice=(temaIndice+1)%TEMAS_JOGO.length;tocarTemaJogo();};
-  temaAudio.play().catch(()=>{});
+  temaAudio.onended=()=>{temaAudio=null;temaIndice=(temaIndice+1)%TEMAS_JOGO.length;atualizarPlayerTema();tocarTemaJogo();};
+  const reproducao=temaAudio.play();
+  reproducao?.then(()=>atualizarPlayerTema()).catch(()=>atualizarPlayerTema());
 }
-function pausarTemaJogo(){if(temaAudio)temaAudio.pause();}
+function pausarTemaJogo(){if(temaAudio){temaAudio.pause();atualizarPlayerTema();}}
 function retomarTemaJogo(){
   if(!temaAudio)tocarTemaJogo();
-  else temaAudio.play().catch(()=>{});
+  else temaAudio.play().then(()=>atualizarPlayerTema()).catch(()=>{});
 }
 function pararTemaJogo(){
   if(temaAudio){temaAudio.pause();temaAudio.currentTime=0;temaAudio.onended=null;temaAudio=null;}
+  atualizarPlayerTema();
+}
+function atualizarPlayerTema(){
+  const seletor=document.getElementById('temaSelect'),botao=document.getElementById('temaPlayPause'),status=document.getElementById('temaStatus');
+  if(seletor)seletor.value=String(temaIndice%Math.max(1,TEMAS_JOGO.length));
+  const tocando=Boolean(temaAudio && !temaAudio.paused);
+  if(botao){botao.textContent=tocando?'❚❚':'▶';botao.setAttribute('aria-label',tocando?'Pausar música tema':'Tocar música tema');botao.title=tocando?'Pausar música tema':'Tocar música tema';}
+  if(status)status.textContent=tocando?`Tema ${temaIndice+1} tocando`:`Tema ${temaIndice+1} pausado`;
+}
+function selecionarTema(valor){
+  const indice=Number(valor);
+  if(!Number.isInteger(indice) || indice<0 || indice>=TEMAS_JOGO.length)return;
+  temaIndice=indice;
+  try{localStorage.setItem(AUDIO_TEMA_KEY,String(temaIndice));}catch(e){}
+  pararTemaJogo();
+  tocarTemaJogo();
+}
+function alternarTema(){
+  if(temaAudio && !temaAudio.paused){temaAudio.pause();atualizarPlayerTema();return;}
+  if(!temaAudio)tocarTemaJogo();
+  else temaAudio.play().then(()=>atualizarPlayerTema()).catch(()=>{});
+}
+function temaAnterior(){
+  temaIndice=(temaIndice-1+TEMAS_JOGO.length)%TEMAS_JOGO.length;
+  selecionarTema(String(temaIndice));
+}
+function temaProxima(){
+  temaIndice=(temaIndice+1)%TEMAS_JOGO.length;
+  selecionarTema(String(temaIndice));
 }
 function tocarAudioPrologo(caminho){
   if(prologoAudio && prologoFaixa===caminho)return;
@@ -3499,10 +3608,12 @@ async function importarJogo(evento){
   const arquivo=evento.target.files?.[0];
   if(!arquivo) return;
   try{
+    statusSave('Lendo arquivo de partida…');
     if(arquivo.size > 8000000) throw Error('O arquivo excede 8 MB.');
+    if(arquivo.size === 0) throw Error('O arquivo está vazio.');
     const dados=JSON.parse(await arquivo.text());
     validarSave(dados);
-    if(S && !confirm('Substituir a partida atual pela partida do arquivo selecionado?')) return;
+    if(S && !confirm('Substituir a partida atual pela partida do arquivo selecionado?')){ statusSave('Carregamento cancelado.'); return; }
     restaurarJogo(dados);
   }catch(e){statusSave('Não foi possível carregar: '+e.message);}
   finally{evento.target.value='';}
@@ -3514,6 +3625,7 @@ const videoCriacaoInicial = document.getElementById('videoCriacao');
 videoCriacaoInicial.volume = 0.5*volumeAudio;
 videoCriacaoInicial.muted = true;
 videoCriacaoInicial.play().catch(()=>{});
+aplicarVolumeAudio();
 renderCriacao();
 </script>
 <script src="assets/muro/config.js"></script>
