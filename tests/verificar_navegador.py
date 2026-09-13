@@ -18,7 +18,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*args): pass
     def do_GET(self):
         if self.path != '/regressoes.html': return super().do_GET()
-        jogo=(ROOT/'deepseek_html_20260912_271fcb.html').read_text(encoding='utf-8')
+        jogo=(ROOT/'last_days.html').read_text(encoding='utf-8')
         suites=[(ROOT/'tests'/nome).read_text(encoding='utf-8') for nome in ['regressoes.js','comunidade.js']]
         script='[].concat('+','.join(suites)+')'
         extra='<pre id="resultadosTeste"></pre><script>try{document.getElementById("resultadosTeste").textContent=JSON.stringify('+script+');}catch(e){document.getElementById("resultadosTeste").textContent=JSON.stringify([{ok:false,nome:"Execução",erro:e.stack}]);}</script>'
