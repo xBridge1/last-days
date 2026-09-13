@@ -456,6 +456,7 @@ body{
 .baseComandos button:disabled,.acaoBtn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.7)}
 .servicosBase{margin-top:9px;padding-top:8px;border-top:1px solid #2b332e;font-size:12px}
 .servicoStatus{display:flex;align-items:center;gap:4px;margin-top:5px}
+.listaInventarioBase{display:grid;gap:8px;margin-top:10px}.listaInventarioBase div{padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:#0f1311;font-size:12px}.listaInventarioBase span,.itemBase{color:var(--txt2);font-size:11px}.itemBase{display:block;margin-top:4px}
 .saudeRuim{color:#df895d}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
 .cartaoSaude{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;border-top:1px solid var(--borda);padding:8px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{margin:0}
 .notaBase{font-size:11px;color:var(--txt2);line-height:1.5;margin:8px 0}
@@ -1517,7 +1518,7 @@ const ACOES = [
   { id:'dormir',    nome:'Dormir',                  desc:'8h · recupera bastante energia, mas pode ser interrompido' },
   { id:'procurar',  nome:'Procurar sobreviventes',  desc:'~4h · recruta aliados' },
    { id:'familia',   nome:'Cuidar da família',       desc:'~6h · fortalece ou aumenta a linhagem' },
-   { id:'gerador', nome:'Ligar o gerador', desc:'~1h · 1 combustível · +5 moral · +10 energia · faz barulho' },
+  { id:'gerador', nome:'Ligar o gerador', desc:'~1h · requer 1 gerador e 1 combustível · +5 moral · +10 energia · faz barulho' },
   { id:'radio', nome:'Usar o rádio', desc:'Ordens internas, contatos e planejamento de excursões' },
   { id:'construcoes',nome:'Construções e abrigos',desc:'Instalações, espaços e mudança de base' },
   { id:'muro',nome:'Observar o muro',desc:'Ver a rua e planejar a redução de ameaça' },
@@ -2022,8 +2023,8 @@ function acaoFamilia(){
 
 function acaoGerador(){
   if(!podeAgir(0)) return;
+  if(quantidadeItemBase('gerador')<1){ log('Você precisa de um gerador no inventário da base para fazer isso.','ruim'); return; }
   if(S.recursos.combustivel < 1){ log('Falta combustível para ligar o gerador.','info'); return; }
-  if(!energiaDisponivel(2)) return;
   S.recursos.combustivel -= 1;
   S.base.ameaca=clamp(S.base.ameaca+8,0,100);
   S.base.geradorAte=S.tempoTotal+360;
@@ -2524,6 +2525,13 @@ function eventoPesadeloSono(){
     {texto:'Respirar e tentar voltar a dormir',fn:()=>{S.player.moral=clamp(S.player.moral-1,0,100);if(S.acao)S.acao.proximoEvento=S.tempoTotal+160;log('Você respirou devagar e conseguiu continuar dormindo.','info');}}
   ]);
 }
+function eventoPesadeloExSono(){
+  if(S.acao?.tipo!=='dormir')return eventoPesadelo();
+  abrirModal('Pesadelo: sua ex-namorada','Você sonha com sua ex-namorada. Ela está do outro lado da porta, com os olhos opacos e a boca coberta de sangue. Quando vira o rosto, você percebe que ela se transformou em zumbi. Yikes.',[
+    {texto:'Acordar assustado',fn:()=>{S.acao=null;S.player.moral=clamp(S.player.moral-4,0,100);log('Você acordou ofegante, chamando por alguém que não está mais aqui. O resto da noite foi em claro.','ruim');}},
+    {texto:'Fechar os olhos e tentar esquecer',fn:()=>{S.player.moral=clamp(S.player.moral-2,0,100);if(S.acao)S.acao.proximoEvento=S.tempoTotal+160;log('Você respirou fundo e tentou voltar a dormir, mas a imagem dela continuou na sua cabeça.','info');}}
+  ],false,'assets/eventos/zombie-ex-nightmar.gif');
+}
 function eventoInterrupcaoSono(){
   if(S.acao?.tipo!=='dormir')return eventoSono();
   abrirModal('Barulho do lado de fora','Uma pancada forte no portão acorda você. Depois vêm passos arrastados junto à parede da base.',[
@@ -2842,6 +2850,8 @@ const EVENTOS_MIDIA={
 
 
   'Uma noite inquieta':'assets/eventos/horror-surto.gif',
+  'Um pesadelo interrompe o sono':'assets/eventos/elevator-nightmar.gif',
+  'Pesadelo: sua ex-namorada':'assets/eventos/zombie-ex-nightmar.gif',
   'Um alarme começou a tocar':'assets/eventos/alarme.gif',
   'Uma manada passa perto':'assets/eventos/manada.gif',
   'Uma refeição compartilhada':'assets/eventos/cotidianos/refeicao-compartilhada.gif',
@@ -3170,7 +3180,7 @@ function renderBase(){
     <div class="barraMini"><div id="barraMuro"></div></div>
     <button class="visorMuro" onclick="abrirMuro()" aria-label="Observar o muro e planejar a defesa"><img id="imagemMuro" alt="Arredores da base"><span id="legendaMuro"></span></button>
     <div id="ruidoBase" class="notaBase"></div>
-    <div class="baseComandos"><button onclick="abrirConstrucoes()">Construir</button><button onclick="abrirLocaisBase()">Novos abrigos</button><button onclick="abrirMuro()">Planos do muro</button><button onclick="abrirRadio()">Rádio</button><button onclick="abrirExcursao()" ${radioInstalado()?'':'disabled title="Construa um rádio na base para liberar excursões."'}>Excursão</button><button onclick="acaoLocalizarVeiculo()">Localizar veículo</button><button onclick="abrirOficinaVeiculos()" ${temInstalacao('oficina')?'':'disabled title="Construa uma oficina mecânica para customizar veículos."'}>Oficina</button><button onclick="abrirServicosBase()">Serviços</button><button onclick="abrirSaude()">Saúde</button></div>`;
+    <div class="baseComandos"><button onclick="abrirConstrucoes()">Construir</button><button onclick="abrirLocaisBase()">Novos abrigos</button><button onclick="abrirMuro()">Planos do muro</button><button onclick="abrirRadio()">Rádio</button><button onclick="abrirExcursao()" ${radioInstalado()?'':'disabled title="Construa um rádio na base para liberar excursões."'}>Excursão</button><button onclick="acaoLocalizarVeiculo()">Localizar veículo</button><button onclick="abrirOficinaVeiculos()" ${temInstalacao('oficina')?'':'disabled title="Construa uma oficina mecânica para customizar veículos."'}>Oficina</button><button onclick="abrirServicosBase()">Serviços</button><button onclick="abrirSaude()">Saúde</button><button onclick="abrirInventarioBase()">Inventário</button></div>`;
   const local=LOCAIS_BASE[S.base.local],faixa=faixaMuro(),ruido=barulhoBase();
   const statusServico=(nome,icone,ligado,estoque)=>{
     const estado=!ligado?'cortada':estoque<=0?'sem reserva':'funcionando';
@@ -3187,6 +3197,7 @@ function renderBase(){
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/base.png" alt=""> Moradores</span><b>${moradores()}/${capacidadeBase()}</b></div>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/moral.png" alt=""> Moral</span><b>${Math.round(S.base.moral)}</b></div>
     <div class="servicosBase"><b>Serviços da cidade</b>${statusServico('Energia','eletricidade',S.base.eletricidadeLigada,S.recursos.eletricidade)}${statusServico('Água','agua',S.base.aguaLigada,S.recursos.agua)}</div>
+    <div class="servicosBase"><b>Inventário</b><br>${inventarioBaseTexto()}</div>
     <div class="servicosBase"><b>Garagem</b><br>${(S.base.veiculos||[]).length}/${S.base.vagasVeiculo} vagas · ${veiculos}${e?`<br><b>Excursão:</b> ${esc(e.alvoNome)} · ${e.status}`:''}${resgates.length?`<br><b>Resgate:</b> ${resgates.map(m=>`${esc(m.nome)} · ${Math.max(0,Math.ceil((m.expedicao.fim-S.tempoTotal)/60))}h`).join(', ')}`:''}${ordem?`<br><b>Ordem:</b> ${esc(ordem.nome)} · até o dia ${S.base.ordemRadio.fim}`:''}</div>`;
   document.getElementById('porcentagemMuro').textContent=Math.round(S.base.ameaca)+'%';
   const barra=document.getElementById('barraMuro');barra.style.width=S.base.ameaca+'%';barra.style.background=faixa.cor;

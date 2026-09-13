@@ -28,6 +28,8 @@ Depois, acesse `http://localhost:8000/last_days.html`.
 - Base inicial pequena, com mudança para locais maiores: casa cercada, oficina de bairro, escola abandonada e depósito industrial.
 - Limite de moradores, espaços de construção, vagas de veículos, barulho e ameaça.
 - Recursos: comida, água, remédios, materiais, munição, combustível e eletricidade.
+- Inventário separado da base para equipamentos e itens compartilhados, como gerador portátil, ferramentas, baterias, lampião, kits médicos e peças mecânicas.
+- Ligar o gerador exige um gerador armazenado na base e combustível; o equipamento pode ser reutilizado.
 - Status separado para água e energia, com cortes aleatórios durante os primeiros 30 dias.
 - NPCs mecânicos experientes podem reativar a rede elétrica na usina hidrelétrica e a água na estação de tratamento.
 - Construções: enfermaria, horta, cisterna, oficina, alojamento, torre de vigia, gerador e rádio.

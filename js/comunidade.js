@@ -15,6 +15,58 @@ const INSTALACOES = {
   gerador:{nome:'Central de energia',materiais:12,combustivel:2,dur:240,ruido:.1,desc:'Ligar o gerador recupera mais energia e moral. O motor atrai atenção por 6 horas.'},
   radio:{nome:'Rádio de comunicação',materiais:8,dur:180,ruido:.08,desc:'Permite conversar com outros acampamentos, emitir ordens e coordenar excursões de longa duração.'}
 };
+const ITENS_BASE = {
+  gerador:{nome:'Gerador portátil',tipo:'energia',peso:8,desc:'Equipamento necessário para produzir energia quando a rede cai.'},
+  ferramentas:{nome:'Caixa de ferramentas',tipo:'manutenção',peso:3,desc:'Ferramentas manuais para reparos e construções.'},
+  bateria:{nome:'Bateria',tipo:'energia',peso:1,desc:'Pode alimentar rádios, lanternas e pequenos equipamentos.'},
+  lampiao:{nome:'Lampião',tipo:'iluminação',peso:2,desc:'Iluminação sem depender da rede elétrica.'},
+  kitMedico:{nome:'Kit médico',tipo:'saúde',peso:1,desc:'Materiais básicos para primeiros socorros.'},
+  pecasMecanicas:{nome:'Peças mecânicas',tipo:'manutenção',peso:2,desc:'Peças reaproveitáveis para veículos e geradores.'}
+};
+const INVENTARIO_BASE_INICIAL = [
+  {id:'gerador',quantidade:1},
+  {id:'ferramentas',quantidade:2},
+  {id:'bateria',quantidade:4},
+  {id:'lampiao',quantidade:1},
+  {id:'kitMedico',quantidade:2},
+  {id:'pecasMecanicas',quantidade:1}
+];
+function inventarioBaseInicial(){
+  return {capacidade:32,itens:INVENTARIO_BASE_INICIAL.map(item=>({...ITENS_BASE[item.id],id:item.id,quantidade:item.quantidade}))};
+}
+function garantirInventarioBase(base=S?.base){
+  if(!base)return null;
+  if(!base.inventario || typeof base.inventario!=='object' || Array.isArray(base.inventario))base.inventario=inventarioBaseInicial();
+  base.inventario.capacidade=Math.max(1,Math.floor(Number(base.inventario.capacidade)||32));
+  if(!Array.isArray(base.inventario.itens))base.inventario.itens=[];
+  base.inventario.itens=base.inventario.itens.filter(item=>item && ITENS_BASE[item.id]).map(item=>({...ITENS_BASE[item.id],...item,id:item.id,quantidade:Math.max(0,Math.floor(Number(item.quantidade)||0))})).filter(item=>item.quantidade>0);
+  return base.inventario;
+}
+function quantidadeItemBase(id){
+  const inventario=garantirInventarioBase();
+  return inventario?.itens.find(item=>item.id===id)?.quantidade || 0;
+}
+function adicionarItemBase(id,quantidade=1){
+  const base=ITENS_BASE[id],inventario=garantirInventarioBase();
+  const qtd=Math.max(1,Math.floor(Number(quantidade)||1));
+  if(!base || !inventario)return false;
+  const existente=inventario.itens.find(item=>item.id===id);
+  if(!existente && pesoInventarioBase()+(base.peso||1)*qtd>inventario.capacidade)return false;
+  if(existente){existente.quantidade+=qtd;return true;}
+  inventario.itens.push({...base,id,quantidade:qtd});return true;
+}
+function pesoInventarioBase(){
+  return (garantirInventarioBase()?.itens||[]).reduce((total,item)=>total+(item.peso||1)*(item.quantidade||1),0);
+}
+function inventarioBaseTexto(){
+  const inventario=garantirInventarioBase();
+  if(!inventario?.itens.length)return '<span class="idle">Inventário vazio.</span>';
+  return inventario.itens.map(item=>`<span class="itemBase"><b>${esc(item.nome)}</b> · ${item.quantidade} · ${esc(item.tipo)}</span>`).join('');
+}
+function abrirInventarioBase(){
+  const inventario=garantirInventarioBase();
+  abrirPainel('Inventário da base',`<p>Equipamentos e itens guardados para uso da comunidade. Peso: <b>${pesoInventarioBase()}/${inventario.capacidade}</b>.</p><div class="listaInventarioBase">${inventario.itens.map(item=>`<div><b>${esc(item.nome)}</b> · ${item.quantidade}<br><span>${esc(item.desc)}</span></div>`).join('') || '<p class="idle">Nenhum item armazenado.</p>'}</div>`,[{texto:'Fechar inventário',fn:()=>{}}]);
+}
 const FUNCOES_NPC = {
   guarda:{nome:'Guarda',desc:'Protege o muro em turnos. Precisa estar saudável e na base.'},
   scavenger:{nome:'Scavenger',desc:'Sai por 4 horas em busca de comida, água e materiais; descansa 2 horas entre saídas. Pode voltar ferido.'},
@@ -70,7 +122,7 @@ function criarBase(local='casa', anterior={}){
   return {barricadas:2,ameaca:8,moral:60,...anterior,local,instalacoes:[],descobertas:[local],atencaoHumana:0,
     eletricidadeLigada:true,corteEletricoDia:null,aguaLigada:true,corteAguaDia:null,
     energiaCidadeRestaurada:false,aguaCidadeRestaurada:false,
-    vagasVeiculo:LOCAIS_BASE[local]?.vagasVeiculo || 1,veiculos:anterior.veiculos || [],proximoVeiculoId:anterior.proximoVeiculoId || 1,ordemRadio:anterior.ordemRadio ?? null,excursao:anterior.excursao ?? null,
+    vagasVeiculo:LOCAIS_BASE[local]?.vagasVeiculo || 1,veiculos:anterior.veiculos || [],proximoVeiculoId:anterior.proximoVeiculoId || 1,ordemRadio:anterior.ordemRadio ?? null,excursao:anterior.excursao ?? null,inventario:anterior.inventario || inventarioBaseInicial(),
     silencioAte:0,geradorAte:0,armadilhas:0,proximaArmadilha:0,proximaHorda:0};
 }
 function atualizarEletricidade(){
@@ -185,7 +237,6 @@ function pagarCusto(item){
 function iniciarAcaoBase(tipo,nome,dur,energia,custo={},extra={}){
   if(!podeAgir(energia)) return false;
   if(idadeAtual()<IDADE_ADULTA && !['tratarDoenca'].includes(tipo)){log('Um adulto precisa conduzir esta ação.','info');return false;}
-  if(['construir','demolir','tratarDoenca','customizarVeiculo'].includes(tipo) && !energiaDisponivel(1)) return false;
   if(!pagarCusto(custo)) return false;
   S.player.energia-=energia;
   S.acao={tipo,nome,dur,fim:S.tempoTotal+dur,...extra};
@@ -252,9 +303,9 @@ function iniciarMudanca(id){
 }
 function resolverMudanca(a){
   const materiais=S.base.instalacoes.reduce((n,id)=>n+INSTALACOES[id].materiais,0);
-  const descobertas=[...S.base.descobertas], moral=S.base.moral,veiculos=(S.base.veiculos||[]).slice(0,LOCAIS_BASE[a.destino].vagasVeiculo).map(v=>({...v,estado:'pronto'}));
+  const descobertas=[...S.base.descobertas], moral=S.base.moral,inventario=garantirInventarioBase(S.base),veiculos=(S.base.veiculos||[]).slice(0,LOCAIS_BASE[a.destino].vagasVeiculo).map(v=>({...v,estado:'pronto'}));
   S.recursos.materiais+=Math.floor(materiais/2);
-  S.base=criarBase(a.destino,{moral,ameaca:15,veiculos,proximoVeiculoId:(S.base.proximoVeiculoId||1)});S.base.descobertas=descobertas;
+  S.base=criarBase(a.destino,{moral,ameaca:15,veiculos,proximoVeiculoId:(S.base.proximoVeiculoId||1),inventario});S.base.descobertas=descobertas;
   for(const m of S.sobreviventes) m.proximaSaida=S.tempoTotal+120;
   log(`A comunidade se instalou em ${LOCAIS_BASE[a.destino].nome}. Recuperou ${Math.floor(materiais/2)} materiais das antigas instalações.`,'bom');
 }
@@ -497,6 +548,7 @@ const EVENTOS_DEBUG={
   relacionamentoPesadelo:evPesadeloParceira,
   relacionamentoMedo:evMedoAntesDeSair,
   pesadeloSono:eventoPesadeloSono,
+  pesadeloEx:eventoPesadeloExSono,
   barulhoSono:eventoInterrupcaoSono,
   rotinaCozinha:eventoRotinaCozinha,
   chuvaFraca:eventoChuvaFraca,
@@ -598,7 +650,7 @@ function eventosParaAcao(tipo){
   const relacao=parceiro && naBase(parceiro);
   if(['comer','beber'].includes(tipo))return [eventoRefeicao,eventoPanela,eventoPortao,eventoServicos,eventoRotinaCozinha,eventoChuvaFraca,evRefeicaoCompartilhada,...(relacao?[evParceiraSenteFalta]:[])];
   if(tipo==='descansar')return [eventoSono,eventoPesadelo,eventoCerca,eventoRondaTranquila,eventoBarulhoDistante,evChuvaNoTelhado,...(relacao?[evPesadeloParceira]:[])];
-  if(tipo==='dormir')return [eventoPesadeloSono,eventoInterrupcaoSono,eventoPortao,eventoCerca,eventoBarulhoDistante];
+  if(tipo==='dormir')return [eventoPesadeloSono,eventoPesadeloExSono,eventoInterrupcaoSono,eventoPortao,eventoCerca,eventoBarulhoDistante];
   if(['construir','fortificar','gerador'].includes(tipo))return [eventoObra,eventoViga,eventoCerca,eventoReparoImprovisado,eventoServicos,evSilencioCorredor];
   if(['perto','expedicao','procurar','cacar','procurarBase','mudarBase','planoMuro'].includes(tipo))return [eventoRua,eventoRuaVazia,eventoAlarme,eventoServicos,evObjetoEncontrado,...(relacao?[evMedoAntesDeSair]:[])];
   return [eventoPortao,eventoCerca,eventoRondaTranquila,evAjudaMedica,evObjetoEncontrado];
@@ -637,6 +689,9 @@ function migrarComunidade(estado){
 function validarComunidade(e){
   const numero=v=>typeof v==='number' && Number.isFinite(v) && v>=0 && v<=1e9;
   const b=e.base;
+  if(!b.inventario)b.inventario=inventarioBaseInicial();
+  if(typeof b.inventario!=='object' || Array.isArray(b.inventario) || !Number.isInteger(b.inventario.capacidade) || b.inventario.capacidade<1 || !Array.isArray(b.inventario.itens) || b.inventario.itens.some(item=>!item || !ITENS_BASE[item.id] || !Number.isInteger(item.quantidade) || item.quantidade<1) || b.inventario.itens.reduce((total,item)=>total+(ITENS_BASE[item.id]?.peso||0)*item.quantidade,0)>b.inventario.capacidade)throw Error('Inventário da base inválido.');
+  garantirInventarioBase(b);
   if(!Object.keys(LOCAIS_BASE).includes(b.local) || !Array.isArray(b.instalacoes) || b.instalacoes.some(id=>!Object.keys(INSTALACOES).includes(id)) || new Set(b.instalacoes).size!==b.instalacoes.length || b.instalacoes.length>LOCAIS_BASE[b.local].slots)throw Error('Instalações da base inválidas.');
   if(!Array.isArray(b.descobertas) || !b.descobertas.includes(b.local) || b.descobertas.some(id=>!Object.keys(LOCAIS_BASE).includes(id)) || new Set(b.descobertas).size!==b.descobertas.length)throw Error('Locais da base inválidos.');
   if(!Array.isArray(b.veiculos) || !Number.isInteger(b.vagasVeiculo) || b.vagasVeiculo<1 || b.veiculos.length>b.vagasVeiculo || !Number.isInteger(b.proximoVeiculoId) || b.veiculos.some(v=>!v || typeof v.id!=='string' || typeof v.nome!=='string' || !['suv','caminhonete','quatroPortas','duasPortas'].includes(v.tipo) || !numero(v.capacidade) || v.capacidade<1 || !numero(v.combustivel) || !numero(v.carga) || !numero(v.velocidade) || !Array.isArray(v.customizacoes) || v.customizacoes.some(c=>!['portaMalas','suspensao','blindagem','tanque'].includes(c)) || !['pronto','em excursão'].includes(v.estado)))throw Error('Garagem da base inválida.');
