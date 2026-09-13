@@ -30,6 +30,7 @@ body{
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   min-height:100vh;
   overflow-x:hidden;
+  overflow-y:auto;
 }
 
 .tela{ max-width:1500px; margin:0 auto; padding:16px; }
@@ -83,11 +84,13 @@ body{
 }
 .aberturaSub{ color:var(--txt2); margin-top:18px; font-size:14px; letter-spacing:2px; }
 .btnAbertura{
-  margin-top:42px; padding:15px 28px; background:transparent;
+  margin-top:0; padding:15px 28px; background:transparent;
   border:1px solid #8b1a1a; color:#d9e0da; border-radius:5px;
   font:700 14px inherit; letter-spacing:2px; cursor:pointer; transition:.2s;
 }
 .btnAbertura:hover{ background:#5e1010; border-color:#c0392b; }
+.botoesAbertura{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:42px}
+@media(max-width:520px){.botoesAbertura{flex-direction:column;width:min(100%,280px)}.botoesAbertura .btnAbertura{width:100%}}
 @keyframes fade{ from{opacity:0; transform:translateY(10px)} to{opacity:1;transform:none} }
 
 #criacao h1{
@@ -161,6 +164,14 @@ body{
 .retratoDados span{ display:block; color:var(--txt2); font-size:11px; margin-top:3px; }
 .idadeCriacao{ color:#c9a227 !important; letter-spacing:1px; text-transform:uppercase; }
 .adultoEscolhas{ display:grid; gap:9px; }
+.acoesCriacao{display:flex;gap:10px;align-items:center;margin-top:18px}
+.acoesCriacao .btnIniciar{margin-top:0;flex:1}
+.btnSecundario{padding:14px 16px;background:transparent;border:1px solid var(--borda);color:var(--txt2);border-radius:6px;cursor:pointer;font:700 12px inherit;letter-spacing:1px;transition:.15s}
+.btnSecundario:hover{border-color:#8b1a1a;color:var(--txt);background:#211716}
+.campoTitulo{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--txt2);font-size:12px;margin-top:12px}
+.btnDado{width:28px;height:28px;padding:0;border:1px solid #7d2929;border-radius:5px;background:#211516;color:#e45b5b;cursor:pointer;font-size:16px;line-height:1}
+.btnDado:hover{background:#3a1f1f;color:#ff9b9b}
+.adultoContador{font-size:12px;color:var(--txt2);margin:4px 0 10px}
 .eventoEscolhido{ color:#9fb0a3; font-size:12px; padding:6px 0; border-bottom:1px solid #252d27; }
 .eventoEscolhido b{ color:#dbe3dc; }
 .eventoEfeito{ display:block; color:#7d8a80; font-size:11px; margin-top:3px; }
@@ -278,6 +289,10 @@ body{
   box-shadow:0 0 0 1px rgba(139,26,26,.35) inset;
 }
 .acaoBtn:disabled{ opacity:.35; cursor:not-allowed; }
+#acoes{max-height:calc(100vh - 220px);overflow-y:auto;padding-right:5px;scrollbar-gutter:stable}
+#acoes::-webkit-scrollbar{width:7px}
+#acoes::-webkit-scrollbar-thumb{background:#3a211f;border-radius:4px}
+@media(max-width:1050px){#acoes{max-height:45vh}}
 
 /* SOBREVIVENTES */
 .sobrev{
@@ -424,6 +439,7 @@ body{
 .saudeRuim{color:#df895d}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
 .cartaoSaude{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;border-top:1px solid var(--borda);padding:8px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{margin:0}
 .notaBase{font-size:11px;color:var(--txt2);line-height:1.5;margin:8px 0}
+.materiaisDetalhes{font-size:12px;color:#b6c2b8;line-height:1.6;padding:8px 10px;border-left:3px solid #8b1a1a;background:#1a1d1b}
 </style>
 </head>
 <body>
@@ -438,8 +454,10 @@ body{
 <div id="abertura" class="abertura">
   <div class="aberturaFrase">Foi assim que você encontrou sua morte.</div>
   <div class="aberturaSub">Antes disso, houve uma vida inteira para lembrar.</div>
-  <button class="btnAbertura" onclick="abrirCriacao()">NOVO JOGO</button>
-  <button id="continuarSave" class="btnAbertura" hidden onclick="carregarJogo()">CONTINUAR PARTIDA</button>
+  <div class="botoesAbertura">
+    <button class="btnAbertura" onclick="abrirCriacao()">NOVO JOGO</button>
+    <button id="continuarSave" class="btnAbertura" hidden onclick="carregarJogo()">CONTINUAR PARTIDA</button>
+  </div>
   <label class="uploadSave">Carregar partida<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label>
   <p id="saveStatusAbertura" role="status" aria-live="polite"></p>
 </div>
@@ -494,6 +512,8 @@ const NOMES = ['Ana','Bruno','Carla','Diego','Elena','Fábio','Gabi','Heitor','I
   'Ubirajara','Vera','Wesley','Yara','Zeca','Bia','Caio','Dora','Enzo','Fê','Gil'];
 const NOMES_MASC = ['Bruno','Diego','Fábio','Heitor','João','Lucas','Nando','Paulo','Samuel','Ubirajara','Wesley','Zeca','Caio','Enzo','Gil'];
 const NOMES_FEM = ['Ana','Carla','Elena','Gabi','Iara','Karin','Marina','Olga','Rita','Tânia','Vera','Yara','Bia','Dora'];
+const SOBRENOMES_MASC = ['Almeida','Barbosa','Cardoso','Costa','Ferreira','Gomes','Lopes','Martins','Moura','Oliveira','Pereira','Ribeiro','Rocha','Santos','Silva'];
+const SOBRENOMES_FEM = ['Almeida','Barbosa','Cardoso','Costa','Ferreira','Gomes','Lopes','Martins','Moura','Oliveira','Pereira','Ribeiro','Rocha','Santos','Silva'];
 
 const PERFIS_NPC = {
   masculino:[
@@ -620,10 +640,13 @@ const EVENTOS_ADULTOS = [
   { texto:'Serviu em uma guerra ou operação de risco', desc:'Você voltou vivo, mas não voltou igual.', ef:{forca:2, agilidade:1}, remove:{carisma:1}, comportamento:{disciplina:2, trauma:2}, exp:10, rec:{municao:5}, arma:'Revólver', armaBonus:3, consequencia:'Você reage rápido ao perigo, mas o barulho de tiros nunca passa despercebido.', tag:'Veterano(a)' },
   { texto:'Construiu uma família', desc:'Você aprendeu a planejar o amanhã porque alguém dependia de você.', ef:{resistencia:1, carisma:1}, comportamento:{empatia:3, disciplina:1}, exp:6, familiaInicio:'filho', consequencia:'Você começa a jornada com parceiro(a) e filho(a) na comunidade.', tag:'Pai/Mãe' }
 ];
+const MAX_EVENTOS_ADULTOS = 6;
 
 let criacao = {
   passo: 0,
   identidadePronta: false,
+  adultosProntos: false,
+  historicoEstados: [],
   build: {
     stats:{ forca:2, agilidade:2, inteligencia:2, carisma:2, resistencia:2 },
     rec:{ comida:4, agua:4, remedios:0, materiais:0, municao:0, combustivel:0, eletricidade:20 },
@@ -654,10 +677,10 @@ function renderCriacao(){
       <h3>QUEM ERA VOCÊ ANTES DO FIM</h3>
       <p class="dica">Sua história começa antes do apocalipse. O nome, a idade e as escolhas vão acompanhar você.</p>
       <div class="identidadeGrid">
-        <label class="campoLabel">Nome
+        <label class="campoLabel"><span class="campoTitulo"><span>Nome</span><button type="button" class="btnDado" onclick="sortearIdentidade()" aria-label="Sortear nome e sobrenome" title="Sortear nome e sobrenome">🎲</button></span>
           <input id="nomeInicial" class="campoNome" maxlength="20" value="${esc(criacao.build.nome)}" placeholder="Nome">
         </label>
-        <label class="campoLabel">Sobrenome
+        <label class="campoLabel"><span class="campoTitulo"><span>Sobrenome</span></span>
           <input id="sobrenomeInicial" class="campoNome" maxlength="24" value="${esc(criacao.build.sobrenome)}" placeholder="Sobrenome">
         </label>
       </div>
@@ -674,7 +697,7 @@ function renderCriacao(){
       <label class="uploadFoto">Ou envie uma foto própria
         <input id="fotoPersonagem" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
       </label>
-      <button class="btnIniciar" onclick="confirmarIdentidade()">COMEÇAR MINHA HISTÓRIA</button>
+      <div class="acoesCriacao"><button type="button" class="btnSecundario" onclick="voltarCriacao()">VOLTAR</button><button class="btnIniciar" onclick="confirmarIdentidade()">COMEÇAR MINHA HISTÓRIA</button></div>
     </div>`;
     box.querySelectorAll('[data-genero]').forEach(btn=>{
       btn.style.borderColor = btn.dataset.genero === criacao.build.genero ? '#c0392b' : '';
@@ -697,12 +720,13 @@ function renderCriacao(){
         <div class="linhaTempo"><span>1. Infância</span><span>2. Adolescência</span><span class="ativo">3. Vida adulta</span></div>
         <div class="pergunta">Que vida você viveu antes do fim?</div>
         <div class="dica">Você começa aos 18 anos. Cada acontecimento acrescenta 5 anos. Escolha até seis acontecimentos diferentes.</div>
+        <div class="adultoContador" aria-live="polite">Acontecimentos escolhidos: <b>${b.eventosAdultos.length}/${MAX_EVENTOS_ADULTOS}</b>. Opções repetidas ficam bloqueadas.</div>
         <div class="adultoEscolhas">${EVENTOS_ADULTOS.map((evento,i)=>`
-          <button class="opcao" ${b.eventosAdultos.some(e=>e.texto === evento.texto) || b.eventosAdultos.length >= 6 ? 'disabled' : ''} onclick="escolherEventoAdulto(${i})"><strong>${evento.texto}</strong><span>${evento.desc}  · +5 anos · ${efeitoResumo(evento)}</span></button>`).join('')}</div>
+          <button class="opcao" ${b.eventosAdultos.some(e=>e.texto === evento.texto) || b.eventosAdultos.length >= MAX_EVENTOS_ADULTOS ? 'disabled' : ''} onclick="escolherEventoAdulto(${i})"><strong>${evento.texto}</strong><span>${evento.desc}  · +5 anos · ${efeitoResumo(evento)}</span></button>`).join('')}</div>
         <div class="historicoBox"><p><b>Acontecimentos escolhidos:</b></p>
           ${b.eventosAdultos.length ? b.eventosAdultos.map(evento=>`<div class="eventoEscolhido"><b>${esc(evento.texto)}</b> · ${evento.idade} anos<span class="eventoEfeito">${esc(evento.efeito)}</span>${evento.consequencia ? `<span class="eventoEfeito">${esc(evento.consequencia)}</span>` : ''}</div>`).join('') : '<div class="idle">Nenhum ainda. Você pode começar aos 18.</div>'}
         </div>
-        <button class="btnIniciar" onclick="finalizarVidaAdulta()">CONTINUAR</button>
+        <div class="acoesCriacao"><button type="button" class="btnSecundario" onclick="voltarCriacao()">VOLTAR</button><button class="btnIniciar" onclick="finalizarVidaAdulta()">CONTINUAR</button></div>
       </div>
     </div>`;
     return;
@@ -722,7 +746,7 @@ function renderCriacao(){
         <p><b>Força</b> ${b.stats.forca} &nbsp;·&nbsp; <b>Agilidade</b> ${b.stats.agilidade} &nbsp;·&nbsp; <b>Inteligência</b> ${b.stats.inteligencia}</p>
         <p><b>Carisma</b> ${b.stats.carisma} &nbsp;·&nbsp; <b>Resistência</b> ${b.stats.resistencia}</p>
      <p style="margin-top:12px"><b>Suprimentos:</b> ${b.rec.comida} comida · ${b.rec.agua} água · ${b.rec.remedios} remédios · ${b.rec.materiais} materiais · ${b.rec.municao} munição</p>
-        <button class="btnIniciar" onclick="iniciarJogo()">SOBREVIVER</button>
+        <div class="acoesCriacao"><button type="button" class="btnSecundario" onclick="voltarCriacao()">VOLTAR</button><button class="btnIniciar" onclick="iniciarJogo()">SOBREVIVER</button></div>
       </div></div>`;
     return;
   }
@@ -733,7 +757,7 @@ function renderCriacao(){
     <div class="linhaTempo">${etapas.map((etapa,i)=>`<span class="${i === criacao.passo ? 'ativo' : ''}">${i+1}. ${etapa}</span>`).join('')}</div>
     <div class="pergunta">${q.pergunta}</div>
     <div class="dica">Escolha ${criacao.passo+1} de ${CRIACAO.length}</div>
-    <div id="ops"></div></div></div>`;
+    <div id="ops"></div><button type="button" class="btnSecundario" onclick="voltarCriacao()">VOLTAR</button></div></div>`;
 
   const ops = box.querySelector('#ops');
   q.opcoes.forEach((o,i)=>{
@@ -768,7 +792,8 @@ function renderRetratoCriacao(){
 function escolherEventoAdulto(i){
   const evento = EVENTOS_ADULTOS[i];
   const b = criacao.build;
-  if(!evento || b.eventosAdultos.some(e=>e.texto === evento.texto) || b.eventosAdultos.length >= 6) return;
+  if(!evento || b.eventosAdultos.some(e=>e.texto === evento.texto) || b.eventosAdultos.length >= MAX_EVENTOS_ADULTOS) return;
+  salvarEstadoCriacao();
   aplicarEfeitosEvento(evento);
   b.idade = Math.max(18, b.idade) + 5;
   b.experiencia += evento.exp || 0;
@@ -780,6 +805,26 @@ function escolherEventoAdulto(i){
 
 function finalizarVidaAdulta(){
   criacao.adultosProntos = true;
+  renderCriacao();
+}
+
+function salvarEstadoCriacao(){
+  criacao.historicoEstados.push({passo:criacao.passo,identidadePronta:criacao.identidadePronta,adultosProntos:criacao.adultosProntos,build:JSON.parse(JSON.stringify(criacao.build))});
+}
+
+function voltarCriacao(){
+  if(!criacao.identidadePronta){
+    document.getElementById('criacao').hidden=true;
+    document.getElementById('abertura').hidden=false;
+    const fundo=document.getElementById('videoCriacaoFundo'),video=document.getElementById('videoCriacao');
+    if(video)video.pause();
+    if(fundo)fundo.hidden=true;
+    return;
+  }
+  if(criacao.adultosProntos){criacao.adultosProntos=false;renderCriacao();return;}
+  const estado=criacao.historicoEstados.pop();
+  if(estado){criacao.passo=estado.passo;criacao.identidadePronta=estado.identidadePronta;criacao.adultosProntos=estado.adultosProntos;criacao.build=estado.build;}
+  else criacao.identidadePronta=false;
   renderCriacao();
 }
 
@@ -803,6 +848,15 @@ function guardarIdentidade(){
   const sobrenome = document.getElementById('sobrenomeInicial');
   if(nome) criacao.build.nome = nome.value;
   if(sobrenome) criacao.build.sobrenome = sobrenome.value;
+}
+
+function sortearIdentidade(){
+  guardarIdentidade();
+  const genero=criacao.build.genero==='feminino'?'feminino':'masculino';
+  criacao.build.nome=pick(genero==='feminino'?NOMES_FEM:NOMES_MASC);
+  criacao.build.sobrenome=pick(genero==='feminino'?SOBRENOMES_FEM:SOBRENOMES_MASC);
+  criacao.build.nomeCompleto='';
+  renderCriacao();
 }
 
 function selecionarAparencia(aparencia){
@@ -855,8 +909,11 @@ function aplicarEfeitosEvento(evento){
 }
 
 function escolher(i){
+  if(criacao.passo>=CRIACAO.length || !CRIACAO[criacao.passo]) return;
   const o = CRIACAO[criacao.passo].opcoes[i];
   const b = criacao.build;
+  if(!o) return;
+  salvarEstadoCriacao();
 
   aplicarEfeitosEvento(o);
   b.idade += o.anos || 0;
@@ -1345,7 +1402,7 @@ const ACOES = [
   { id:'expedicao', nome:'Expedição distante',      desc:'~4-9h · risco alto · muito loot' },
   { id:'excursao',  nome:'Planejar excursão',       desc:'Vários dias · equipe, carga, rádio e veículos' },
   { id:'localizarVeiculo', nome:'Localizar veículo', desc:'~4h · encontra um veículo para a garagem' },
-  { id:'fortificar',nome:'Fortificar a base',       desc:'~2-4h · consome 4 materiais' },
+  { id:'fortificar',nome:'Fortificar a base',       desc:'~2-4h · consome 4 materiais (40 pregos, 20 tábuas e 4 ferramentas)' },
   { id:'cacar',     nome:'Carregar e buscar água',     desc:'~3h · comida e água' },
   { id:'descansar', nome:'Descansar',               desc:'~2h · recupera vida e energia' },
   { id:'dormir',    nome:'Dormir',                  desc:'8h · recupera bastante energia, mas pode ser interrompido' },
@@ -1397,7 +1454,7 @@ function clicarAcao(id){
   if(!verificarEstado() || S.pausado || S.acao) return;
   if(id === 'excursao' && !radioInstalado()){log('Construa um rádio na base antes de planejar uma excursão.','info');return;}
   if(!acoesDisponiveis().some(a=>a.id === id)){
-    log('Você ainda não tem idade ou experiencia para fazer isso.', 'ruim');
+    log('Você ainda não tem idade ou experiência para fazer isso.', 'ruim');
     return;
   }
   if(id === 'construcoes')return abrirConstrucoes();
@@ -1469,7 +1526,8 @@ function acaoPerto(){
   S.player.energia -= 15;
   S.base.ameaca += 6;
   S.acao = { tipo:'perto', nome:'Saquear casas próximas', fim:S.tempoTotal+dur, dur };
-  log('Você sai pelas ruas do quarteirão, com o machado na mão.', 'info');
+  const arma=armaEquipada(S.player),nomeArma=arma?.nome || S.player.arma || 'nenhuma arma';
+  log(`Você sai pelas ruas do quarteirão, com ${nomeArma.toLowerCase()} na mão.`, 'info');
 }
 
 function resolverPerto(){
@@ -1498,7 +1556,7 @@ const LOCAIS = [
     loot:{ remedios:[4,10], comida:[1,3], agua:[1,3] } },
   { id:'posto', nome:'Posto de Gasolina', tempo:[200,300], risco:0.35, zumbis:[1,4],
     loot:{ combustivel:[3,8], comida:[3,7], agua:[2,5], materiais:[1,3] } },
-  { id:'construcao', nome:'Deptsito de Construção', tempo:[280,420], risco:0.42, zumbis:[2,5],
+  { id:'construcao', nome:'Depósito de Construção', tempo:[280,420], risco:0.42, zumbis:[2,5],
     loot:{ materiais:[9,18], combustivel:[1,3] } },
   { id:'delegacia', nome:'Delegacia Abandonada', tempo:[320,480], risco:0.62, zumbis:[3,7],
     loot:{ municao:[6,15], remedios:[1,3], materiais:[2,5] } },
@@ -1764,7 +1822,7 @@ function resolverCustomizacaoVeiculo(a){
 function acaoFortificar(){
   if(idadeAtual()<IDADE_ADULTA){log('Um adulto precisa conduzir o reforço do muro.','info');return;}
   if(S.recursos.materiais < 4){
-     log('Você não tem materiais suficientes para reforçar as barricadas.', 'ruim');
+     log(`Você não tem materiais suficientes para reforçar as barricadas. Necessário: ${detalharMateriais(4)}.`, 'ruim');
     return;
   }
   if(!podeAgir(25)) return;
@@ -1773,7 +1831,7 @@ function acaoFortificar(){
   S.player.energia -= 25;
   S.base.ameaca += 8;
   S.acao = { tipo:'fortificar', nome:'Fortificar a base', fim:S.tempoTotal+dur, dur };
-  log('Você prega tábuas nas janelas. O barulho do martelo ecoa longe.', 'info');
+  log(`Você prega tábuas nas janelas. O barulho do martelo ecoa longe. Consumo: ${detalharMateriais(4)}.`, 'info');
 }
 
 function resolverFortificar(){
@@ -2069,14 +2127,14 @@ function iniciarCombateTurnos(zumbis,finalizar){
 }
 function renderPainelCombate(){
   const c=S.combate,p=S.player,maxVida=Math.max(1,p.vidaMax||100),percent=Math.max(0,Math.min(100,p.vida/maxVida*100));
-  abrirPainel('Combate',`<div class="combateCabecalho"><span>Rodada <b>${c.rodada}</b></span><strong>${c.zumbis} inimigo(s)</strong></div><div class="combateInfo"><div><b>Voce</b><br>Vida: ${Math.ceil(p.vida)}/${maxVida}<div class="combateBarra"><i style="width:${percent}%"></i></div>Energia: ${Math.ceil(p.energia)}</div><div><b>Ameacaa</b><br>O combate gera barulho.<div class="combateBarra"><i style="width:${Math.min(100,c.zumbis*12)}%"></i></div>Inimigos restantes: ${c.zumbis}</div></div><p class="combateAviso">Escolha uma acao.</p>`,[
+  abrirPainel('Combate',`<div class="combateCabecalho"><span>Rodada <b>${c.rodada}</b></span><strong>${c.zumbis} inimigo(s)</strong></div><div class="combateInfo"><div><b>Você</b><br>Vida: ${Math.ceil(p.vida)}/${maxVida}<div class="combateBarra"><i style="width:${percent}%"></i></div>Energia: ${Math.ceil(p.energia)}</div><div><b>Ameaça</b><br>O combate gera barulho.<div class="combateBarra"><i style="width:${Math.min(100,c.zumbis*12)}%"></i></div>Inimigos restantes: ${c.zumbis}</div></div><p class="combateAviso">Escolha uma ação.</p>`,[
     {texto:'Atacar',fn:()=>turnoCombate('atacar')},{texto:'Defender',fn:()=>turnoCombate('defender')},{texto:'Fugir',fn:()=>turnoCombate('fugir')}
   ]);
 }
 function turnoCombate(acao){
   const c=S.combate;if(!c)return;const p=S.player;
   if(acao==='fugir'){c.finalizar(false);S.combate=null;return;}
-  const arma=(p.inventario?.armas||[]).find(a=>a.nome===p.arma);const poder=p.forca*1.5+p.agilidade+(arma?.dano||p.armaBonus||0)+(acao==='atacar'?2:0);
+  const arma=armaEquipada(p);const poder=p.forca*1.5+p.agilidade+(arma?.dano||p.armaBonus||0)+(acao==='atacar'?2:0);
   if(acao==='atacar'){
     const derrubados=Math.max(1,Math.floor(poder/6));c.zumbis-=derrubados;log(`Você atacou e derrubou ${derrubados} zumbi(s).`,'bom');
   }
@@ -2100,6 +2158,10 @@ function garantirInventario(p){
   if(!p.inventario)p.inventario={armas:[],mochila:{capacidade:8,itens:[]},equipado:null};
   p.inventario.mochila ||= {capacidade:8,itens:[]};p.inventario.armas ||= [];p.inventario.mochila.itens ||= [];
 }
+function armaEquipada(p){
+  garantirInventario(p);
+  return p.inventario.armas.find(a=>a.id===p.inventario.equipado) || p.inventario.armas.find(a=>a.nome===p.arma) || null;
+}
 function pesoInventario(p){garantirInventario(p);return p.inventario.mochila.itens.reduce((n,i)=>n+(i.peso||1)*(i.quantidade||1),0);}
 function adicionarItemInventario(p,id,quantidade=1){
   garantirInventario(p);const base=ITENS_LOOT[id];if(!base)return false;
@@ -2117,7 +2179,7 @@ function lootItens(p,local='rua'){
   const achados=[];for(const id of pool)if(Math.random()<.3 && adicionarItemInventario(p,id)){achados.push(ITENS_LOOT[id].nome);}
   if(achados.length)log(`Itens encontrados: ${achados.map(esc).join(', ')}.`,'bom');
 }
-function inventarioTexto(p){garantirInventario(p);const armas=p.inventario.armas.map(a=>`<li>⚔ ${esc(a.nome)} · dano ${a.dano}</li>`).join('')||'<li>Nenhuma arma</li>';const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} · ${i.quantidade||1}</li>`).join('')||'<li>Mochila vazia</li>';return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;}
+function inventarioTexto(p){garantirInventario(p);const equipada=armaEquipada(p);const armas=p.inventario.armas.map(a=>`<li>⚔ ${esc(a.nome)} · dano ${a.dano}${a===equipada?' · <b>equipada</b>':''}</li>`).join('')||'<li>Nenhuma arma</li>';const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} · ${i.quantidade||1}</li>`).join('')||'<li>Mochila vazia</li>';return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;}
 
 /* ============================================================
    COMBATE
@@ -3268,8 +3330,8 @@ function abrirPerfilPrincipal(){
 }
 
 function abrirInventario(){
-  const p=S.player;garantirInventario(p);
-  abrirPainel('Mochila e equipamento',`<p>Capacidade: ${pesoInventario(p)}/${p.inventario.mochila.capacidade}. Arma equipada: ${esc(p.arma || 'Nenhuma')}.</p>${inventarioTexto(p)}`,[
+  const p=S.player;garantirInventario(p);const equipada=armaEquipada(p);
+  abrirPainel('Mochila e equipamento',`<p>Capacidade: ${pesoInventario(p)}/${p.inventario.mochila.capacidade}. Arma equipada: ${esc(equipada?.nome || 'Nenhuma')}.</p>${inventarioTexto(p)}`,[
     ...p.inventario.mochila.itens.filter(i=>i.tipo==='medico'||i.tipo==='mochila').map(i=>({texto:`Usar ${i.nome}`,fn:()=>{if(!usarItemInventario(p,i.id))log('Não foi possível usar esse item.','info');}})),
     ...p.inventario.armas.map(a=>({texto:`Equipar ${a.nome} · dano ${a.dano}`,fn:()=>{p.arma=a.nome;p.armaBonus=a.dano;p.inventario.equipado=a.id;log(`${esc(a.nome)} equipada.`,'bom');}})),
     {texto:'Fechar mochila',fn:()=>{}}

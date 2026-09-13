@@ -169,8 +169,13 @@ function naBase(m){
   return true;
 }
 function aptoTrabalho(m){ return naBase(m) && !m.doenca && !m.ferido && idadeMembro(m)>=IDADE_ADULTA; }
+const COMPONENTES_MATERIAIS={pregos:10,tabuas:5,ferramentas:1};
+function detalharMateriais(qtd){
+  const n=Math.max(0,Math.floor(Number(qtd)||0));
+  return `${n} material${n===1?'':'is'} (aprox. ${n*COMPONENTES_MATERIAIS.pregos} pregos, ${n*COMPONENTES_MATERIAIS.tabuas} tábuas e ${n*COMPONENTES_MATERIAIS.ferramentas} ferramenta${n===1?'':'s'})`;
+}
 function custoTexto(item){
-  return Object.keys(NOMES_REC).filter(k=>item[k]).map(k=>`${item[k]} ${NOMES_REC[k]}`).join(' · ') || 'sem recursos';
+  return Object.keys(NOMES_REC).filter(k=>item[k]).map(k=>k==='materiais'?detalharMateriais(item[k]):`${item[k]} ${NOMES_REC[k]}`).join(' · ') || 'sem recursos';
 }
 function pagarCusto(item){
   for(const k of Object.keys(NOMES_REC)) if((item[k] || 0)>S.recursos[k]){ log(`Faltam recursos: ${custoTexto(item)}.`,'ruim'); return false; }
@@ -193,7 +198,7 @@ function abrirConstrucoes(){
   const opcoes=Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([id,i])=>({
     texto:`Construir ${i.nome} · ${custoTexto(i)} · ${i.dur/60}h`,fn:()=>iniciarConstrucao(id)
   }));
-  abrirPainel('Construções da base',`<p>${local.nome}: <b>${S.base.instalacoes.length}/${local.slots} espaços usados</b>. Cada instalação ocupa um espaço e aumenta um pouco o movimento.</p><ul>${instaladas || '<li>Nenhuma instalação construída.</li>'}</ul><div class="catalogoBase">${Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([,i])=>`<p><b>${i.nome}</b><br>${i.desc}</p>`).join('')}</div>`,[
+  abrirPainel('Construções da base',`<p>${local.nome}: <b>${S.base.instalacoes.length}/${local.slots} espaços usados</b>. Cada instalação ocupa um espaço e aumenta um pouco o movimento.</p><p class="materiaisDetalhes"><b>Estoque:</b> ${detalharMateriais(S.recursos.materiais)}. Os componentes são uma estimativa de planejamento; a contagem do jogo continua agrupada em materiais.</p><ul>${instaladas || '<li>Nenhuma instalação construída.</li>'}</ul><div class="catalogoBase">${Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([,i])=>`<p><b>${i.nome}</b><br>${i.desc}</p>`).join('')}</div>`,[
     ...opcoes,...S.base.instalacoes.map(id=>({texto:`Desmontar ${INSTALACOES[id].nome} · 2h · recupera ${Math.floor(INSTALACOES[id].materiais/2)} materiais`,fn:()=>iniciarDemolicao(id)})),{texto:'Procurar locais e mudar de base',fn:abrirLocaisBase},{texto:'Fechar',fn:()=>{}}
   ]);
 }
