@@ -12,6 +12,19 @@ python -m http.server 8000
 
 Depois, acesse `http://localhost:8000/last_days.html`.
 
+## Changelog
+
+### 15/09/2026
+
+- Scavengers passaram a ter ciclos variáveis: ficam fora de 3 a 6 horas e descansam de 2 a 5 horas antes da próxima saída.
+- O rádio pode receber o upgrade **Mural de horários**, permitindo escalar cada NPC para horário livre, madrugada, manhã, tarde ou noite. Os turnos controlam guardas, médicos, Scavengers e demais funções.
+- O sistema de ferimentos agora mantém a pessoa em repouso mesmo após o tratamento. O atendimento reduz o tempo de recuperação e elimina o risco associado, mas não remove o ferimento imediatamente.
+- Adicionado minigame de lockpick inspirado em Skyrim e Fallout, com rotação da gazua, aplicação de tensão, desgaste, barulho e recompensa. Os arquivos ficam em `assets/UI/lockpick/`.
+- Adicionados conhecimentos do apocalipse nos dias 3, 5 e 10: ataque na cabeça, sensibilidade dos zumbis ao som e disfarce do cheiro com sangue e vísceras.
+- O evento do dia 5 mostra os zumbis cegos atravessando a rua sem perceber o personagem imóvel; a descoberta registrada continua sendo apenas sobre o som.
+- O evento do dia 10 acontece durante uma caminhada pela cidade, com uma horda distante e um sobrevivente passando despercebido depois de se cobrir com restos de um zumbi.
+- O modo debug ganhou `debugJogo.lockpick()` para testar a fechadura diretamente no console do navegador.
+
 ## Fluxo inicial
 
 - Criação do personagem com nome, sobrenome, aparência predefinida ou imagem própria.
@@ -40,7 +53,7 @@ Depois, acesse `http://localhost:8000/last_days.html`.
 Os sobreviventes podem assumir funções que rodam em segundo plano:
 
 - **Guarda:** protege o muro em turnos.
-- **Scavenger:** procura comida, água e materiais, com risco de voltar ferido.
+- **Scavenger:** procura comida, água e materiais em saídas aleatórias de 3 a 6 horas, descansando de 2 a 5 horas entre elas.
 - **Médico:** trata doenças e ferimentos usando remédios.
 - **Agricultor:** produz comida quando há horta.
 - **Mecânico:** produz materiais quando há oficina.
@@ -71,8 +84,9 @@ A ameaça representa a quantidade de zumbis e a pressão do lado de fora. Ela au
 ## Exploração, rádio e veículos
 
 - Saque de casas próximas e expedições para supermercado, farmácia, posto, depósito de construção, delegacia e hospital.
-- Rádio desbloqueia ordens internas, contato com outros acampamentos e excursões de longa duração.
+- Rádio desbloqueia ordens internas, contato com outros acampamentos, excursões de longa duração e o upgrade Mural de horários.
 - Ordens de rádio podem focar em ameaça, medicina, mecânica ou suprimentos e melhoram habilidades ao longo dos dias.
+- O Mural de horários permite definir turnos individuais para os moradores e limita o trabalho ao horário escolhido.
 - Scavengers podem procurar alvos grandes, como hospitais, bases abandonadas e centros de logística.
 - Excursões têm estados de caminho, local e retorno, além de risco, carga, ferimentos e loot.
 - Veículos: SUV, caminhonete, carro de quatro portas e carro de duas portas.
@@ -82,6 +96,8 @@ A ameaça representa a quantidade de zumbis e a pressão do lado de fora. Ela au
 ## Combate
 
 Eventos de rua, expedições e algumas decisões podem iniciar o combate por turnos. A cada rodada, o jogador pode atacar, defender ou fugir. O resultado considera força, agilidade, arma equipada, dano, energia e quantidade de zumbis. O combate gera barulho e pode aumentar a ameaça.
+
+Durante saques, gazuas podem abrir contêineres trancados em um lockpick de rotação e tensão; erros desgastam a ferramenta e aumentam a ameaça.
 
 ## Relações e família
 
@@ -94,7 +110,7 @@ Eventos de rua, expedições e algumas decisões podem iniciar o combate por tur
 
 ## Eventos
 
-Há eventos com escolhas e eventos corriqueiros sem escolha, incluindo refeições, obras, chuva, rondas, barulhos distantes, alarmes, encontros, doenças, brigas, pesadelos, resgates e acontecimentos de relacionamento. Eventos de combate usam o mesmo sistema de turnos do restante do jogo.
+Há eventos com escolhas e eventos corriqueiros sem escolha, incluindo refeições, obras, chuva, rondas, barulhos distantes, alarmes, encontros, doenças, brigas, pesadelos, resgates, conhecimentos do apocalipse e acontecimentos de relacionamento. Eventos de combate usam o mesmo sistema de turnos do restante do jogo.
 
 Para testes, o modo debug fica disponível no console do navegador:
 
@@ -127,6 +143,7 @@ debugJogo.desativar()
 - `assets/UI/icons`: ícones de recursos, saúde e funções.
 - `assets/UI/body_*`: silhuetas corporais.
 - `assets/UI/decalques` e `assets/UI/regioes`: sobreposições de saúde.
+- `assets/UI/lockpick`: fechadura, gazua e chave de fenda do minigame.
 - `assets/eventos`: GIFs e imagens de acontecimentos.
 - `assets/snd`: músicas, ambiências e efeitos.
 - `assets/muro`: imagens e configuração das faixas de ameaça.
