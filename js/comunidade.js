@@ -99,10 +99,12 @@ function imagemCorpo(m){
 }
 function criarFerimento(m,tipo='corte',local='braco',gravidade=null){
   const base=TIPOS_FERIMENTO[tipo]||TIPOS_FERIMENTO.corte;
-  const f={tipo,local,gravidade:gravidade||base.gravidade,intensidade:gravidade==='grave'?75:25,inicio:S.tempoTotal,ultimoAvanco:S.tempoTotal,recuperacao:base.recuperacao,fim:S.tempoTotal+base.recuperacao};
+  const nivel=gravidade||base.gravidade;
+  const intensidade=nivel==='grave'?75:nivel==='médio'?50:25;
+  const f={tipo,local,gravidade:nivel,intensidade,intensidadeInicial:intensidade,inicio:S.tempoTotal,ultimoAvanco:S.tempoTotal,recuperacao:base.recuperacao,repousoNecessario:base.recuperacao,repousoAcumulado:0,tratado:false,riscoMorte:nivel==='grave',fim:S.tempoTotal+base.recuperacao};
   m.ferimentos=m.ferimentos||[];m.ferimentos.push(f);m.ferido=true;return f;
 }
-function piorFerimento(m){return (m.ferimentos||[]).sort((a,b)=>b.intensidade-a.intensidade)[0];}
+function piorFerimento(m){return (m.ferimentos||[]).slice().sort((a,b)=>(Number(Boolean(a.tratado))-Number(Boolean(b.tratado))) || b.intensidade-a.intensidade)[0];}
 const PLANOS_MURO = {
   distrair:{nome:'Atrair para longe',dur:120,energia:20,materiais:2,combustivel:1,desc:'Desvia 28 pontos de ameaça; a movimentação devolve 3. Risco de ferimentos.'},
   fogos:{nome:'Soltar fogos à distância',dur:80,energia:12,materiais:2,municao:1,desc:'Desvia 40 pontos. Há 25% de chance de atrair 15 de volta; chama a atenção de pessoas.'},
@@ -122,7 +124,7 @@ function criarBase(local='casa', anterior={}){
   return {barricadas:2,ameaca:8,moral:60,...anterior,local,instalacoes:[],descobertas:[local],atencaoHumana:0,
     eletricidadeLigada:true,corteEletricoDia:null,aguaLigada:true,corteAguaDia:null,
     energiaCidadeRestaurada:false,aguaCidadeRestaurada:false,
-    vagasVeiculo:LOCAIS_BASE[local]?.vagasVeiculo || 1,veiculos:anterior.veiculos || [],proximoVeiculoId:anterior.proximoVeiculoId || 1,ordemRadio:anterior.ordemRadio ?? null,excursao:anterior.excursao ?? null,inventario:anterior.inventario || inventarioBaseInicial(),
+    vagasVeiculo:LOCAIS_BASE[local]?.vagasVeiculo || 1,veiculos:anterior.veiculos || [],proximoVeiculoId:anterior.proximoVeiculoId || 1,ordemRadio:anterior.ordemRadio ?? null,excursao:anterior.excursao ?? null,muralHorarios:Boolean(anterior.muralHorarios),inventario:anterior.inventario || inventarioBaseInicial(),
     silencioAte:0,geradorAte:0,armadilhas:0,proximaArmadilha:0,proximaHorda:0};
 }
 function atualizarEletricidade(){
@@ -220,7 +222,7 @@ function naBase(m){
   if(m.id===S.familia.atual && (fora.includes(S.acao?.tipo) || (S.acao?.tipo==='planoMuro' && ['distrair','fogos','abater'].includes(S.acao.plano))))return false;
   return true;
 }
-function aptoTrabalho(m){ return naBase(m) && !m.doenca && !m.ferido && idadeMembro(m)>=IDADE_ADULTA; }
+function aptoTrabalho(m){ return naBase(m) && !m.doenca && !m.ferido && idadeMembro(m)>=IDADE_ADULTA && (typeof horarioMuralAtivo!=='function' || horarioMuralAtivo(m)); }
 const COMPONENTES_MATERIAIS={pregos:10,tabuas:5,ferramentas:1};
 function detalharMateriais(qtd){
   const n=Math.max(0,Math.floor(Number(qtd)||0));
@@ -267,7 +269,7 @@ function resolverConstrucao(a){
 function iniciarDemolicao(id){
   if(!temInstalacao(id))return;
   if(id==='oficina' && S.acao?.tipo==='customizarVeiculo'){log('A oficina está ocupada com uma customização em andamento.','info');return;}
-  if(id==='radio' && (S.base.ordemRadio || S.base.excursao)){log('O rádio está sendo usado para coordenar a comunidade e a excursão.','info');return;}
+  if(id==='radio' && (S.base.ordemRadio || S.base.excursao || S.base.muralHorarios)){log('O rádio está sendo usado para coordenar a comunidade, a excursão e o mural de horários.','info');return;}
   if(id==='alojamento' && moradores()+(S.familia.gravidez?1:0)>capacidadeBase()-2){log('O alojamento ainda é necessário para abrigar a comunidade.','info');return;}
   iniciarAcaoBase('demolir',`Desmontar ${INSTALACOES[id].nome}`,120,10,{}, {obra:id});
 }
@@ -278,21 +280,22 @@ function resolverDemolicao(a){
   log(`${INSTALACOES[a.obra].nome} desmontada. +${ganho} materiais; um espaço livre.`,'info');
 }
 function abrirLocaisBase(){
-  abrirPainel('Novos abrigos',`<p>Você está em <b>${LOCAIS_BASE[S.base.local].nome}</b>. Procure locais para descobrir abrigos maiores.</p><p>A mudança leva 6 horas. A comunidade e os suprimentos vão juntos; as instalações ficam no local antigo. Metade dos materiais usados nelas é recuperada.</p><div class="catalogoBase">${S.base.descobertas.map(id=>{const l=LOCAIS_BASE[id];return `<p><b>${l.nome}</b> · ${l.capacidade} pessoas · ${l.slots} espaços · ${l.vagasVeiculo} vagas de veículo<br>${id===S.base.local ? 'Base atual' : `Mudança: ${custoTexto(l)}`}</p>`;}).join('')}</div>`,[
-    {texto:'Procurar um novo local · 4h · 20 energia',fn:procurarBase},
+  const busca=S.base.ordemRadio?.tipo==='buscarBase';
+  const instrucao=busca
+    ? `Os Scavengers estão observando rotas e prédios abandonados. A busca termina no dia ${S.base.ordemRadio.fim}; mesmo depois disso, eles podem não encontrar um lugar seguro.`
+    : 'Novos abrigos são encontrados pelos Scavengers por meio do rádio. A busca leva alguns dias e depende da atenção deles e da sorte.';
+  abrirPainel('Novos abrigos',`<p>Você está em <b>${LOCAIS_BASE[S.base.local].nome}</b>.</p><p>${instrucao}</p><p>A mudança leva 6 horas. A comunidade e os suprimentos vão juntos; as instalações ficam no local antigo. Metade dos materiais usados nelas é recuperada.</p><div class="catalogoBase">${S.base.descobertas.map(id=>{const l=LOCAIS_BASE[id];return `<p><b>${l.nome}</b> · ${l.capacidade} pessoas · ${l.slots} espaços · ${l.vagasVeiculo} vagas de veículo<br>${id===S.base.local ? 'Base atual' : `Mudança: ${custoTexto(l)}`}</p>`;}).join('')}</div>`,[
+    {texto:busca?'Acompanhar ordem no rádio':'Pedir aos Scavengers que procurem',fn:abrirRadio},
     ...S.base.descobertas.filter(id=>id!==S.base.local).map(id=>({texto:`Mudar para ${LOCAIS_BASE[id].nome}`,fn:()=>iniciarMudanca(id)})),
     {texto:'Voltar às construções',fn:abrirConstrucoes},{texto:'Fechar',fn:()=>{}}
   ]);
 }
 function procurarBase(){
-  if(S.base.descobertas.length===Object.keys(LOCAIS_BASE).length){log('Todos os abrigos da região já foram mapeados.','info');return;}
-  iniciarAcaoBase('procurarBase','Procurar novos abrigos',240,20);
+  if(!radioInstalado()){log('É preciso construir um rádio para coordenar a busca por novos abrigos.','info');return;}
+  iniciarOrdemRadio('buscarBase');
 }
 function resolverBuscaBase(){
-  const id=Object.keys(LOCAIS_BASE).find(id=>!S.base.descobertas.includes(id));if(!id)return;
-  S.base.descobertas.push(id);
-  const l=LOCAIS_BASE[id];
-  abrirModal('Novo abrigo encontrado',`Você mapeou <b>${l.nome}</b>: espaço para ${l.capacidade} pessoas e ${l.slots} instalações. A mudança exige ${custoTexto(l)}.`,[{texto:'Anotar a localização',fn:()=>{}}]);
+  procurarBase();
 }
 function iniciarMudanca(id){
   const l=LOCAIS_BASE[id];if(!l || !S.base.descobertas.includes(id) || id===S.base.local)return;
@@ -328,8 +331,10 @@ function atribuirFuncao(i,tarefa){
 function situacaoNPC(m){
   const ferimento=piorFerimento(m);
   if(m.doenca) return `<span class="saudeRuim">${DOENCAS[m.doenca.tipo].nome} · corpo todo afetado · gravidade ${Math.ceil(m.doenca.gravidade)}% · recuperação ${Math.max(0,Math.ceil((m.doenca.fim-S.tempoTotal)/60))}h</span>`;
-  if(ferimento) return `<span class="saudeRuim">${TIPOS_FERIMENTO[ferimento.tipo].nome} · ${LOCAIS_CORPO[ferimento.local]} · ${ferimento.gravidade} · recuperação ${Math.max(0,Math.ceil((ferimento.fim-S.tempoTotal)/60))}h</span>`;
+  if(ferimento){const estado=ferimento.tratado?'tratado · repouso necessário':'risco ativo · precisa de tratamento';const restante=ferimento.repousoNecessario?Math.max(0,Math.ceil((ferimento.repousoNecessario-(ferimento.repousoAcumulado||0))/60)):Math.max(0,Math.ceil((ferimento.fim-S.tempoTotal)/60));return `<span class="saudeRuim">${TIPOS_FERIMENTO[ferimento.tipo].nome} · ${LOCAIS_CORPO[ferimento.local]} · ${ferimento.gravidade} · ${estado} · repouso restante ${restante}h</span>`;}
   if(m.expedicao)return `Fora da base · volta em ${Math.max(0,m.expedicao.fim-S.tempoTotal)} min`;
+  if(m.tarefa==='scavenger' && m.proximaSaida>S.tempoTotal)return `Descansando · próxima saída em ${Math.max(0,Math.ceil((m.proximaSaida-S.tempoTotal)/60))}h`;
+  if(S.base.muralHorarios && !horarioMuralAtivo(m))return `Fora do turno · ${nomeHorarioMural(m)}`;
   if(m.ferido)return '<span class="saudeRuim">Ferido · aguardando cuidados</span>';
   if(m.tarefa==='agricultor' && !temInstalacao('horta'))return 'Aguardando a construção de uma horta';
   if(m.tarefa==='oficina' && !temInstalacao('oficina'))return 'Aguardando a construção de uma oficina';
@@ -347,18 +352,18 @@ function atualizarScavengers(){
       continue;
     }
     if(m.expedicao && S.tempoTotal>=m.expedicao.fim){
-      m.expedicao=null;m.proximaSaida=S.tempoTotal+120;
+      m.expedicao=null;const descanso=rnd(2,5)*60;m.proximaSaida=S.tempoTotal+descanso;
       const bonus=/Scavenger|Batedor|Caçador/.test(m.especialidade)?1:0;
       const feriu=Math.random()<.12+S.base.ameaca*.001;
       const ganhos={comida:rnd(2,4)+bonus,agua:rnd(1,3)+bonus,materiais:rnd(1,3),remedios:rnd(0,1)};
       if(feriu){criarFerimento(m,pick(['corte','hematoma','osso']),pick(Object.keys(LOCAIS_CORPO)));ganhos.materiais=0;}
       aplicarGanhos(ganhos);ganharExperienciaPessoa(m,2);
       S.base.ameaca=clamp(S.base.ameaca+2,0,100);
-      log(`${esc(m.nome)} voltou da busca automática${feriu?' com ferimentos. Precisa de cuidados antes de sair de novo.':'. Descansará por duas horas.'}`,feriu?'ruim':'bom');
+      log(`${esc(m.nome)} voltou da busca automática${feriu?' com ferimentos. Precisa de cuidados antes de sair de novo.':`. Descansará por ${descanso/60} horas.`}`,feriu?'ruim':'bom');
     }
-    if(m.tarefa==='scavenger' && aptoTrabalho(m) && !emSilencio() && S.acao?.tipo!=='mudarBase' && S.tempoTotal>=(m.proximaSaida || 0)){
-      m.expedicao={inicio:S.tempoTotal,fim:S.tempoTotal+240};
-      log(`${esc(m.nome)} saiu para buscar suprimentos. Volta em quatro horas.`,'info');
+    if(m.tarefa==='scavenger' && aptoTrabalho(m) && !emSilencio() && S.base.ordemRadio?.tipo!=='buscarBase' && S.acao?.tipo!=='mudarBase' && (typeof horarioMuralAtivo!=='function' || horarioMuralAtivo(m)) && S.tempoTotal>=(m.proximaSaida || 0)){
+      const duracao=rnd(3,6)*60;m.expedicao={inicio:S.tempoTotal,fim:S.tempoTotal+duracao,duracao};
+      log(`${esc(m.nome)} saiu para buscar suprimentos. Ficará fora por ${duracao/60} horas.`,'info');
     }
   }
 }
@@ -376,9 +381,12 @@ function tratarPaciente(m,potencia){
     if(m.doenca.gravidade===0){m.doenca=null;log(`${esc(m.nome)} se recuperou da doença.`,'bom');}
     else log(`${esc(m.nome)} recebeu tratamento. Gravidade: ${Math.ceil(m.doenca.gravidade)}%.`,'bom');
   }else if(m.ferimentos?.length){
-    const f=piorFerimento(m);f.intensidade=Math.max(0,f.intensidade-potencia);
-    if(f.intensidade===0)log(`${esc(m.nome)} se recuperou de ${TIPOS_FERIMENTO[f.tipo].nome.toLowerCase()}.`,'bom');
-    m.ferimentos=m.ferimentos.filter(x=>x.intensidade>0);m.ferido=m.ferimentos.length>0;
+    const f=piorFerimento(m);
+    if(!f || f.tratado){log(`${esc(m.nome)} já recebeu tratamento e ainda precisa repousar.`,'info');return false;}
+    const baseTempo=f.repousoNecessario||f.recuperacao||TIPOS_FERIMENTO[f.tipo]?.recuperacao||240;
+    f.tratado=true;f.riscoMorte=false;f.repousoNecessario=Math.max(60,Math.floor(baseTempo*.6));f.recuperacao=f.repousoNecessario;f.repousoAcumulado=Math.min(f.repousoAcumulado||0,f.repousoNecessario);f.fim=S.tempoTotal+Math.max(0,f.repousoNecessario-f.repousoAcumulado);
+    m.ferido=true;
+    log(`${esc(m.nome)} recebeu tratamento. O risco de morte foi controlado e o tempo de recuperação diminuiu, mas ainda precisa de repouso.`,'bom');
   }else if(m.ferido){m.ferido=false;log(`Os ferimentos de ${esc(m.nome)} foram tratados.`,'bom');}
   else return false;
   return true;
@@ -386,7 +394,7 @@ function tratarPaciente(m,potencia){
 function atualizarMedicos(){
   for(const medico of S.sobreviventes.filter(m=>m.tarefa==='medico' && aptoTrabalho(m))){
     if(S.tempoTotal<(medico.proximoAtendimento || 0) || S.recursos.remedios<1)continue;
-    const pacientes=S.familia.membros.filter(m=>naBase(m) && (m.doenca || m.ferido));
+    const pacientes=S.familia.membros.filter(m=>naBase(m) && (m.doenca || (m.ferimentos||[]).some(f=>!f.tratado)));
     pacientes.sort((a,b)=>(b.doenca?.gravidade || piorFerimento(b)?.intensidade || 1)-(a.doenca?.gravidade || piorFerimento(a)?.intensidade || 1));
     if(!pacientes.length)continue;
     S.recursos.remedios--;
@@ -410,8 +418,14 @@ function evoluirDoencas(){
     }
   }
   for(const m of S.familia.membros){
-    for(const f of (m.ferimentos||[])){f.intensidade=Math.max(0,f.intensidade-.5);f.fim=f.inicio+f.recuperacao;}
-    m.ferimentos=(m.ferimentos||[]).filter(f=>f.intensidade>0);m.ferido=m.ferimentos.length>0;
+    const repousando=m.id===S.familia.atual ? ['descansar','dormir'].includes(S.acao?.tipo) : naBase(m) && !m.expedicao && !aptoTrabalho(m);
+    for(const f of (m.ferimentos||[])){
+      f.intensidadeInicial ??= f.intensidade || 25;f.repousoNecessario ??= f.recuperacao || TIPOS_FERIMENTO[f.tipo]?.recuperacao || 240;f.repousoAcumulado ??= 0;f.tratado ??= false;f.riscoMorte ??= f.gravidade==='grave';
+      const decorrido=Math.max(0,S.tempoTotal-(f.ultimoAvanco||S.tempoTotal));
+      if(repousando && decorrido>0){f.repousoAcumulado=Math.min(f.repousoNecessario,f.repousoAcumulado+decorrido);f.intensidade=Math.max(0,f.intensidadeInicial*(1-f.repousoAcumulado/f.repousoNecessario));}
+      f.ultimoAvanco=S.tempoTotal;f.fim=f.inicio+(f.tratado?f.repousoNecessario:f.recuperacao);
+    }
+    m.ferimentos=(m.ferimentos||[]).filter(f=>(f.repousoAcumulado||0)<(f.repousoNecessario||f.recuperacao||240));m.ferido=m.ferimentos.length>0;
   }
 }
 function incidenciaDoencas(){
@@ -419,7 +433,8 @@ function incidenciaDoencas(){
   S.comunidade.ultimoDiaDoenca=S.dia;
   const risco=clamp(.07+(moradores()/capacidadeBase()>.85?.03:0)-(temInstalacao('enfermaria')?.02:0)-(temInstalacao('cisterna')?.02:0),.01,.2);
   for(const m of S.familia.membros.filter(m=>naBase(m) && !m.doenca)){
-    if(Math.random()<risco+(m.ferido ? .05 : 0)){
+    const riscoFerimento=m.ferido && (m.ferimentos||[]).some(f=>f.riscoMorte!==false) ? .05 : 0;
+    if(Math.random()<risco+riscoFerimento){
       const tipo=Math.random()<.08?'pesteRoxa':(Math.random()<.35?'virose':'gripe');
       adoecer(m,tipo);
     }
@@ -427,7 +442,8 @@ function incidenciaDoencas(){
 }
 function iniciarTratamento(id){
   const m=S.familia.membros.find(m=>m.id===id);
-  if(!naBase(m) || (!m.doenca && !m.ferido)){log('Essa pessoa não precisa de atendimento ou está fora da base.','info');return;}
+  const ferimentoPendente=(m?.ferimentos||[]).some(f=>!f.tratado);
+  if(!naBase(m) || (!m.doenca && !ferimentoPendente)){log(m?.ferido?'Esse ferimento já foi tratado. Ainda é necessário repouso.':'Essa pessoa não precisa de atendimento ou está fora da base.','info');return;}
   iniciarAcaoBase('tratarDoenca',`Tratar ${m.nome}`,60,8,{remedios:1},{pacienteId:id});
 }
 function resolverTratamento(a){
@@ -437,7 +453,7 @@ function resolverTratamento(a){
 function abrirSaude(){
   const pacientes=S.familia.membros.filter(m=>naBase(m) && (m.doenca || m.ferido));
   const medicos=S.sobreviventes.filter(m=>m.tarefa==='medico' && aptoTrabalho(m)).length;
-  abrirPainel('Saúde da comunidade',`<p><b>${medicos} médico(s) disponível(is)</b> · ${S.recursos.remedios} remédios · ${temInstalacao('enfermaria')?'enfermaria pronta':'sem enfermaria'}</p><p>Doenças sistêmicas afetam o corpo todo. Ferimentos mostram o local atingido e têm recuperação própria.</p>${pacientes.map(m=>`<div class="cartaoSaude"><img src="${imagemCorpo(m)}" alt="Mapa corporal de ${esc(m.nome)}"><p><b>${esc(m.nome)}</b><br>${situacaoNPC(m)}</p></div>`).join('') || '<p>Ninguém precisa de cuidados agora.</p>'}`,[
+  abrirPainel('Saúde da comunidade',`<p><b>${medicos} médico(s) disponível(is)</b> · ${S.recursos.remedios} remédios · ${temInstalacao('enfermaria')?'enfermaria pronta':'sem enfermaria'}</p><p>Doenças sistêmicas afetam o corpo todo. Ferimentos mostram o local atingido. O tratamento reduz o tempo de recuperação e elimina o risco de morte, mas o repouso continua obrigatório.</p>${pacientes.map(m=>`<div class="cartaoSaude"><img src="${imagemCorpo(m)}" alt="Mapa corporal de ${esc(m.nome)}"><p><b>${esc(m.nome)}</b><br>${situacaoNPC(m)}</p></div>`).join('') || '<p>Ninguém precisa de cuidados agora.</p>'}`,[
     ...pacientes.map(m=>({texto:`Tratar ${m.nome} · 1 remédio · 1h`,fn:()=>iniciarTratamento(m.id)})),
     {texto:'Ver funções do grupo',fn:abrirGrupo},{texto:'Fechar',fn:()=>{}}
   ]);
@@ -549,6 +565,9 @@ const EVENTOS_DEBUG={
   relacionamentoMedo:evMedoAntesDeSair,
   pesadeloSono:eventoPesadeloSono,
   pesadeloEx:eventoPesadeloExSono,
+  conhecimentoCabeca:eventoConhecimentoCabeca,
+  conhecimentoSom:eventoConhecimentoSom,
+  conhecimentoCheiro:eventoConhecimentoCheiro,
   barulhoSono:eventoInterrupcaoSono,
   rotinaCozinha:eventoRotinaCozinha,
   chuvaFraca:eventoChuvaFraca,
@@ -595,16 +614,20 @@ function eventoCerca(){
   ]);
 }
 function eventoRua(){
-  abrirModal('A rua está bloqueada','Carros abandonados e zumbis fecharam o caminho.',[
+  const opcoes=[
     {texto:'Dar a volta · +60 min',fn:()=>atrasarAcao(60)},
     {texto:'Abrir caminho lutando',fn:()=>combate(3)}
-  ]);
+  ];
+  if(typeof temConhecimentoApocalipse==='function' && temConhecimentoApocalipse('disfarceCheiro'))opcoes.splice(1,0,{texto:'Usar o cheiro dos mortos e passar pela borda da horda',fn:()=>{S.base.ameaca=clamp(S.base.ameaca-4,0,100);log('Você usou o cheiro para passar pela borda da horda sem iniciar um combate.','bom');}});
+  abrirModal('A rua está bloqueada','Carros abandonados e zumbis fecharam o caminho.',opcoes);
 }
 function eventoAlarme(){
-  abrirModal('Um alarme começou a tocar','Um carro próximo dispara o alarme e quebra o silêncio.',[
+  const opcoes=[
     {texto:'Sair de perto · +8 ameaça',fn:()=>S.base.ameaca=clamp(S.base.ameaca+8,0,100)},
     {texto:'Tentar desligar · +20 min',fn:()=>{atrasarAcao(20);if(S.player.inteligencia>=4)log('Você silenciou o alarme.','bom');else{S.player.vida-=4;S.base.ameaca=clamp(S.base.ameaca+5,0,100);log('Você se cortou tentando desligar o alarme.','ruim');}}}
-  ]);
+  ];
+  if(typeof temConhecimentoApocalipse==='function' && temConhecimentoApocalipse('zumbisSom'))opcoes.unshift({texto:'Afastar-se em silêncio · +3 ameaça',fn:()=>{S.base.ameaca=clamp(S.base.ameaca+3,0,100);log('Você se moveu sem fazer barulho e deixou o alarme atrair os zumbis para longe.','bom');}});
+  abrirModal('Um alarme começou a tocar','Um carro próximo dispara o alarme e quebra o silêncio.',opcoes);
 }
 
 /* Acontecimentos cotidianos: aparecem como relatos curtos e não interrompem a ação. */
@@ -665,9 +688,13 @@ function tentarEventoDuranteAcao(){
     pick(eventosParaAcao('dormir'))();
     return;
   }
-  if(a.eventoTentado)return;
   const decorrido=S.tempoTotal-(a.fim-a.dur);
   if(decorrido<Math.min(60,a.dur/2))return;
+  if(typeof eventoConhecimentoDuranteAcao==='function' && eventoConhecimentoDuranteAcao(a)){
+    a.eventoTentado=true;
+    return;
+  }
+  if(a.eventoTentado)return;
   a.eventoTentado=true;
   if(S.tempoTotal-S.comunidade.ultimoEvento<120 || Math.random()>=.24)return;
   S.comunidade.ultimoEvento=S.tempoTotal;
@@ -697,14 +724,15 @@ function validarComunidade(e){
   if(!Array.isArray(b.veiculos) || !Number.isInteger(b.vagasVeiculo) || b.vagasVeiculo<1 || b.veiculos.length>b.vagasVeiculo || !Number.isInteger(b.proximoVeiculoId) || b.veiculos.some(v=>!v || typeof v.id!=='string' || typeof v.nome!=='string' || !['suv','caminhonete','quatroPortas','duasPortas'].includes(v.tipo) || !numero(v.capacidade) || v.capacidade<1 || !numero(v.combustivel) || !numero(v.carga) || !numero(v.velocidade) || !Array.isArray(v.customizacoes) || v.customizacoes.some(c=>!['portaMalas','suspensao','blindagem','tanque'].includes(c)) || !['pronto','em excursão'].includes(v.estado)))throw Error('Garagem da base inválida.');
   if(b.ordemRadio && (!ORDENS_RADIO[b.ordemRadio.tipo] || !Number.isInteger(b.ordemRadio.inicio) || !Number.isInteger(b.ordemRadio.fim) || !Number.isInteger(b.ordemRadio.ultimoDia)))throw Error('Ordem de rádio inválida.');
   if(b.excursao && (!['a caminho','no local','retornando'].includes(b.excursao.status) || typeof b.excursao.alvoId!=='string' || !Array.isArray(b.excursao.participantes) || !Array.isArray(b.excursao.veiculos) || !numero(b.excursao.chegada) || !numero(b.excursao.localFim) || !numero(b.excursao.retorno)))throw Error('Excursão inválida.');
-  if(!['atencaoHumana','silencioAte','geradorAte','armadilhas','proximaArmadilha','proximaHorda'].every(k=>numero(b[k])) || typeof b.eletricidadeLigada!=='boolean' || typeof b.aguaLigada!=='boolean' || typeof b.energiaCidadeRestaurada!=='boolean' || typeof b.aguaCidadeRestaurada!=='boolean' || (b.corteEletricoDia!==null && !Number.isInteger(b.corteEletricoDia)) || (b.corteAguaDia!==null && !Number.isInteger(b.corteAguaDia)) || b.armadilhas>9 || b.atencaoHumana>100 || b.ameaca>100)throw Error('Pressão da base inválida.');
+  if(!['atencaoHumana','silencioAte','geradorAte','armadilhas','proximaArmadilha','proximaHorda'].every(k=>numero(b[k])) || typeof b.eletricidadeLigada!=='boolean' || typeof b.aguaLigada!=='boolean' || typeof b.energiaCidadeRestaurada!=='boolean' || typeof b.aguaCidadeRestaurada!=='boolean' || typeof b.muralHorarios!=='boolean' || (b.muralHorarios && !b.instalacoes.includes('radio')) || (b.corteEletricoDia!==null && !Number.isInteger(b.corteEletricoDia)) || (b.corteAguaDia!==null && !Number.isInteger(b.corteAguaDia)) || b.armadilhas>9 || b.atencaoHumana>100 || b.ameaca>100)throw Error('Pressão da base inválida.');
   if(!e.comunidade || !numero(e.comunidade.ultimoDiaDoenca) || !numero(e.comunidade.ultimoEvento))throw Error('Rotina da comunidade inválida.');
   for(const m of e.familia.membros){
     if(!Array.isArray(m.ferimentos))m.ferimentos=[];
+    for(const f of m.ferimentos){f.intensidadeInicial ??= f.intensidade;f.repousoNecessario ??= f.recuperacao;f.repousoAcumulado ??= 0;f.tratado ??= false;f.riscoMorte ??= f.gravidade==='grave';}
     if(!numero(m.proximaSaida) || !numero(m.proximoAtendimento))throw Error('Horários de trabalho inválidos.');
     const d=m.doenca,x=m.expedicao;
     if(d && (!DOENCAS[d.tipo] || !numero(d.gravidade) || d.gravidade>100 || !numero(d.ultimoAvanco) || !numero(d.aviso) || !numero(d.fim)))throw Error('Doença inválida.');
-    if(!Array.isArray(m.ferimentos) || m.ferimentos.some(f=>!TIPOS_FERIMENTO[f.tipo] || !LOCAIS_CORPO[f.local] || !['leve','médio','grave'].includes(f.gravidade) || !numero(f.intensidade) || f.intensidade>100 || !numero(f.inicio) || !numero(f.fim)))throw Error('Ferimento inválido.');
+    if(!Array.isArray(m.ferimentos) || m.ferimentos.some(f=>!TIPOS_FERIMENTO[f.tipo] || !LOCAIS_CORPO[f.local] || !['leve','médio','grave'].includes(f.gravidade) || !numero(f.intensidade) || f.intensidade>100 || !numero(f.intensidadeInicial) || f.intensidadeInicial>100 || !numero(f.inicio) || !numero(f.fim) || !numero(f.repousoNecessario) || f.repousoNecessario<1 || !numero(f.repousoAcumulado) || f.repousoAcumulado>f.repousoNecessario || typeof f.tratado!=='boolean' || typeof f.riscoMorte!=='boolean'))throw Error('Ferimento inválido.');
     if(x && (!numero(x.inicio) || !numero(x.fim) || x.fim<x.inicio || (x.tipo==='resgate' ? typeof x.alvoNome!=='string' : m.tarefa!=='scavenger')))throw Error('Saída de scavenger inválida.');
   }
   const a=e.acao;

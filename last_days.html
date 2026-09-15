@@ -96,6 +96,18 @@ body{
 @media(max-width:520px){.botoesAbertura{flex-direction:column;width:min(100%,280px)}.botoesAbertura .btnAbertura{width:100%}}
 @keyframes fade{ from{opacity:0; transform:translateY(10px)} to{opacity:1;transform:none} }
 
+.disclaimer18{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.94);backdrop-filter:blur(5px)}
+.disclaimer18[hidden]{display:none}
+.disclaimer18Box{width:min(100%,540px);padding:30px 28px;background:#121614;border:1px solid #7d2525;border-radius:10px;box-shadow:0 0 70px rgba(139,26,26,.5);text-align:center}
+.disclaimer18Selo{display:inline-grid;place-items:center;width:66px;height:66px;margin-bottom:18px;border:2px solid #c0392b;border-radius:50%;color:#f0b0b0;font-size:25px;font-weight:800;letter-spacing:-1px}
+.disclaimer18Box h1{margin-bottom:14px;color:#f0d7d7;font-family:'Nosifer',Georgia,serif;font-size:clamp(20px,4vw,29px);font-weight:400;line-height:1.25}
+.disclaimer18Box p{margin:0 auto 14px;max-width:450px;color:#c0c9c1;font-size:14px;line-height:1.7}
+.disclaimer18Box .disclaimer18Nota{color:#d79b9b;font-size:12px}
+.disclaimer18Ops{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.disclaimer18Ops .btnAbertura{flex:1 1 210px}
+.disclaimer18Ops .btnRecusar{border-color:#3b443e;color:#9ba79d}
+.disclaimer18Status{min-height:18px;margin:16px 0 0;color:#e39a9a;font-size:12px!important}
+
 #criacao h1{
   font-size:clamp(30px,7vw,54px);
   letter-spacing:6px;
@@ -420,6 +432,7 @@ body{
 .modalOps button:hover{ background:#232b26; border-color:#5e1010; transform:translateX(3px); }
 .modalMidia{display:block;width:100%;max-height:230px;object-fit:cover;border-radius:7px;margin:0 0 16px;border:1px solid var(--borda);background:#0b0d0c}.modalMidia[hidden]{display:none}.modalVideo{width:100%;max-height:230px;object-fit:cover;border-radius:7px;margin-bottom:16px}
 .combateCabecalho{display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid #3a1f1f;padding-bottom:10px;margin-bottom:14px;color:#e4eae5}.combateCabecalho strong{color:#e45b5b}.combateBarra{height:9px;background:#2b302d;border-radius:8px;overflow:hidden;margin:6px 0 14px}.combateBarra i{display:block;height:100%;background:#b63838;transition:width .2s}.combateInfo{display:grid;grid-template-columns:1fr 1fr;gap:8px}.combateInfo div{background:#1b201d;border:1px solid var(--borda);border-radius:6px;padding:9px;font-size:13px;color:#a9b5ac}.combateAviso{color:#e5c56b!important;font-size:13px!important;margin:10px 0!important}
+.lockpickStatus{display:flex;justify-content:space-between;gap:10px;color:#c4cec6;font-size:12px;margin:8px 0}.lockpickStatus b{color:#e5c56b}.lockpickBarra{height:10px;background:#282d2a;border:1px solid var(--borda);border-radius:6px;overflow:hidden;margin-bottom:14px}.lockpickBarra i{display:block;height:100%;background:#a83232;transition:width .2s}.lockpickDica{color:#d6a0a0!important;font-size:12px!important;margin-bottom:12px!important}.lockpickDisco{position:relative;width:136px;height:136px;margin:12px auto 16px;border:2px solid #714646;border-radius:50%;background:radial-gradient(circle,#29211f 0 17%,#171a18 18% 62%,#0d100f 63%);box-shadow:inset 0 0 0 8px #211817,0 0 20px rgba(139,26,26,.25)}.lockpickFechadura{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1}.lockpickCentro{position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border:2px solid #bd7777;border-radius:50%;background:#29191a;z-index:2}.lockpickPick{position:absolute;left:calc(50% - 2px);top:calc(50% - 58px);width:4px;height:58px;transform-origin:50% 100%;background:#d7b0a5;border-radius:3px 3px 0 0;box-shadow:0 0 7px rgba(230,175,165,.5);z-index:3}.lockpickDisco.comArte .lockpickPick{display:none}.lockpickPick:after{content:'';position:absolute;left:-4px;bottom:-2px;width:12px;height:5px;border-radius:3px;background:#a84f4f}.lockpickGazua{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;transform-origin:50% 50%;z-index:3}.lockpickChaveFenda{position:absolute;left:4px;bottom:4px;width:45%;height:45%;object-fit:contain;z-index:4}
 
 [hidden]{ display:none !important; }
 .controlesSave{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center}
@@ -460,6 +473,8 @@ body{
 .saudeRuim{color:#df895d}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
 .cartaoSaude{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;border-top:1px solid var(--borda);padding:8px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{margin:0}
 .notaBase{font-size:11px;color:var(--txt2);line-height:1.5;margin:8px 0}
+.conhecimentosApocalipse{display:grid;gap:7px;margin:8px 0}.conhecimentoApocalipse{display:block;padding:8px 9px;border:1px solid #4b3434;border-radius:5px;background:#171211}.conhecimentoApocalipse b{display:block;color:#dca3a3;font-size:12px}.conhecimentoApocalipse small{display:block;margin-top:3px;color:var(--txt2);font-size:11px;line-height:1.45}
+.listaHorarios{display:grid;gap:6px;margin:10px 0}.linhaHorario{display:flex;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:var(--painel2);font-size:12px}.linhaHorario span{color:var(--txt2);text-align:right}
 .materiaisDetalhes{font-size:12px;color:#b6c2b8;line-height:1.6;padding:8px 10px;border-left:3px solid #8b1a1a;background:#1a1d1b}
 </style>
 </head>
@@ -497,6 +512,20 @@ body{
       </div>
       <span id="temaStatus" role="status" aria-live="polite">Pronto para tocar</span>
     </div>
+  </div>
+</div>
+
+<div id="disclaimer18" class="disclaimer18" role="dialog" aria-modal="true" aria-labelledby="tituloDisclaimer18">
+  <div class="disclaimer18Box">
+    <div class="disclaimer18Selo" aria-hidden="true">18+</div>
+    <h1 id="tituloDisclaimer18">Aviso de conteúdo adulto</h1>
+    <p>Este jogo contém violência gráfica, sangue, ferimentos, morte, doenças, horror psicológico e situações perturbadoras.</p>
+    <p class="disclaimer18Nota">Ao continuar, você confirma que tem 18 anos ou mais e que deseja prosseguir por sua própria conta.</p>
+    <div class="disclaimer18Ops">
+      <button id="confirmarIdade18" class="btnAbertura" type="button" onclick="confirmarIdade18()">Tenho 18 anos ou mais · Continuar</button>
+      <button class="btnAbertura btnRecusar" type="button" onclick="recusarIdade18()">Sair</button>
+    </div>
+    <p id="disclaimer18Status" class="disclaimer18Status" role="status" aria-live="polite"></p>
   </div>
 </div>
 
@@ -1147,7 +1176,7 @@ function sincronizarEstado(){
   if(!S) return;
   const atual = membroAtual();
   if(atual){
-    for(const k of [...SKILLS,'experiencia','nivel','moral','perks','imagem','aparencia','especialidade','comportamento','passadoCriminoso','passadoRevelado']){
+    for(const k of [...SKILLS,'experiencia','nivel','moral','perks','imagem','aparencia','especialidade','comportamento','passadoCriminoso','passadoRevelado','conhecimentosApocalipse','eventosConhecimentoVistos']){
       if(S.player[k] !== undefined) atual[k] = S.player[k];
     }
     atual.vivo = S.vivo;
@@ -1206,7 +1235,8 @@ function novoMembroFamilia(nome, parentesco, idade, pais=[], geracao=null, gener
     experiencia:0,
     perks:[],
     moral:70,
-    rotina:'guarda',
+    conhecimentosApocalipse:[], eventosConhecimentoVistos:[],
+    rotina:'guarda',horario:'livre',
     doenca:null,ferimentos:[],expedicao:null,proximaSaida:S.tempoTotal,proximoAtendimento:0,
     emTurno:true,
     relacao:{ amizade:50, respeito:50, romance:parentesco === 'Parceiro(a)' ? 70 : 0, status:parentesco === 'Parceiro(a)' ? 'namorando' : 'solteiro' }
@@ -1276,6 +1306,7 @@ function iniciarJogo(){
       nivel:1,
       perks:[],
       moral:70,
+      conhecimentosApocalipse:[], eventosConhecimentoVistos:[],
       arma:b.arma, armaBonus:b.armaBonus, bonusLoot:b.bonusLoot,
       inventario:{armas:b.arma!=='Nenhuma'?[{id:'arma-inicial',nome:b.arma,tipo:'arma',dano:b.armaBonus||1,municao:b.arma==='Revólver'?6:0}]:[],mochila:{capacidade:8,itens:[]},equipado:b.arma!=='Nenhuma'?'arma-inicial':null},
       vida:100, vidaMax:100, fome:15, sede:15, energia:100, emExcursao:false
@@ -1402,6 +1433,29 @@ function finalizarPrologo(rota){
 function iniciarLoop(){
   if(loopId) clearInterval(loopId);
   loopId = setInterval(tick, 1000);
+}
+
+function confirmarIdade18(){
+  const aviso=document.getElementById('disclaimer18');
+  if(!aviso)return;
+  aviso.hidden=true;
+  const video=document.getElementById('videoCriacao');
+  if(video){
+    video.muted=false;
+    aplicarVolumeAudio();
+    video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});
+  }
+  document.getElementById('botaoConfigAudio')?.focus();
+}
+function recusarIdade18(){
+  const status=document.getElementById('disclaimer18Status');
+  if(status)status.textContent='O acesso está restrito a maiores de 18 anos. Feche esta página para sair.';
+}
+function prepararAviso18(){
+  const aviso=document.getElementById('disclaimer18');
+  if(!aviso)return;
+  aviso.hidden=false;
+  document.getElementById('confirmarIdade18')?.focus();
 }
 
 function abrirCriacao(){
@@ -1548,12 +1602,14 @@ function acoesDisponiveis(){
 function construirAcoes(){
   const box = document.getElementById('acoes');
   box.innerHTML = '';
+  const repousoObrigatorio=Boolean(membroAtual()?.ferido);
   acoesDisponiveis().forEach(a=>{
     const b = document.createElement('button');
     b.className = 'acaoBtn';
     b.dataset.id = a.id;
-    b.disabled = a.id === 'excursao' && !radioInstalado();
-    if(b.disabled)b.title = 'Construa um rádio na base para liberar excursões.';
+    const podeRepousar=['comer','beber','descansar','dormir','saude'].includes(a.id);
+    b.disabled = (a.id === 'excursao' && !radioInstalado()) || (repousoObrigatorio && !podeRepousar);
+    if(b.disabled)b.title = a.id === 'excursao' && !radioInstalado() ? 'Construa um rádio na base para liberar excursões.' : repousoObrigatorio ? 'Você precisa repousar enquanto se recupera de um ferimento.' : '';
     b.innerHTML = `<strong>${a.nome}</strong><span>${a.desc}</span>`;
     b.onclick = ()=> clicarAcao(a.id);
     box.appendChild(b);
@@ -1651,11 +1707,12 @@ function resolverPerto(){
   if(Math.random() < 0.28){
     const n = rnd(1,3);
     log(`Um walker sai de três de um carro. Depois outro.`, 'sangue');
-    iniciarCombateTurnos(n,()=>{aplicarGanhos(ganhos);lootItens(S.player,'rua');});
+    iniciarCombateTurnos(n,()=>{aplicarGanhos(ganhos);lootItens(S.player,'rua');tentarCofreTrancado('rua');});
     return;
   }
   aplicarGanhos(ganhos);
   lootItens(S.player,'rua');
+  tentarCofreTrancado('rua');
 }
 
 /* ---- Expedição distante ---- */
@@ -1707,12 +1764,13 @@ function resolverExpedicao(a){
   if(Math.random() < l.risco){
     const n = rnd(l.zumbis[0], l.zumbis[1]);
     log(`Dentro do ${l.nome}, ${n} walkers erguem a cabeça ao mesmo tempo.`, 'sangue');
-    iniciarCombateTurnos(n,venceu=>{if(!venceu)for(const k in ganhos)ganhos[k]=Math.floor(ganhos[k]/2);if(!venceu)log('Você larga metade do que achou e corre.','ruim');aplicarGanhos(ganhos);lootItens(S.player,l.id);});return;
+    iniciarCombateTurnos(n,venceu=>{if(!venceu)for(const k in ganhos)ganhos[k]=Math.floor(ganhos[k]/2);if(!venceu)log('Você larga metade do que achou e corre.','ruim');aplicarGanhos(ganhos);lootItens(S.player,l.id);tentarCofreTrancado(l.nome);});return;
   } else {
     log(`O ${l.nome} está estranhamente vazio. Você trabalha rápido.`, 'info');
   }
   aplicarGanhos(ganhos);
   lootItens(S.player,l.id);
+  tentarCofreTrancado(l.nome);
 }
 
 /* ---- Rádio, ordens e excursões de longa duração ---- */
@@ -1737,7 +1795,8 @@ const ORDENS_RADIO = {
   ameaca:{nome:'Focar em reduzir a ameaça',skill:'agilidade',desc:'Guardas treinam patrulhas e a comunidade tenta manter o muro silencioso.',dur:3},
   medicina:{nome:'Focar em medicina',skill:'inteligencia',desc:'O grupo organiza triagem, higiene e produção de remédios.',dur:3},
   mecanica:{nome:'Focar em mecânica',skill:'inteligencia',desc:'O grupo recupera ferramentas e treina reparos de veículos e instalações.',dur:3},
-  suprimentos:{nome:'Focar em suprimentos',skill:'resistencia',desc:'A comunidade raciona, conserva e melhora a coleta de comida e água.',dur:3}
+  suprimentos:{nome:'Focar em suprimentos',skill:'resistencia',desc:'A comunidade raciona, conserva e melhora a coleta de comida e água.',dur:3},
+  buscarBase:{nome:'Scavengers: procurar novos abrigos',skill:'inteligencia',desc:'Os Scavengers mantêm os olhos abertos para localizar bases maiores e rotas seguras. O resultado depende do tempo, da equipe e da sorte.',dur:4}
 };
 function radioInstalado(){return temInstalacao('radio');}
 function excursaoAtiva(){return !!S.base.excursao;}
@@ -1848,6 +1907,24 @@ function atualizarExcursao(){
 function processarOrdemRadio(){
   const ordem=S.base.ordemRadio;if(!ordem || S.dia<=ordem.ultimoDia)return;
   ordem.ultimoDia=S.dia;const cfg=ORDENS_RADIO[ordem.tipo];if(!cfg)return;
+  if(ordem.tipo==='buscarBase'){
+    const grupo=S.sobreviventes.filter(m=>m.vivo && naBase(m) && m.tarefa==='scavenger' && !m.expedicao);
+    grupo.forEach(m=>{m.inteligencia=Math.min(10,(m.inteligencia||2)+1);m.experiencia=(m.experiencia||0)+1;});
+    S.base.moral=clamp(S.base.moral+1,0,100);
+    if(S.dia<ordem.fim){log(`Os Scavengers continuam observando a região. ${grupo.length ? 'Ainda não encontraram um abrigo seguro.':'Não há Scavengers disponíveis na base neste momento.'}`,'info');return;}
+    const restantes=Object.keys(LOCAIS_BASE).filter(id=>!S.base.descobertas.includes(id));
+    if(!restantes.length){log('Os Scavengers confirmaram que todos os abrigos conhecidos da região já foram mapeados.','info');S.base.ordemRadio=null;return;}
+    const media=grupo.length ? grupo.reduce((total,m)=>total+(m.inteligencia||2),0)/grupo.length : 0;
+    const chance=clamp(.3+grupo.length*.12+media*.035,0,.9);
+    if(grupo.length && Math.random()<chance){
+      const id=pick(restantes);S.base.descobertas.push(id);const local=LOCAIS_BASE[id];
+      abrirModal('Novo abrigo encontrado',`Depois de dias mantendo os olhos abertos, ${grupo.length>1?'os Scavengers encontram':'um Scavenger encontra'} um local que pode servir de base: <b>${local.nome}</b>. O lugar comporta ${local.capacidade} pessoas e ${local.slots} instalações. A mudança exige ${custoTexto(local)}.`,[{texto:'Anotar a localização',fn:()=>{}}]);
+    }else{
+      log(`A busca terminou, mas os Scavengers não encontraram uma base segura desta vez. Eles tiveram ${Math.round(chance*100)}% de chance; uma nova ordem pode ser emitida pelo rádio.`,'ruim');
+    }
+    S.base.ordemRadio=null;
+    return;
+  }
   const grupo=S.sobreviventes.filter(m=>m.vivo && naBase(m));
   grupo.forEach(m=>{m[cfg.skill]=Math.min(10,(m[cfg.skill]||2)+1);m.experiencia=(m.experiencia||0)+1;});
   if(ordem.tipo==='ameaca')S.base.ameaca=clamp(S.base.ameaca-5,0,100);
@@ -1860,15 +1937,24 @@ function processarOrdemRadio(){
 function abrirRadio(){
   if(!radioInstalado()){abrirPainel('Rádio indisponível','Construa um rádio na base para conversar com outros acampamentos e emitir ordens.',[{texto:'Abrir construções',fn:abrirConstrucoes},{texto:'Fechar',fn:()=>{}}]);return;}
   const ordem=S.base.ordemRadio,cfg=ordem&&ORDENS_RADIO[ordem.tipo];
-  abrirPainel('Rádio da base',`<p>O rádio mantém contato com outros acampamentos e coordena trabalho interno.</p>${cfg?`<p>Ordem atual: <b>${cfg.nome}</b><br>Termina no dia ${ordem.fim}. ${cfg.desc}</p>`:'<p>Nenhuma ordem ativa.</p>'}`,[
+  abrirPainel('Rádio da base',`<p>O rádio mantém contato com outros acampamentos e coordena trabalho interno.</p>${cfg?`<p>Ordem atual: <b>${cfg.nome}</b><br>Termina no dia ${ordem.fim}. ${cfg.desc}</p>`:'<p>Nenhuma ordem ativa.</p>'}<p><b>Mural de horários:</b> ${S.base.muralHorarios?'instalado · turnos configuráveis':'não instalado · exige 8 materiais e 2h'}</p>`,[
     ...Object.entries(ORDENS_RADIO).map(([id,o])=>({texto:`Emitir ordem: ${o.nome}`,fn:()=>iniciarOrdemRadio(id)})),
     {texto:'Conversar com outro acampamento',fn:conversarRadio},
     {texto:'Ordem aos Scavengers: procurar alvo grande',fn:()=>abrirExcursao(true)},
+    S.base.muralHorarios?{texto:'Abrir mural de horários',fn:abrirMuralHorarios}:{texto:'Instalar mural de horários · 8 materiais · 2h',fn:iniciarMuralHorarios},
     ...(cfg?[{texto:'Encerrar ordem atual',fn:()=>{S.base.ordemRadio=null;log('A ordem de rádio foi encerrada antes do prazo.','info');}}]:[]),{texto:'Fechar',fn:()=>{}}
   ]);
 }
 function iniciarOrdemRadio(tipo){
-  if(!ORDENS_RADIO[tipo]||!radioInstalado())return;S.base.ordemRadio={tipo,inicio:S.dia,ultimoDia:S.dia,fim:S.dia+ORDENS_RADIO[tipo].dur};S.base.moral=clamp(S.base.moral+2,0,100);log(`A comunidade recebeu a ordem: ${ORDENS_RADIO[tipo].nome}.`,'info');
+  if(!ORDENS_RADIO[tipo]||!radioInstalado())return;
+  if(S.base.ordemRadio){log(`Já existe uma ordem de rádio em andamento: ${ORDENS_RADIO[S.base.ordemRadio.tipo]?.nome||'ordem desconhecida'}.`,'info');return;}
+  if(tipo==='buscarBase'){
+    const restantes=Object.keys(LOCAIS_BASE).filter(id=>!S.base.descobertas.includes(id));
+    if(!restantes.length){log('Todos os abrigos da região já foram mapeados.','info');return;}
+    const grupo=S.sobreviventes.filter(m=>m.vivo && naBase(m) && m.tarefa==='scavenger' && !m.expedicao);
+    if(!grupo.length){log('Atribua a função Scavenger a pelo menos um sobrevivente disponível antes de iniciar essa busca.','info');return;}
+  }
+  S.base.ordemRadio={tipo,inicio:S.dia,ultimoDia:S.dia,fim:S.dia+ORDENS_RADIO[tipo].dur};S.base.moral=clamp(S.base.moral+2,0,100);log(`A comunidade recebeu a ordem: ${ORDENS_RADIO[tipo].nome}.`,'info');
 }
 function conversarRadio(){
   abrirModal('Uma voz no rádio','Uma comunidade distante responde. A transmissão falha, mas ainda é possível trocar favores.',[
@@ -1876,6 +1962,27 @@ function conversarRadio(){
     {texto:'Compartilhar uma rota segura',fn:()=>{S.base.ameaca=clamp(S.base.ameaca-3,0,100);S.base.moral=clamp(S.base.moral+3,0,100);log('As coordenadas compartilhadas ajudaram outra comunidade e acalmaram o grupo.','bom');}},
     {texto:'Encerrar a transmissão',fn:()=>log('A transmissão foi encerrada antes que alguém triangulasse o sinal.','info')}
   ]);
+}
+function iniciarMuralHorarios(){
+  if(!radioInstalado()){log('Construa um rádio antes de instalar o mural de horários.','info');return;}
+  if(S.base.muralHorarios){abrirMuralHorarios();return;}
+  iniciarAcaoBase('muralHorarios','Instalar mural de horários',120,15,{materiais:8});
+}
+function resolverMuralHorarios(){
+  S.base.muralHorarios=true;
+  S.sobreviventes.forEach(m=>{m.horario ??='livre';});
+  log('O mural de horários foi instalado ao lado do rádio. Agora você pode organizar os turnos da comunidade.','bom');
+}
+function alternarHorarioMural(id){
+  const m=S.sobreviventes.find(s=>s.id===id);if(!m)return;
+  const chaves=Object.keys(HORARIOS_MURAL),atual=chaves.indexOf(m.horario||'livre');m.horario=chaves[(atual+1+chaves.length)%chaves.length];
+  log(`${esc(m.nome)} foi escalado para ${nomeHorarioMural(m)}.`,'info');abrirMuralHorarios();
+}
+function abrirMuralHorarios(){
+  if(!S.base.muralHorarios){iniciarMuralHorarios();return;}
+  const hora=Math.floor((S.tempoTotal%1440)/60),lista=S.sobreviventes.filter(m=>m.vivo).map(m=>`<div class="linhaHorario"><b>${esc(m.nome)}</b><span>${ROTULOS_TAREFA[m.tarefa]||'NPC'} · ${nomeHorarioMural(m)}${horarioMuralAtivo(m)?' · trabalhando agora':' · fora do turno'}</span></div>`).join('');
+  const opcoes=S.sobreviventes.filter(m=>m.vivo).map(m=>({texto:`Alterar ${m.nome} · ${nomeHorarioMural(m)}`,fn:()=>alternarHorarioMural(m.id)}));
+  abrirPainel('Mural de horários',`<p>Hora atual: <b>${String(hora).padStart(2,'0')}h</b>. O turno escolhido limita quando a função do NPC trabalha; o horário livre mantém a rotina normal.</p><div class="listaHorarios">${lista||'<span class="idle">Nenhum sobrevivente disponível.</span>'}</div>`,[...opcoes,{texto:'Voltar ao rádio',fn:abrirRadio},{texto:'Fechar',fn:()=>{}}]);
 }
 function acaoLocalizarVeiculo(){
   if((S.base.veiculos||[]).length>=S.base.vagasVeiculo){log('Não há vagas de veículo nesta base. Procure uma base maior.','info');return;}
@@ -2088,6 +2195,7 @@ function resolverAcao(){
     case 'customizarVeiculo': resolverCustomizacaoVeiculo(a); break;
     case 'construir': resolverConstrucao(a); break;
     case 'demolir': resolverDemolicao(a); break;
+    case 'muralHorarios': resolverMuralHorarios(); break;
     case 'procurarBase': resolverBuscaBase(); break;
     case 'mudarBase': resolverMudanca(a); break;
     case 'planoMuro': resolverPlanoMuro(a); break;
@@ -2237,16 +2345,17 @@ function iniciarCombateTurnos(zumbis,finalizar){
 }
 function renderPainelCombate(){
   const c=S.combate,p=S.player,maxVida=Math.max(1,p.vidaMax||100),percent=Math.max(0,Math.min(100,p.vida/maxVida*100));
-  abrirPainel('Combate',`<div class="combateCabecalho"><span>Rodada <b>${c.rodada}</b></span><strong>${c.zumbis} inimigo(s)</strong></div><div class="combateInfo"><div><b>Você</b><br>Vida: ${Math.ceil(p.vida)}/${maxVida}<div class="combateBarra"><i style="width:${percent}%"></i></div>Energia: ${Math.ceil(p.energia)}</div><div><b>Ameaça</b><br>O combate gera barulho.<div class="combateBarra"><i style="width:${Math.min(100,c.zumbis*12)}%"></i></div>Inimigos restantes: ${c.zumbis}</div></div><p class="combateAviso">Escolha uma ação.</p>`,[
-    {texto:'Atacar',fn:()=>turnoCombate('atacar')},{texto:'Defender',fn:()=>turnoCombate('defender')},{texto:'Fugir',fn:()=>turnoCombate('fugir')}
-  ]);
+  const opcoes=[{texto:'Atacar',fn:()=>turnoCombate('atacar')}];
+  if(temConhecimentoApocalipse('ataqueCabeca'))opcoes.push({texto:'Atacar a cabeça · conhecimento aplicado',fn:()=>turnoCombate('cabeca')});
+  opcoes.push({texto:'Defender',fn:()=>turnoCombate('defender')},{texto:'Fugir',fn:()=>turnoCombate('fugir')});
+  abrirPainel('Combate',`<div class="combateCabecalho"><span>Rodada <b>${c.rodada}</b></span><strong>${c.zumbis} inimigo(s)</strong></div><div class="combateInfo"><div><b>Você</b><br>Vida: ${Math.ceil(p.vida)}/${maxVida}<div class="combateBarra"><i style="width:${percent}%"></i></div>Energia: ${Math.ceil(p.energia)}</div><div><b>Ameaça</b><br>O combate gera barulho.<div class="combateBarra"><i style="width:${Math.min(100,c.zumbis*12)}%"></i></div>Inimigos restantes: ${c.zumbis}</div></div><p class="combateAviso">Escolha uma ação.</p>`,opcoes);
 }
 function turnoCombate(acao){
   const c=S.combate;if(!c)return;const p=S.player;
   if(acao==='fugir'){c.finalizar(false);S.combate=null;return;}
-  const arma=armaEquipada(p);const poder=p.forca*1.5+p.agilidade+(arma?.dano||p.armaBonus||0)+(acao==='atacar'?2:0);
-  if(acao==='atacar'){
-    const derrubados=Math.max(1,Math.floor(poder/6));c.zumbis-=derrubados;log(`Você atacou e derrubou ${derrubados} zumbi(s).`,'bom');
+  const arma=armaEquipada(p),ataqueCabeca=acao==='cabeca';const poder=p.forca*1.5+p.agilidade+(arma?.dano||p.armaBonus||0)+(acao==='atacar'?2:ataqueCabeca?5:0);
+  if(acao==='atacar' || ataqueCabeca){
+    const derrubados=Math.max(1,Math.floor(poder/(ataqueCabeca?5:6)));c.zumbis-=derrubados;log(ataqueCabeca?`Você mira na cabeça e derruba ${derrubados} zumbi(s).`:`Você atacou e derrubou ${derrubados} zumbi(s).`,'bom');
   }
   const dano=Math.max(0,Math.round((c.zumbis*1.6)*(acao==='defender'?.45:1)));p.vida-=dano;
   if(dano>0)log(`O grupo inimigo causou ${dano} de dano.`,'ruim');
@@ -2259,6 +2368,7 @@ const ITENS_LOOT={
   faca:{id:'faca',nome:'Faca de cozinha',tipo:'arma',dano:3,peso:1},
   bastao:{id:'bastao',nome:'Bastão reforçado',tipo:'arma',dano:4,peso:2},
   pistola:{id:'pistola',nome:'Pistola',tipo:'arma',dano:6,peso:2,municaoTipo:'municao'},
+  gazua:{id:'gazua',nome:'Gazua',tipo:'ferramenta',peso:1},
   municao9:{id:'municao9',nome:'Caixa de munição',tipo:'item',peso:1,quantidade:4,recurso:'municao'},
   bandagem:{id:'bandagem',nome:'Bandagem',tipo:'medico',peso:1,efeito:20},
   antiseptico:{id:'antiseptico',nome:'Antisséptico',tipo:'medico',peso:1,efeito:35},
@@ -2279,16 +2389,50 @@ function adicionarItemInventario(p,id,quantidade=1){
   if(pesoInventario(p)+(base.peso||1)*quantidade>p.inventario.mochila.capacidade)return false;
   const existente=p.inventario.mochila.itens.find(i=>i.id===id);if(existente)existente.quantidade=(existente.quantidade||1)+quantidade;else p.inventario.mochila.itens.push({...base,quantidade});return true;
 }
+function quantidadeItemInventario(p,id){garantirInventario(p);return p.inventario.mochila.itens.find(i=>i.id===id)?.quantidade||0;}
+function consumirItemInventario(p,id,quantidade=1){garantirInventario(p);const item=p.inventario.mochila.itens.find(i=>i.id===id);if(!item || item.quantidade<quantidade)return false;item.quantidade-=quantidade;if(item.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==item);return true;}
 function usarItemInventario(p,id){
   garantirInventario(p);const i=p.inventario.mochila.itens.find(x=>x.id===id);if(!i)return false;
   if(i.tipo==='medico'){const alvo=p===S.player?membroAtual():p;if(tratarPaciente(alvo,i.efeito)){i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);return true;}}
   if(i.tipo==='mochila'){p.inventario.mochila.capacidade+=i.capacidade;i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);return true;}return false;
 }
 function lootItens(p,local='rua'){
-  const pool=local==='farmacia'?['bandagem','antiseptico','mochila']:local==='delegacia'?['pistola','municao9','faca']:['faca','bastao','bandagem','mochila'];
+  const pool=local==='farmacia'?['bandagem','antiseptico','mochila','gazua']:local==='delegacia'?['pistola','municao9','faca','gazua']:local==='cofre'?['bandagem','antiseptico','municao9','gazua']:['faca','bastao','bandagem','mochila','gazua'];
   const achados=[];for(const id of pool)if(Math.random()<.3 && adicionarItemInventario(p,id)){achados.push(ITENS_LOOT[id].nome);}
   if(achados.length)log(`Itens encontrados: ${achados.map(esc).join(', ')}.`,'bom');
 }
+function tentarCofreTrancado(local='rua'){
+  if(quantidadeItemInventario(S.player,'gazua')<1 || Math.random()>=.3)return;
+  const nome=local==='rua'?'um armário de manutenção':`um compartimento trancado no ${local}`;
+  const recompensa=gerarLoot({materiais:[2,5],remedios:[0,2],municao:[0,3],combustivel:[0,2]},1+S.player.inteligencia*.05);
+  abrirLockpick(nome,recompensa);
+}
+function abrirLockpick(alvo,recompensa){
+  const estado={angulo:0,alvo:Math.floor(Math.random()*360),tolerancia:clamp(14+(S.player.inteligencia||0)*2,14,30),durabilidade:100,mensagem:'Gire a gazua até sentir o ponto certo. Depois aplique tensão.'};
+  const distanciaAngular=(a,b)=>Math.abs(((a-b+540)%360)-180);
+  function desenhar(){
+    const texto=`<p>Você encontra ${esc(alvo)}. Posicione a gazua e aplique tensão como em uma fechadura real. Se o ângulo estiver errado, a ferramenta range e perde resistência.</p><div class="lockpickStatus"><span>Resistência da gazua: <b>${Math.max(0,estado.durabilidade)}%</b></span><span>Ângulo: <b>${estado.angulo}°</b></span></div><div class="lockpickBarra"><i style="width:${Math.max(0,estado.durabilidade)}%"></i></div><div class="lockpickDisco" aria-label="Posição da gazua"><img class="lockpickFechadura" src="assets/UI/lockpick/fechadura.png" alt="" onerror="this.hidden=true"><div class="lockpickCentro"></div><div class="lockpickPick" style="transform:rotate(${estado.angulo}deg)"></div><img class="lockpickGazua" src="assets/UI/lockpick/gazua.png" alt="Gazua" style="transform:rotate(${estado.angulo}deg)" onload="this.parentElement.classList.add('comArte')" onerror="this.hidden=true"><img class="lockpickChaveFenda" src="assets/UI/lockpick/chave-fenda.png" alt="" onerror="this.hidden=true"></div><p class="lockpickDica">${esc(estado.mensagem)}</p>`;
+    abrirPainel('Minigame de lockpick',texto,[
+      {texto:'Girar gazua para a esquerda · 10°',fn:()=>girar(-10)},
+      {texto:'Girar gazua para a direita · 10°',fn:()=>girar(10)},
+      {texto:'Aplicar tensão',fn:tensionar},
+      {texto:'Desistir e deixar o contêiner',fn:()=>log('Você desistiu do contêiner trancado para não fazer barulho.','info')}
+    ]);
+  }
+  function girar(delta){estado.angulo=(estado.angulo+delta+360)%360;estado.mensagem='A gazua mudou de posição. Agora tente aplicar tensão.';desenhar();}
+  function tensionar(){
+    const distancia=distanciaAngular(estado.angulo,estado.alvo);
+    if(distancia<=estado.tolerancia){
+      consumirItemInventario(S.player,'gazua');aplicarGanhos(recompensa);lootItens(S.player,'cofre');
+      log('Você encontrou o ponto de tensão. A fechadura abriu e a gazua quebrou.','bom');return;
+    }
+    const desgaste=2+Math.ceil(distancia/30);estado.durabilidade-=desgaste;S.base.ameaca=clamp(S.base.ameaca+2,0,100);estado.mensagem=distancia>70?'A trava não se move. O ângulo está muito longe do ponto certo.':'A fechadura resiste. O ângulo está próximo, mas ainda errado.';log(`A gazua rangeu e perdeu ${desgaste}% de resistência. O barulho pode atrair atenção.`,'ruim');
+    if(estado.durabilidade<=0){consumirItemInventario(S.player,'gazua');S.base.ameaca=clamp(S.base.ameaca+6,0,100);log('A gazua quebrou antes de abrir o contêiner.','ruim');return;}
+    desenhar();
+  }
+  desenhar();
+}
+window.addEventListener('load',()=>{if(window.debugJogo)window.debugJogo.lockpick=()=>{if(!S?.vivo)return false;if(quantidadeItemInventario(S.player,'gazua')<1)adicionarItemInventario(S.player,'gazua');abrirLockpick('um contêiner de teste',gerarLoot({materiais:[2,5],remedios:[0,2],municao:[0,3]},1));return true;};});
 function inventarioTexto(p){garantirInventario(p);const equipada=armaEquipada(p);const armas=p.inventario.armas.map(a=>`<li>⚔ ${esc(a.nome)} · dano ${a.dano}${a===equipada?' · <b>equipada</b>':''}</li>`).join('')||'<li>Nenhuma arma</li>';const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} · ${i.quantidade||1}</li>`).join('')||'<li>Mochila vazia</li>';return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;}
 
 /* ============================================================
@@ -2340,7 +2484,8 @@ function calcularDefesa(){
   if(S.recursos.municao > 0) d += 5;
 
   S.sobreviventes.filter(s=>aptoTrabalho(s)).forEach(s=>{
-    d += s.tarefa === 'guarda' ? (s.emTurno ? 5 : 1) : 2;
+    const emTurno=S.base.muralHorarios ? horarioMuralAtivo(s) : s.emTurno;
+    d += s.tarefa === 'guarda' ? (emTurno ? 5 : 1) : 2;
     if(s.ferido) d -= 1.5;
   });
   return Math.max(0, d);
@@ -2406,6 +2551,51 @@ const PERKS = [
   {nome:'Corpo resistente', desc:'+1 resistencia', skill:'resistencia'}
 ];
 
+const CONHECIMENTOS_APOCALIPSE = {
+  ataqueCabeca:{nome:'Ataques na cabeça',desc:'Golpes na cabeça derrubam zumbis com mais eficiência.'},
+  zumbisSom:{nome:'Zumbis percebem sons',desc:'Movimentos e barulhos podem denunciar sua presença.'},
+  disfarceCheiro:{nome:'Disfarce de cheiro',desc:'O cheiro de vísceras pode esconder uma pessoa de uma horda por algum tempo.'}
+};
+function garantirConhecimentos(p=S?.player){
+  if(!p)return [];
+  if(!Array.isArray(p.conhecimentosApocalipse))p.conhecimentosApocalipse=[];
+  if(!Array.isArray(p.eventosConhecimentoVistos))p.eventosConhecimentoVistos=[];
+  return p.conhecimentosApocalipse;
+}
+function temConhecimentoApocalipse(id,p=S?.player){return garantirConhecimentos(p).includes(id);}
+function registrarConhecimentoApocalipse(id){
+  const lista=garantirConhecimentos();
+  if(!CONHECIMENTOS_APOCALIPSE[id] || lista.includes(id))return false;
+  lista.push(id);sincronizarEstado();
+  log(`Novo conhecimento do apocalipse: ${CONHECIMENTOS_APOCALIPSE[id].nome}.`,'bom');
+  return true;
+}
+function marcarEventoConhecimentoVisto(id){
+  const p=S?.player;if(!p)return;
+  garantirConhecimentos(p);
+  if(!p.eventosConhecimentoVistos.includes(id))p.eventosConhecimentoVistos.push(id);
+}
+function textoConhecimentosApocalipse(p=S?.player){
+  const lista=garantirConhecimentos(p);
+  if(!lista.length)return '<span class="idle">Nenhum conhecimento registrado ainda.</span>';
+  return lista.map(id=>{const c=CONHECIMENTOS_APOCALIPSE[id];return c?`<span class="conhecimentoApocalipse"><b>${esc(c.nome)}</b><small>${esc(c.desc)}</small></span>`:'';}).join('');
+}
+
+function eventoConhecimentoDuranteAcao(acao){
+  if(!acao || !['perto','expedicao'].includes(acao.tipo) || !S?.vivo)return false;
+  garantirConhecimentos();
+  const eventos=[
+    {dia:3,id:'ataqueCabeca',fn:eventoConhecimentoCabeca},
+    {dia:5,id:'zumbisSom',fn:eventoConhecimentoSom},
+    {dia:10,id:'disfarceCheiro',fn:eventoConhecimentoCheiro}
+  ];
+  const evento=eventos.find(item=>S.dia>=item.dia && !S.player.conhecimentosApocalipse.includes(item.id) && !S.player.eventosConhecimentoVistos.includes(item.id));
+  if(!evento)return false;
+  marcarEventoConhecimentoVisto(evento.id);
+  evento.fn();
+  return true;
+}
+
 function ganharExperiencia(valor){
   if(!S.vivo || S.player.vida <= 0) return;
   const p = S.player;
@@ -2432,10 +2622,35 @@ function ganharExperienciaPessoa(pessoa, valor){
 }
 
 function rotacionarGuardas(){
-  const guardas = S.sobreviventes.filter(s=>aptoTrabalho(s) && s.tarefa === 'guarda');
+  const guardas = S.sobreviventes.filter(s=>s.vivo && s.tarefa === 'guarda');
+  if(S.base.muralHorarios){guardas.forEach(s=>s.emTurno=horarioMuralAtivo(s));return;}
   if(guardas.length <= 1){ guardas.forEach(s=>s.emTurno=true); return; }
   guardas.forEach((s,i)=>s.emTurno = i % 2 === (S.dia % 2));
   log(`Rotina de guarda reorganizada: ${guardas.filter(s=>s.emTurno).length} em turno e ${guardas.filter(s=>!s.emTurno).length} em folga.`, 'info');
+}
+
+function eventoConhecimentoCabeca(){
+  const midia='assets/eventos/conhecimentos/dia-03-ataque-cabeca.gif';
+  abrirModal('Um sobrevivente estranho','Você vê um sobrevivente caminhando longe de você. Ele parece estranho e quase não se movimenta. Perto de um carro abandonado, dois zumbis vagam sem perceber a presença dele.',[
+    {texto:'Ignorar e continuar o saque',fn:()=>log('Você deixou o estranho para trás e continuou sem descobrir o que ele pretendia.','info')},
+    {texto:'Observar de longe',fn:()=>abrirModal('O golpe na cabeça','O sobrevivente espera o momento certo, ataca a perna de um zumbi e o derruba. Em seguida, acerta a cabeça até ele parar de se mexer. Quando outro zumbi se aproxima, ele vai direto ao crânio e o derruba com poucos golpes. Você acabou de aprender que a cabeça é o ponto mais eficaz.',[
+      {texto:'Memorizar e seguir em silêncio',fn:()=>registrarConhecimentoApocalipse('ataqueCabeca')}
+    ],false,midia)}
+  ],false,midia);
+}
+function eventoConhecimentoSom(){
+  const midia='assets/eventos/conhecimentos/dia-05-zumbi-som.gif';
+  abrirModal('O beco silencioso','Você atravessa sorrateiramente um beco e vê, do outro lado da rua, um zumbi parado e voltado para você. A rua é larga, o vento sopra entre vocês e a distância mantém a criatura longe. Qualquer humano teria visto sua silhueta ali, encostado e exposto, mas o zumbi não reage. Você fica completamente imóvel enquanto outros zumbis passam pela calçada, também sem notar você. Você ainda não sabe o que mais pode denunciar sua presença. Quando dá o primeiro passo, o zumbi percebe o movimento e avança de repente.',[
+    {texto:'Recuar devagar, sem fazer barulho',fn:()=>{registrarConhecimentoApocalipse('zumbisSom');S.base.ameaca=clamp(S.base.ameaca-2,0,100);log('Você recuou sem chamar atenção. Agora sabe que o som pode denunciar até um movimento pequeno.','bom');}},
+    {texto:'Correr e enfrentar o zumbi',fn:()=>{registrarConhecimentoApocalipse('zumbisSom');S.base.ameaca=clamp(S.base.ameaca+5,0,100);log('Seu passo virou uma corrida e o zumbi veio atrás. O som foi suficiente para chamar sua atenção.','ruim');iniciarCombateTurnos(1,()=>{});}}
+  ],false,midia);
+}
+function eventoConhecimentoCheiro(){
+  const midia='assets/eventos/conhecimentos/dia-10-disfarce-cheiro.gif';
+  abrirModal('A horda na avenida','Você caminha pela cidade quando avista uma horda se movendo a distância. Um prédio próximo chama sua atenção: há movimento atrás das janelas. Uma pessoa surge na entrada, mata um zumbi e se cobre com o sangue e as vísceras dele. Em seguida, atravessa a rua e passa por dentro da horda. Os zumbis estão a poucos passos, mas seguem adiante sem reagir. Você entende que o cheiro dos mortos pode esconder o cheiro de um sobrevivente.',[
+    {texto:'Memorizar o método e sair',fn:()=>{registrarConhecimentoApocalipse('disfarceCheiro');log('Você guardou a informação: esconder o próprio cheiro pode permitir passar perto de uma horda.','bom');}},
+    {texto:'Continuar observando de longe',fn:()=>{registrarConhecimentoApocalipse('disfarceCheiro');atrasarAcao(20);log('Você observou por mais alguns minutos e confirmou que os zumbis não reagiam ao cheiro mascarado.','info');}}
+  ],false,midia);
 }
 
 /* ============================================================
@@ -2710,16 +2925,16 @@ function evBriga(){
 function evAjudaMedica(){
   const pessoa = pick(S.sobreviventes.filter(s=>s.vivo && !s.ferido));
   if(!pessoa) return;
-  pessoa.ferido = true;
+  criarFerimento(pessoa,'corte','braco','leve');
   const podeMedicar = S.player.inteligencia >= 5 || /Médic/i.test(S.player.especialidade || '');
   abrirModal('Alguém precisa de ajuda',`${esc(pessoa.nome)} se feriu enquanto ajudava na base. ${podeMedicar ? 'Você reconhece o que precisa ser feito.' : 'Você não tem certeza do que fazer.'}`,[
-    {texto:podeMedicar ? 'Tratar os ferimentos' : 'Tentar ajudar mesmo assim',fn:()=>{pessoa.ferido=false; alterarRelacao(pessoa,{amizade:podeMedicar?8:3,respeito:podeMedicar?8:1}); pessoa.moral=clamp(pessoa.moral+8,0,100); log(`Você cuidou de ${esc(pessoa.nome)}.`,'bom');}},
+    {texto:podeMedicar ? 'Tratar os ferimentos' : 'Tentar ajudar mesmo assim',fn:()=>{tratarPaciente(pessoa,podeMedicar?35:15); alterarRelacao(pessoa,{amizade:podeMedicar?8:3,respeito:podeMedicar?8:1}); pessoa.moral=clamp(pessoa.moral+8,0,100); log(`Você cuidou de ${esc(pessoa.nome)}. Ainda será necessário repouso.`,'bom');}},
     {texto:'Chamar outra pessoa',fn:()=>{S.base.moral=Math.max(0,S.base.moral-1); log(`${esc(pessoa.nome)} foi levado para descansar e se recuperar.`,'info');}}
   ]);
 }
 
 function evGuardaCansado(){
-  const guarda = pick(S.sobreviventes.filter(s=>s.vivo && s.tarefa === 'guarda' && s.emTurno));
+  const guarda = pick(S.sobreviventes.filter(s=>s.vivo && s.tarefa === 'guarda' && (S.base.muralHorarios ? horarioMuralAtivo(s) : s.emTurno)));
   if(!guarda) return;
   abrirModal('A vigília pesa',`${guarda.nome} está de guarda há tempo demais. Os olhos dele mal conseguem ficar abertos.`,[
     {texto:'Mandar descansar',fn:()=>{guarda.emTurno=false; guarda.moral=clamp(guarda.moral+6,0,100); alterarRelacao(guarda,{amizade:2,respeito:4}); log(`${guarda.nome} deixou o posto para descansar.`,'bom');}},
@@ -2852,6 +3067,10 @@ const EVENTOS_MIDIA={
   'Uma noite inquieta':'assets/eventos/horror-surto.gif',
   'Um pesadelo interrompe o sono':'assets/eventos/elevator-nightmar.gif',
   'Pesadelo: sua ex-namorada':'assets/eventos/zombie-ex-nightmar.gif',
+  'Um sobrevivente estranho':'assets/eventos/conhecimentos/dia-03-ataque-cabeca.gif',
+  'O golpe na cabeça':'assets/eventos/conhecimentos/dia-03-ataque-cabeca.gif',
+  'Um zumbi imóvel':'assets/eventos/conhecimentos/dia-05-zumbi-som.gif',
+  'O cheiro dos mortos':'assets/eventos/conhecimentos/dia-10-disfarce-cheiro.gif',
   'Um alarme começou a tocar':'assets/eventos/alarme.gif',
   'Uma manada passa perto':'assets/eventos/manada.gif',
   'Uma refeição compartilhada':'assets/eventos/cotidianos/refeicao-compartilhada.gif',
@@ -3059,7 +3278,7 @@ function assumirLider(membro){
     ...Object.fromEntries(SKILLS.map(k=>[k,membro[k] ?? 2])),
     nome:membro.nome,genero:membro.genero,idade:idadeMembro(membro),
     experiencia:membro.experiencia ?? 0,nivel:membro.nivel ?? 1,perks:[...(membro.perks || [])],
-    moral:membro.moral ?? 70,especialidade:membro.especialidade,comportamento:{...membro.comportamento},
+    moral:membro.moral ?? 70,conhecimentosApocalipse:[...(membro.conhecimentosApocalipse || [])],eventosConhecimentoVistos:[...(membro.eventosConhecimentoVistos || [])],especialidade:membro.especialidade,comportamento:{...membro.comportamento},
     imagem:membro.imagem || '',aparencia:membro.aparencia,
     passadoCriminoso:!!membro.passadoCriminoso,passadoRevelado:!!membro.passadoRevelado,
     arma:'Nenhuma',armaBonus:0,bonusLoot:0,vida:100,vidaMax:100,fome:15,sede:15,energia:100,emExcursao:false
@@ -3147,11 +3366,12 @@ function renderStatus(){
   document.getElementById('statusJogador').innerHTML = `
     <h3><button class="nomePerfil" onclick="abrirPerfilPrincipal()">${esc(nomeAtual)}</button></h3>
     <div class="statLinha"><span>Idade</span><b>${idadeAtual()} anos</b></div>
-    <div class="notaBase">${p.emExcursao ? `Em excursão · ${esc(S.base.excursao?.alvoNome || 'fora da base')}` : membroAtual?.doenca ? situacaoNPC(membroAtual) : 'Saudável'}</div>
+    <div class="notaBase">${p.emExcursao ? `Em excursão · ${esc(S.base.excursao?.alvoNome || 'fora da base')}` : (membroAtual?.doenca || membroAtual?.ferido) ? situacaoNPC(membroAtual) : 'Saudável'}</div>
     <div class="statLinha"><span>Experiência</span><b>${p.experiencia || 0}</b></div>
     <div class="statLinha"><span>Nível</span><b>${p.nivel || 1}</b></div>
     <div class="statLinha"><span>Ânimo</span><b>${Math.round(p.moral ?? 70)}</b></div>
     <div class="statLinha"><span>Perks</span><b>${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</b></div>
+    <div class="statLinha"><span>Conhecimentos</span><b>${garantirConhecimentos(p).length}/${Object.keys(CONHECIMENTOS_APOCALIPSE).length}</b></div>
     <div class="statLinha"><span>Comportamento</span><b>${esc(comportamentoTexto(p.comportamento || {}))}</b></div>
     ${gravidezAtual ? `<div class="gravidezPainel" onclick="abrirEstagioGravidez()"><strong>${gravidezAtual.nome}</strong><span>${gravidezAtual.dias}/280 dias · clique para acompanhar</span></div>` : ''}
     <div class="statLinha"><span>Vida</span><b>${Math.round(p.vida)}/${p.vidaMax}</b></div>
@@ -3198,7 +3418,7 @@ function renderBase(){
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/moral.png" alt=""> Moral</span><b>${Math.round(S.base.moral)}</b></div>
     <div class="servicosBase"><b>Serviços da cidade</b>${statusServico('Energia','eletricidade',S.base.eletricidadeLigada,S.recursos.eletricidade)}${statusServico('Água','agua',S.base.aguaLigada,S.recursos.agua)}</div>
     <div class="servicosBase"><b>Inventário</b><br>${inventarioBaseTexto()}</div>
-    <div class="servicosBase"><b>Garagem</b><br>${(S.base.veiculos||[]).length}/${S.base.vagasVeiculo} vagas · ${veiculos}${e?`<br><b>Excursão:</b> ${esc(e.alvoNome)} · ${e.status}`:''}${resgates.length?`<br><b>Resgate:</b> ${resgates.map(m=>`${esc(m.nome)} · ${Math.max(0,Math.ceil((m.expedicao.fim-S.tempoTotal)/60))}h`).join(', ')}`:''}${ordem?`<br><b>Ordem:</b> ${esc(ordem.nome)} · até o dia ${S.base.ordemRadio.fim}`:''}</div>`;
+    <div class="servicosBase"><b>Garagem</b><br>${(S.base.veiculos||[]).length}/${S.base.vagasVeiculo} vagas · ${veiculos}${e?`<br><b>Excursão:</b> ${esc(e.alvoNome)} · ${e.status}`:''}${resgates.length?`<br><b>Resgate:</b> ${resgates.map(m=>`${esc(m.nome)} · ${Math.max(0,Math.ceil((m.expedicao.fim-S.tempoTotal)/60))}h`).join(', ')}`:''}${ordem?`<br><b>Ordem:</b> ${esc(ordem.nome)} · até o dia ${S.base.ordemRadio.fim}`:''}<br><b>Mural de horários:</b> ${S.base.muralHorarios?'instalado':'não instalado'}</div>`;
   document.getElementById('porcentagemMuro').textContent=Math.round(S.base.ameaca)+'%';
   const barra=document.getElementById('barraMuro');barra.style.width=S.base.ameaca+'%';barra.style.background=faixa.cor;
   document.getElementById('legendaMuro').textContent=`${faixa.nome} · cerca de ${zumbisFora()} zumbis. Clique para observar.`;
@@ -3209,7 +3429,7 @@ function renderBase(){
 function renderSobreviventes(){
   const vivos=S.sobreviventes.filter(s=>s.vivo);
   document.getElementById('painelSobreviventes').innerHTML=`<div class="painelResumoAcao"><h3>Grupo (${vivos.length})</h3><button class="botaoVisualizar" onclick="abrirGrupo()">Visualizar</button></div>
-    <div class="statLinha"><span>Em guarda</span><b>${vivos.filter(s=>s.tarefa==='guarda' && s.emTurno && aptoTrabalho(s)).length}</b></div>
+    <div class="statLinha"><span>Em guarda</span><b>${vivos.filter(s=>s.tarefa==='guarda' && (S.base.muralHorarios ? horarioMuralAtivo(s) : s.emTurno) && aptoTrabalho(s)).length}</b></div>
     <div class="statLinha"><span>Scavengers fora</span><b>${vivos.filter(s=>s.expedicao && s.expedicao.tipo!=='excursao').length}</b></div>
     <div class="statLinha"><span>Em excursão</span><b>${S.base.excursao ? S.base.excursao.participantes.length : 0}</b></div>
     <div class="statLinha"><span>Médicos disponíveis</span><b>${vivos.filter(s=>s.tarefa==='medico' && aptoTrabalho(s)).length}</b></div>
@@ -3217,6 +3437,19 @@ function renderSobreviventes(){
 }
 
 const ROTULOS_TAREFA = {guarda:'Guarda',scavenger:'Scavenger',medico:'Médico',agricultor:'Agricultor',oficina:'Mecânico',coletor:'Coletor de água',ocioso:'Sem função'};
+const HORARIOS_MURAL = {
+  livre:{nome:'Horário livre',inicio:0,fim:24},
+  madrugada:{nome:'Madrugada · 00h–06h',inicio:0,fim:6},
+  manha:{nome:'Manhã · 06h–12h',inicio:6,fim:12},
+  tarde:{nome:'Tarde · 12h–18h',inicio:12,fim:18},
+  noite:{nome:'Noite · 18h–00h',inicio:18,fim:24}
+};
+function horarioMuralAtivo(m){
+  if(!S?.base?.muralHorarios || !m || !m.horario || m.horario==='livre')return true;
+  const h=((S.tempoTotal%1440)+1440)%1440/60,cfg=HORARIOS_MURAL[m.horario]||HORARIOS_MURAL.livre;
+  return h>=cfg.inicio && h<cfg.fim;
+}
+function nomeHorarioMural(m){return HORARIOS_MURAL[m?.horario]?.nome||HORARIOS_MURAL.livre.nome;}
 
 function barraRelacao(nome, valor, classe=''){
   return `<div class="relBar ${classe}"><span>${nome}</span><i><b style="width:${clamp(valor,0,100)}%"></b></i><b>${Math.round(valor)}</b></div>`;
@@ -3317,8 +3550,9 @@ function resolverInteracao(a){
     if(a.interacao==='casar'){rel.status='casado';pessoa.parceiro=S.familia.atual;membroAtual().parceiro=pessoa.id;}
     log(`${esc(pessoa.nome)} correspondeu. A relação agora · ${rel.status==='casado'?'um casamento':rel.status==='namorando'?'um namoro':'mais próxima'}.`,'bom');
   } else if(a.interacao === 'ajudar'){
-    pessoa.ferido = false; rel.amizade += 6; rel.respeito += 5; pessoa.moral = clamp((pessoa.moral ?? 70)+10,0,100);
-    log(`Você cuidou dos ferimentos de ${esc(pessoa.nome)}. A confiança entre vocês aumentou.`, 'bom');
+    if(pessoa.ferimentos?.length)tratarPaciente(pessoa,20);else pessoa.ferido = false;
+    rel.amizade += 6; rel.respeito += 5; pessoa.moral = clamp((pessoa.moral ?? 70)+10,0,100);
+    log(`Você cuidou dos ferimentos de ${esc(pessoa.nome)}. A confiança aumentou, mas essa pessoa ainda precisa repousar.`, 'bom');
   }
   sincronizarEstado();
 }
@@ -3426,7 +3660,7 @@ function abrirPerfilFamilia(id){
      <b>Parentesco:</b> ${esc(membro.parentesco)}<br>
      <b>Especialidade:</b> ${esc(membro.especialidade || 'Membro da comunidade')}</p>
      ${membro.ferimentos?.length || membro.doenca ? `<div class="cartaoSaude"><img src="${imagemCorpo(membro)}" alt="Mapa corporal"><p>${situacaoNPC(membro)}</p></div>` : ''}
-     <p><b>Inventário</b><br>${inventarioTexto(membro)}</p><p><b>Skills</b><br>
+     <p><b>Inventário</b><br>${inventarioTexto(membro)}</p><p><b>Conhecimentos do apocalipse</b></p><div class="conhecimentosApocalipse">${textoConhecimentosApocalipse(membro)}</div><p><b>Skills</b><br>
      Força ${skills.forca ?? 2} · Agilidade ${skills.agilidade ?? 2}<br>
      Inteligência ${skills.inteligencia ?? 2} · Carisma ${skills.carisma ?? 2}<br>
      Resistência ${skills.resistencia ?? 2}</p>`,
@@ -3445,7 +3679,7 @@ function abrirPerfilPrincipal(){
     <p><b>Nível ${p.nivel || 1}</b> · Experiência ${p.experiencia || 0}<br><b>Ânimo:</b> ${Math.round(p.moral ?? 70)}</p>
     <p><b>Força</b> ${p.forca} · <b>Agilidade</b> ${p.agilidade}<br><b>Inteligência</b> ${p.inteligencia} · <b>Carisma</b> ${p.carisma}<br><b>Resistência</b> ${p.resistencia}</p>
     <div class="cartaoSaude"><img src="${imagemCorpo(membro || p)}" alt="Mapa corporal do personagem"><p>${membro?.doenca || membro?.ferido ? situacaoNPC(membro) : 'Nenhum ferimento registrado.'}</p></div>
-    <p><b>Comportamento:</b> ${esc(comportamentoTexto(p.comportamento || {}))}<br><b>Perks:</b> ${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</p><p><b>Inventário</b><br>${inventarioTexto(p)}</p>`,
+    <p><b>Comportamento:</b> ${esc(comportamentoTexto(p.comportamento || {}))}<br><b>Perks:</b> ${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</p><p><b>Inventário</b><br>${inventarioTexto(p)}</p><p><b>Conhecimentos do apocalipse</b></p><div class="conhecimentosApocalipse">${textoConhecimentosApocalipse(p)}</div>`,
     [{texto:membro?.doenca || membro?.ferido ? 'Tratar ferimento · 1 remédio' : 'Fechar perfil',fn:()=>membro?.doenca || membro?.ferido ? iniciarTratamento(membro.id) : fecharModal()},{texto:'Usar um item da mochila',fn:()=>abrirInventario()},{texto:'Fechar perfil',fn:()=>{}}]);
 }
 
@@ -3525,6 +3759,7 @@ function validarSave(dados){
   e.base.corteAguaDia ??= null;
   e.base.energiaCidadeRestaurada ??= false;
   e.base.aguaCidadeRestaurada ??= false;
+  e.base.muralHorarios ??= false;
   e.base.vagasVeiculo ??= LOCAIS_BASE[e.base.local]?.vagasVeiculo || 1;
   e.base.veiculos ??= [];
   e.base.proximoVeiculoId ??= 1;
@@ -3540,6 +3775,9 @@ function validarSave(dados){
   });
   e.base.ordemRadio ??= null;
   e.base.excursao ??= null;
+  e.player.conhecimentosApocalipse ??= [];
+  e.player.eventosConhecimentoVistos ??= [];
+  if(!Array.isArray(e.player.conhecimentosApocalipse) || e.player.conhecimentosApocalipse.some(id=>!CONHECIMENTOS_APOCALIPSE[id]) || !Array.isArray(e.player.eventosConhecimentoVistos) || e.player.eventosConhecimentoVistos.some(id=>!CONHECIMENTOS_APOCALIPSE[id])) throw Error('Conhecimentos do apocalipse inválidos.');
   e.comunidade ??= {ultimoDiaDoenca:e.dia,ultimoEvento:e.tempoTotal};
   e.comunidade.resgateRadioUltimo ??= -99;
   e.comunidade.resgateRadioAlvo ??= null;
@@ -3549,8 +3787,12 @@ function validarSave(dados){
   const ids = new Set();
   for(const m of e.familia.membros){
     garantirInventario(m);
+    m.horario ??= 'livre';
+    m.conhecimentosApocalipse ??= [];
+    m.eventosConhecimentoVistos ??= [];
+    if(!Array.isArray(m.conhecimentosApocalipse) || m.conhecimentosApocalipse.some(id=>!CONHECIMENTOS_APOCALIPSE[id]) || !Array.isArray(m.eventosConhecimentoVistos) || m.eventosConhecimentoVistos.some(id=>!CONHECIMENTOS_APOCALIPSE[id])) throw Error('Conhecimentos de um membro inválidos.');
     if(!Number.isInteger(m.id) || m.id < 1 || ids.has(m.id) || typeof m.nome !== 'string' || typeof m.vivo !== 'boolean' || !numero(m.idade) || !numero(m.diaEntrada) || !Array.isArray(m.pais) || !Array.isArray(m.filhos) || !m.relacao || !Array.isArray(m.perks) || !numero(m.experiencia) || !numero(m.nivel) || !numero(m.moral) || !SKILLS.every(k=>numero(m[k]))) throw Error('Pessoa inválida na partida.');
-    if(!texto(m.nome) || !texto(m.parentesco) || !texto(m.especialidade) || !['masculino','feminino'].includes(m.genero) || !Number.isInteger(m.geracao) || m.geracao < 0 || !numero(m.fertilidade) || (m.diaSaida != null && !numero(m.diaSaida)) || !objeto(m.relacao) || !['amizade','respeito','romance'].every(k=>numero(m.relacao[k])) || !m.perks.every(texto) || !imagemValida(m.imagem) || !comportamentoValido(m.comportamento)) throw Error('Dados pessoais inválidos.');
+    if(!texto(m.nome) || !texto(m.parentesco) || !texto(m.especialidade) || !['masculino','feminino'].includes(m.genero) || !Object.keys(HORARIOS_MURAL).includes(m.horario) || !Number.isInteger(m.geracao) || m.geracao < 0 || !numero(m.fertilidade) || (m.diaSaida != null && !numero(m.diaSaida)) || !objeto(m.relacao) || !['amizade','respeito','romance'].every(k=>numero(m.relacao[k])) || !m.perks.every(texto) || !imagemValida(m.imagem) || !comportamentoValido(m.comportamento)) throw Error('Dados pessoais inválidos.');
     ids.add(m.id);
   }
   if(!ids.has(e.familia.atual) || e.familia.proximoId <= Math.max(...ids)) throw Error('Liderança inválida.');
@@ -3565,7 +3807,7 @@ function validarSave(dados){
   garantirInventario(e.player);
   if(![...SKILLS,'vida','vidaMax','fome','sede','energia','moral','experiencia','nivel'].every(k=>numero(e.player[k])) || !Array.isArray(e.player.perks) || !e.player.comportamento || !Object.keys(NOMES_REC).every(k=>numero(e.recursos[k])) || !['barricadas','ameaca','moral'].every(k=>numero(e.base[k]))) throw Error('Atributos inválidos.');
   if(e.player.vidaMax <= 0 || !texto(e.player.nome) || !texto(e.player.especialidade) || !['Nenhuma','Revólver'].includes(e.player.arma) || !numero(e.player.armaBonus) || !numero(e.player.bonusLoot) || !e.player.perks.every(texto) || !imagemValida(e.player.imagem) || !comportamentoValido(e.player.comportamento)) throw Error('Protagonista inválido.');
-  if(e.acao && (!['comer','beber','perto','expedicao','excursao','localizarVeiculo','customizarVeiculo','fortificar','cacar','descansar','dormir','procurar','familia','ajudar','interacao','bebe','gerador','radio','construir','demolir','procurarBase','mudarBase','planoMuro','tratarDoenca','restaurarServico'].includes(e.acao.tipo) || !numero(e.acao.fim) || !numero(e.acao.dur) || e.acao.dur === 0)) throw Error('Ação inválida.');
+  if(e.acao && (!['comer','beber','perto','expedicao','excursao','localizarVeiculo','customizarVeiculo','fortificar','cacar','descansar','dormir','procurar','familia','ajudar','interacao','bebe','gerador','radio','construir','demolir','muralHorarios','procurarBase','mudarBase','planoMuro','tratarDoenca','restaurarServico'].includes(e.acao.tipo) || !numero(e.acao.fim) || !numero(e.acao.dur) || e.acao.dur === 0)) throw Error('Ação inválida.');
   if(e.acao && !texto(e.acao.nome)) throw Error('Descrição de aviso inválida.');
   if(e.acao?.tipo === 'interacao' && (!['conversar','abracar','profunda','flertar','beijar','amor','namorar','casar','treinar','divertir','ajudar'].includes(e.acao.interacao) || !Number.isInteger(e.acao.pessoaId) || !e.sobreviventes[e.acao.pessoaId])) throw Error('Interaviso inválida.');
   if(e.acao?.tipo === 'bebe' && !ids.has(e.acao.pessoaId)) throw Error('Parceiro inválido.');
@@ -3637,6 +3879,7 @@ videoCriacaoInicial.volume = 0.5*volumeAudio;
 videoCriacaoInicial.muted = true;
 videoCriacaoInicial.play().catch(()=>{});
 aplicarVolumeAudio();
+prepararAviso18();
 renderCriacao();
 </script>
 <script src="assets/muro/config.js"></script>

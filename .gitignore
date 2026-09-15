@@ -1,3 +1,4 @@
 # Documentação e relatórios locais
 *.md
+!LEIA-ME.md
 scan_suspeitos.txt
