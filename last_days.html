@@ -469,13 +469,14 @@ body{
 .baseComandos button:disabled,.acaoBtn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.7)}
 .servicosBase{margin-top:9px;padding-top:8px;border-top:1px solid #2b332e;font-size:12px}
 .servicoStatus{display:flex;align-items:center;gap:4px;margin-top:5px}
-.listaInventarioBase{display:grid;gap:8px;margin-top:10px}.listaInventarioBase div{padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:#0f1311;font-size:12px}.listaInventarioBase span,.itemBase{color:var(--txt2);font-size:11px}.itemBase{display:block;margin-top:4px}
+.listaInventarioBase{display:grid;gap:8px;margin-top:10px}.listaInventarioBase div{padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:#0f1311;font-size:12px}.listaInventarioBase span,.itemBase{color:var(--txt2);font-size:11px}.itemBase{display:block;margin-top:4px}.itemBaseAcoes{display:flex;gap:6px;margin-top:7px}.itemBaseAcoes button{padding:4px 7px;border:1px solid #713939;border-radius:4px;background:#241617;color:#e3b3b3;cursor:pointer;font:inherit;font-size:10px}.itemBaseAcoes button:hover{background:#3a1f1f;border-color:#ad5555}
 .saudeRuim{color:#df895d}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
 .cartaoSaude{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;border-top:1px solid var(--borda);padding:8px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{margin:0}
 .notaBase{font-size:11px;color:var(--txt2);line-height:1.5;margin:8px 0}
 .conhecimentosApocalipse{display:grid;gap:7px;margin:8px 0}.conhecimentoApocalipse{display:block;padding:8px 9px;border:1px solid #4b3434;border-radius:5px;background:#171211}.conhecimentoApocalipse b{display:block;color:#dca3a3;font-size:12px}.conhecimentoApocalipse small{display:block;margin-top:3px;color:var(--txt2);font-size:11px;line-height:1.45}
 .listaHorarios{display:grid;gap:6px;margin:10px 0}.linhaHorario{display:flex;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:var(--painel2);font-size:12px}.linhaHorario span{color:var(--txt2);text-align:right}
 .materiaisDetalhes{font-size:12px;color:#b6c2b8;line-height:1.6;padding:8px 10px;border-left:3px solid #8b1a1a;background:#1a1d1b}
+.modalBox.inventarioBox{max-width:980px}.inventarioVisual{display:grid;grid-template-columns:minmax(150px,1fr) 210px minmax(220px,1.25fr);gap:14px;align-items:stretch}.inventarioColuna{display:grid;gap:8px;align-content:start}.inventarioTitulo{margin:0 0 4px;color:#dca3a3;font-size:12px;letter-spacing:1px;text-transform:uppercase}.slotEquipamento{min-height:54px;padding:8px;border:1px solid #4b3434;border-radius:6px;background:linear-gradient(135deg,#191b19,#111412);font-size:11px}.slotEquipamento strong{display:block;color:#c7d1c9;font-size:10px;text-transform:uppercase;letter-spacing:.8px}.slotEquipamento span{display:block;margin-top:6px;color:#e4eae5;line-height:1.35}.slotEquipamento.vazio span{color:#68746b;font-style:italic}.inventarioCorpo{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:340px;padding:8px;border:1px solid #4b3434;border-radius:7px;background:radial-gradient(circle at center,#202722,#101310 70%)}.inventarioCorpo img{width:100%;height:300px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}.inventarioProtecao{margin-top:4px;color:#e5c56b;font-size:12px;text-align:center}.inventarioMochila{min-height:340px;padding:10px;border:1px solid #4b3434;border-radius:7px;background:#0f1311}.inventarioMochilaCabecalho{display:flex;justify-content:space-between;gap:8px;color:#dbe3dc;font-size:12px;border-bottom:1px solid #2b332e;padding-bottom:8px;margin-bottom:8px}.inventarioItens{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:7px;max-height:310px;overflow:auto}.itemInventario{display:flex;flex-direction:column;justify-content:space-between;gap:7px;min-height:64px;padding:8px;border:1px solid #303b34;border-radius:5px;background:#171c19;color:#bdc9bf;font-size:11px}.itemInventario b{display:block;color:#e4eae5;font-size:11px;line-height:1.3}.itemInventario small{color:#89958c}.itemInventario button{width:100%;padding:5px 4px;border:1px solid #713939;border-radius:4px;background:#241617;color:#e3b3b3;cursor:pointer;font:inherit;font-size:10px}.itemInventario button:hover{background:#3a1f1f;border-color:#ad5555}.itemInventarioAcoes{display:flex;gap:5px}.itemInventarioAcoes button{font-size:9px;padding:4px 3px}.inventarioLegenda{margin:9px 0 0;color:#89958c;font-size:11px;line-height:1.45}@media(max-width:760px){.inventarioVisual{grid-template-columns:1fr 1fr}.inventarioCorpo{grid-column:1 / -1;grid-row:1}.inventarioColuna{grid-row:2}.inventarioMochila{grid-column:1 / -1;grid-row:3}}@media(max-width:460px){.inventarioVisual{display:flex;flex-direction:column}.inventarioCorpo{order:-1}.inventarioCorpo img{height:250px}.inventarioItens{max-height:none}}
 </style>
 </head>
 <body>
@@ -1174,15 +1175,17 @@ function adicionarAoGrupo(membro, tarefa='guarda'){
 
 function sincronizarEstado(){
   if(!S) return;
+  garantirInventario?.(S.player);
   const atual = membroAtual();
   if(atual){
-    for(const k of [...SKILLS,'experiencia','nivel','moral','perks','imagem','aparencia','especialidade','comportamento','passadoCriminoso','passadoRevelado','conhecimentosApocalipse','eventosConhecimentoVistos']){
+    for(const k of [...SKILLS,'experiencia','nivel','moral','perks','imagem','aparencia','especialidade','comportamento','passadoCriminoso','passadoRevelado','conhecimentosApocalipse','eventosConhecimentoVistos','inventario']){
       if(S.player[k] !== undefined) atual[k] = S.player[k];
     }
     atual.vivo = S.vivo;
     S.player.idade = idadeMembro(atual);
   }
   for(const m of S.familia.membros){
+    garantirInventario?.(m);
     m.stats = Object.fromEntries(SKILLS.map(k=>[k,m[k] ?? m.skills?.[k] ?? m.stats?.[k] ?? 2]));
     m.skills = {...m.stats};
     for(const k of SKILLS) m[k] = m.stats[k];
@@ -1308,7 +1311,7 @@ function iniciarJogo(){
       moral:70,
       conhecimentosApocalipse:[], eventosConhecimentoVistos:[],
       arma:b.arma, armaBonus:b.armaBonus, bonusLoot:b.bonusLoot,
-      inventario:{armas:b.arma!=='Nenhuma'?[{id:'arma-inicial',nome:b.arma,tipo:'arma',dano:b.armaBonus||1,municao:b.arma==='Revólver'?6:0}]:[],mochila:{capacidade:8,itens:[]},equipado:b.arma!=='Nenhuma'?'arma-inicial':null},
+      inventario:{armas:b.arma!=='Nenhuma'?[{id:'arma-inicial',nome:b.arma,tipo:'arma',categoria:'fogo',calibre:'ammo38',dano:b.armaBonus||1,peso:2}]:[],mochila:{capacidade:8,itens:b.arma!=='Nenhuma'?[{...ITENS_LOOT.ammo38,quantidade:6}]:[]},equipado:b.arma!=='Nenhuma'?'arma-inicial':null,equipados:{armas:{corpo:null,fogo:b.arma!=='Nenhuma'?'arma-inicial':null},roupas:{torso:{...ITENS_LOOT.camiseta,quantidade:1},pernas:{...ITENS_LOOT.calca,quantidade:1},pes:{...ITENS_LOOT.sapatos,quantidade:1}},armaduras:{}}},
       vida:100, vidaMax:100, fome:15, sede:15, energia:100, emExcursao:false
     },
     recursos:{...b.rec},
@@ -1702,16 +1705,17 @@ function resolverPerto(){
     comida:[2,7], agua:[1,6], materiais:[1,5],
     remedios:[0,2], municao:[0,2], combustivel:[0,1]
   };
-  const ganhos = gerarLoot(tabela, bonus);
+  const saqueDisponivel=reservarSaqueLocal('rua');
+  const ganhos = saqueDisponivel ? gerarLoot(tabela, bonus) : {};
 
   if(Math.random() < 0.28){
     const n = rnd(1,3);
     log(`Um walker sai de três de um carro. Depois outro.`, 'sangue');
-    iniciarCombateTurnos(n,()=>{aplicarGanhos(ganhos);lootItens(S.player,'rua');tentarCofreTrancado('rua');});
+    iniciarCombateTurnos(n,()=>{aplicarGanhos(ganhos);if(saqueDisponivel)lootItens(S.player,'rua',true);tentarCofreTrancado('rua');});
     return;
   }
   aplicarGanhos(ganhos);
-  lootItens(S.player,'rua');
+  if(saqueDisponivel)lootItens(S.player,'rua',true);
   tentarCofreTrancado('rua');
 }
 
@@ -1759,17 +1763,18 @@ function iniciarExpedicao(l){
 function resolverExpedicao(a){
   const l = a.local;
   const bonus = 1 + S.player.inteligencia*0.05 + S.player.bonusLoot;
-  const ganhos = gerarLoot(l.loot, bonus);
+  const saqueDisponivel=reservarSaqueLocal(l.id);
+  const ganhos = saqueDisponivel ? gerarLoot(l.loot, bonus) : {};
 
   if(Math.random() < l.risco){
     const n = rnd(l.zumbis[0], l.zumbis[1]);
     log(`Dentro do ${l.nome}, ${n} walkers erguem a cabeça ao mesmo tempo.`, 'sangue');
-    iniciarCombateTurnos(n,venceu=>{if(!venceu)for(const k in ganhos)ganhos[k]=Math.floor(ganhos[k]/2);if(!venceu)log('Você larga metade do que achou e corre.','ruim');aplicarGanhos(ganhos);lootItens(S.player,l.id);tentarCofreTrancado(l.nome);});return;
+    iniciarCombateTurnos(n,venceu=>{if(!venceu)for(const k in ganhos)ganhos[k]=Math.floor(ganhos[k]/2);if(!venceu)log('Você larga metade do que achou e corre.','ruim');aplicarGanhos(ganhos);if(saqueDisponivel)lootItens(S.player,l.id,true);tentarCofreTrancado(l.nome);});return;
   } else {
     log(`O ${l.nome} está estranhamente vazio. Você trabalha rápido.`, 'info');
   }
   aplicarGanhos(ganhos);
-  lootItens(S.player,l.id);
+  if(saqueDisponivel)lootItens(S.player,l.id,true);
   tentarCofreTrancado(l.nome);
 }
 
@@ -1777,7 +1782,9 @@ function resolverExpedicao(a){
 const ALVOS_EXCURSAO = [
   {id:'hospitalGrande',nome:'Hospital abandonado',descricao:'Remédios, equipamentos e pacientes que talvez ainda estejam vivos.',duracao:[2880,4320],risco:.58,loot:{remedios:[12,26],materiais:[5,12],agua:[5,12],comida:[2,8]}},
   {id:'baseAbandonada',nome:'Base de sobreviventes abandonada',descricao:'Um antigo acampamento com estoques, ferramentas e sinais de quem saiu às pressas.',duracao:[3600,5040],risco:.68,loot:{materiais:[14,30],municao:[8,20],combustivel:[4,12],comida:[8,18],agua:[8,18]}},
-  {id:'postoLogistica',nome:'Centro de logística',descricao:'Galpões fechados e caminhões parados. A carga pode mudar o futuro da comunidade.',duracao:[4320,5760],risco:.76,loot:{materiais:[20,42],combustivel:[10,24],comida:[12,28],agua:[10,24]}}
+  {id:'postoLogistica',nome:'Centro de logística',descricao:'Galpões fechados e caminhões parados. A carga pode mudar o futuro da comunidade.',duracao:[4320,5760],risco:.76,loot:{materiais:[20,42],combustivel:[10,24],comida:[12,28],agua:[10,24]}},
+  {id:'bloqueioMilitar',nome:'Bloqueio militar abandonado',descricao:'Ve\u00edculos de contenção, caixas de munição e armas deixadas durante a retirada.',duracao:[5760,7200],risco:.82,loot:{materiais:[18,36],municao:[18,36],combustivel:[8,18],remedios:[2,8]}},
+  {id:'baseMilitar',nome:'Base militar cercada',descricao:'Uma instalação fortificada com armamentos pesados. A equipe precisará de muito preparo para entrar e sair.',duracao:[7200,10080],risco:.9,loot:{materiais:[28,55],municao:[30,60],combustivel:[12,28],remedios:[4,12]}}
 ];
 const TIPOS_VEICULO = {
   suv:{nome:'SUV',capacidade:5,combustivel:10,carga:20,velocidade:.88},
@@ -1836,7 +1843,7 @@ function abrirExcursao(alvoGrande=false){
   }
   const alvos=alvoGrande?ALVOS_EXCURSAO.filter(a=>a.id!=='postoLogistica'):ALVOS_EXCURSAO;
   abrirPainel(alvoGrande?'Escolher alvo grande':'Planejar excursão','Escolha o destino. Os alvos grandes exigem pelo menos um Scavenger e podem deixar a base sem parte da equipe durante vários dias.',[
-    ...alvos.map(alvo=>({texto:`${alvo.nome} · ${Math.round(alvo.duracao[0]/1440)}–${Math.round(alvo.duracao[1]/1440)} dias`,fn:()=>abrirPlanejamentoExcursao(alvo)})),
+    ...alvos.map(alvo=>({texto:`${alvo.nome}${['bloqueioMilitar','baseMilitar'].includes(alvo.id)?' \u00b7 armas militares':''} \u00b7 ${Math.round(alvo.duracao[0]/1440)}-${Math.round(alvo.duracao[1]/1440)} dias`,fn:()=>abrirPlanejamentoExcursao(alvo)})),
     {texto:'Fechar',fn:()=>{}}
   ]);
 }
@@ -1892,7 +1899,7 @@ function resolverExcursaoNoLocal(e){
   }else{S.base.moral=clamp(S.base.moral+3,0,100);log(`A equipe chegou a ${alvo.nome} e encontrou suprimentos. Está organizando o retorno.`,'bom');}
 }
 function finalizarExcursao(){
-  const e=S.base.excursao;if(!e)return;pararAudioExpedicao();const ganhos=e.loot||{};aplicarGanhos(ganhos);
+  const e=S.base.excursao;if(!e)return;pararAudioExpedicao();const ganhos=e.loot||{};aplicarGanhos(ganhos);lootArmas(S.player,e.alvoId);lootMunicao(S.player,e.alvoId);
   for(const id of e.participantes){const p=S.sobreviventes.find(m=>m.id===id);if(p){p.expedicao=null;ganharExperienciaPessoa(p,2);}}
   if(e.participantes.includes('player'))S.player.emExcursao=false;
   for(const id of e.veiculos){const v=S.base.veiculos.find(x=>x.id===id);if(v)v.estado='pronto';}
@@ -2194,6 +2201,8 @@ function resolverAcao(){
     case 'localizarVeiculo': resolverLocalizarVeiculo(); break;
     case 'customizarVeiculo': resolverCustomizacaoVeiculo(a); break;
     case 'construir': resolverConstrucao(a); break;
+    case 'craftarEquipamento': resolverCraftEquipamento(a); break;
+    case 'fabricarMunicao': resolverFabricacaoMunicao(a); break;
     case 'demolir': resolverDemolicao(a); break;
     case 'muralHorarios': resolverMuralHorarios(); break;
     case 'procurarBase': resolverBuscaBase(); break;
@@ -2318,6 +2327,12 @@ function concluirGestacao(prematuro){
 /* ============================================================
    LOOT
 ============================================================ */
+const ESTOQUE_LOOT_LOCAL_PADRAO={rua:5,mercado:3,farmacia:3,posto:3,construcao:3,delegacia:3,hospital:3,cofre:1};
+function idLocalLoot(local){return typeof local==='string'?local:(local?.id||'rua');}
+function garantirEstoqueLoot(){if(!S.base.estoqueLoot||typeof S.base.estoqueLoot!=='object'||Array.isArray(S.base.estoqueLoot))S.base.estoqueLoot={};return S.base.estoqueLoot;}
+function estoqueLootRestante(local='rua'){const id=idLocalLoot(local),estoque=garantirEstoqueLoot();if(!Number.isInteger(estoque[id])||estoque[id]<0)estoque[id]=ESTOQUE_LOOT_LOCAL_PADRAO[id]??3;return estoque[id];}
+function reservarSaqueLocal(local='rua'){const id=idLocalLoot(local),restante=estoqueLootRestante(id);if(restante<=0){log(`As proximidades de ${id==='rua'?'nossa base':id} j\u00e1 foram saqueadas. N\u00e3o h\u00e1 mais itens para encontrar aqui.`,'info');return false;}garantirEstoqueLoot()[id]=restante-1;return true;}
+function duracaoScavenger(){const restante=estoqueLootRestante('rua');const total=ESTOQUE_LOOT_LOCAL_PADRAO.rua;const multiplicador=restante<=0?2:1+(1-restante/total)*.45;return Math.max(180,Math.round(rnd(3,6)*multiplicador)*60);}
 function gerarLoot(tabela, bonus){
   const g = {};
   for(const k in tabela){
@@ -2346,6 +2361,8 @@ function iniciarCombateTurnos(zumbis,finalizar){
 function renderPainelCombate(){
   const c=S.combate,p=S.player,maxVida=Math.max(1,p.vidaMax||100),percent=Math.max(0,Math.min(100,p.vida/maxVida*100));
   const opcoes=[{texto:'Atacar',fn:()=>turnoCombate('atacar')}];
+  const armaFogo=armaEquipada(p,'fogo');
+  if(armaFogo)opcoes.push({texto:`Atirar com ${armaFogo.nome}${quantidadeMunicao(p,armaFogo.calibre)?'':' · sem munição'}`,fn:()=>turnoCombate('atirar')});
   if(temConhecimentoApocalipse('ataqueCabeca'))opcoes.push({texto:'Atacar a cabeça · conhecimento aplicado',fn:()=>turnoCombate('cabeca')});
   opcoes.push({texto:'Defender',fn:()=>turnoCombate('defender')},{texto:'Fugir',fn:()=>turnoCombate('fugir')});
   abrirPainel('Combate',`<div class="combateCabecalho"><span>Rodada <b>${c.rodada}</b></span><strong>${c.zumbis} inimigo(s)</strong></div><div class="combateInfo"><div><b>Você</b><br>Vida: ${Math.ceil(p.vida)}/${maxVida}<div class="combateBarra"><i style="width:${percent}%"></i></div>Energia: ${Math.ceil(p.energia)}</div><div><b>Ameaça</b><br>O combate gera barulho.<div class="combateBarra"><i style="width:${Math.min(100,c.zumbis*12)}%"></i></div>Inimigos restantes: ${c.zumbis}</div></div><p class="combateAviso">Escolha uma ação.</p>`,opcoes);
@@ -2353,41 +2370,163 @@ function renderPainelCombate(){
 function turnoCombate(acao){
   const c=S.combate;if(!c)return;const p=S.player;
   if(acao==='fugir'){c.finalizar(false);S.combate=null;return;}
-  const arma=armaEquipada(p),ataqueCabeca=acao==='cabeca';const poder=p.forca*1.5+p.agilidade+(arma?.dano||p.armaBonus||0)+(acao==='atacar'?2:ataqueCabeca?5:0);
+  const arma=armaEquipada(p),armaFogo=armaEquipada(p,'fogo'),ataqueCabeca=acao==='cabeca';
+  if(acao==='atirar'){
+    if(!armaFogo){log('Você não tem uma arma de fogo equipada.','info');renderPainelCombate();return;}
+    if(!quantidadeMunicao(p,armaFogo.calibre)){log(`Falta munição ${armaFogo.calibre} para ${armaFogo.nome}.`,'ruim');renderPainelCombate();return;}
+    consumirMunicao(p,armaFogo.calibre);const derrubados=Math.max(1,Math.floor((p.agilidade+armaFogo.dano+p.inteligencia*.4)/5));c.zumbis-=derrubados;S.base.ameaca=clamp(S.base.ameaca+5,0,100);log(`Você disparou ${armaFogo.nome} e derrubou ${derrubados} zumbi(s). O estampido aumentou a ameaça.`,'ruim');
+  }
+  const poder=p.forca*1.5+p.agilidade+(arma?.dano||p.armaBonus||0)+(acao==='atacar'?2:ataqueCabeca?5:0);
   if(acao==='atacar' || ataqueCabeca){
     const derrubados=Math.max(1,Math.floor(poder/(ataqueCabeca?5:6)));c.zumbis-=derrubados;log(ataqueCabeca?`Você mira na cabeça e derruba ${derrubados} zumbi(s).`:`Você atacou e derrubou ${derrubados} zumbi(s).`,'bom');
   }
-  const dano=Math.max(0,Math.round((c.zumbis*1.6)*(acao==='defender'?.45:1)));p.vida-=dano;
-  if(dano>0)log(`O grupo inimigo causou ${dano} de dano.`,'ruim');
+  const danoBruto=Math.max(0,Math.round((c.zumbis*1.6)*(acao==='defender'?.45:1))),recebido=aplicarDanoFisico(p,danoBruto);
+  if(recebido.dano>0)log(`O grupo inimigo causou ${recebido.dano} de dano${recebido.protecao?` (${recebido.protecao}% absorvido pela armadura)`:''}.`,'ruim');
+  else if(danoBruto>0)log(`A armadura absorveu o impacto do ataque (${recebido.protecao}% de prote\u00e7\u00e3o).`,'bom');
   if(c.zumbis<=0){const f=c.finalizar;S.combate=null;verificarEstado();if(S.vivo)f(true);return;}
   if(!S.vivo){S.combate=null;return;}
   c.rodada++;renderPainelCombate();
 }
 
 const ITENS_LOOT={
-  faca:{id:'faca',nome:'Faca de cozinha',tipo:'arma',dano:3,peso:1},
-  bastao:{id:'bastao',nome:'Bastão reforçado',tipo:'arma',dano:4,peso:2},
-  pistola:{id:'pistola',nome:'Pistola',tipo:'arma',dano:6,peso:2,municaoTipo:'municao'},
+  faca:{id:'faca',nome:'Faca de cozinha',tipo:'arma',categoria:'corpo',dano:3,peso:1},
+  bastao:{id:'bastao',nome:'Bast\u00e3o refor\u00e7ado',tipo:'arma',categoria:'corpo',dano:4,peso:2},
+  pistola:{id:'pistola',nome:'Pistola 9mm',tipo:'arma',categoria:'fogo',civil:true,calibre:'ammo9mm',dano:6,peso:2},
   gazua:{id:'gazua',nome:'Gazua',tipo:'ferramenta',peso:1},
   municao9:{id:'municao9',nome:'Caixa de munição',tipo:'item',peso:1,quantidade:4,recurso:'municao'},
   bandagem:{id:'bandagem',nome:'Bandagem',tipo:'medico',peso:1,efeito:20},
   antiseptico:{id:'antiseptico',nome:'Antisséptico',tipo:'medico',peso:1,efeito:35},
-  mochila:{id:'mochila',nome:'Mochila maior',tipo:'mochila',peso:2,capacidade:6}
+  mochila:{id:'mochila',nome:'Mochila maior',tipo:'mochila',peso:2,capacidade:6},
+  camiseta:{id:'camiseta',nome:'Camiseta',tipo:'roupa',slot:'torso',peso:1,protecao:1,isolamento:1},
+  calca:{id:'calca',nome:'Calça comum',tipo:'roupa',slot:'pernas',peso:1,protecao:1,isolamento:1},
+  sapatos:{id:'sapatos',nome:'Sapatos comuns',tipo:'roupa',slot:'pes',peso:1,protecao:1,isolamento:1},
+  casaco:{id:'casaco',nome:'Casaco de inverno',tipo:'roupa',slot:'torso',peso:2,isolamento:5},
+  botas:{id:'botas',nome:'Botas resistentes',tipo:'roupa',slot:'pes',peso:2,isolamento:2},
+  colete:{id:'colete',nome:'Colete de prote\u00e7\u00e3o',tipo:'armadura',slot:'torso',peso:4,protecao:18},
+  capacete:{id:'capacete',nome:'Capacete',tipo:'armadura',slot:'cabeca',peso:2,protecao:12},
+  capaceteMoto:{id:'capaceteMoto',nome:'Capacete de moto',tipo:'armadura',slot:'cabeca',peso:3,protecao:16},
+  capaceteMilitar:{id:'capaceteMilitar',nome:'Capacete militar',tipo:'armadura',slot:'cabeca',peso:3,protecao:20},
+  capaceteObra:{id:'capaceteObra',nome:'Capacete de obra',tipo:'armadura',slot:'cabeca',peso:2,protecao:10},
+  joelheira:{id:'joelheira',nome:'Joelheira refor\u00e7ada',tipo:'armadura',slot:'pernas',peso:2,protecao:8}
 };
-function garantirInventario(p){
-  if(!p.inventario)p.inventario={armas:[],mochila:{capacidade:8,itens:[]},equipado:null};
-  p.inventario.mochila ||= {capacidade:8,itens:[]};p.inventario.armas ||= [];p.inventario.mochila.itens ||= [];
+const DADOS_MUNICAO={
+  ammo22:{nome:'Muni\u00e7\u00e3o .22',calibre:'.22',peso:.08},ammo9mm:{nome:'Muni\u00e7\u00e3o 9mm',calibre:'9mm',peso:.1},ammo45:{nome:'Muni\u00e7\u00e3o .45',calibre:'.45',peso:.14},ammo38:{nome:'Muni\u00e7\u00e3o .38',calibre:'.38',peso:.12},ammo44:{nome:'Muni\u00e7\u00e3o .44',calibre:'.44',peso:.16},ammo50:{nome:'Muni\u00e7\u00e3o .50',calibre:'.50',peso:.2},ammo9x19:{nome:'Muni\u00e7\u00e3o 9x19mm',calibre:'9x19mm',peso:.1},ammo45acp:{nome:'Muni\u00e7\u00e3o .45 ACP',calibre:'.45 ACP',peso:.14},ammo40:{nome:'Muni\u00e7\u00e3o .40',calibre:'.40',peso:.12},ammo22lr:{nome:'Muni\u00e7\u00e3o .22 LR',calibre:'.22 LR',peso:.08},ammo556:{nome:'Muni\u00e7\u00e3o 5.56mm',calibre:'5.56mm',peso:.12},ammo762x39:{nome:'Muni\u00e7\u00e3o 7.62x39mm',calibre:'7.62x39mm',peso:.16},ammo3006:{nome:'Muni\u00e7\u00e3o .30-06',calibre:'.30-06',peso:.2},ammo762x51:{nome:'Muni\u00e7\u00e3o 7.62x51mm / .308',calibre:'7.62x51mm / .308',peso:.18},ammo4570:{nome:'Muni\u00e7\u00e3o .45-70',calibre:'.45-70',peso:.22},ammo50bmg:{nome:'Muni\u00e7\u00e3o .50 BMG',calibre:'.50 BMG',peso:.35}
+};
+for(const [id,dados] of Object.entries(DADOS_MUNICAO))ITENS_LOOT[id]={id,nome:dados.nome,tipo:'municao',calibre:dados.calibre,peso:dados.peso};
+const CATALOGO_ARMAS_FOGO=[
+  ['pistola22','Pistola .22','ammo22',5,2,false],['pistola9','Pistola 9mm','ammo9mm',6,2,false],['pistola45','Pistola .45','ammo45',8,2,false],
+  ['revolver38','Rev\u00f3lver .38','ammo38',7,2,false],['revolver44','Rev\u00f3lver .44','ammo44',9,2,false],['revolver50','Rev\u00f3lver .50','ammo50',11,3,false],
+  ['smg9x19','Submetralhadora 9x19mm','ammo9x19',8,3,true],['smg45acp','Submetralhadora .45 ACP','ammo45acp',10,3,true],['smg40','Submetralhadora .40','ammo40',9,3,true],['smg22lr','Submetralhadora .22 LR','ammo22lr',6,3,true],
+  ['rifle22lr','Rifle .22 LR','ammo22lr',7,3,false],['rifle556','Rifle 5.56mm','ammo556',12,4,true],['rifle762x39','Fuzil 7.62x39mm','ammo762x39',13,4,true],['rifle3006','Rifle de ca\u00e7a .30-06','ammo3006',13,4,false],['rifle762x51','Fuzil 7.62x51mm / .308','ammo762x51',15,5,true],['rifle4570','Carabina .45-70','ammo4570',16,4,false],['rifle50bmg','Rifle .50 BMG','ammo50bmg',25,8,true]
+];
+for(const [id,nome,calibre,dano,peso,militar] of CATALOGO_ARMAS_FOGO)ITENS_LOOT[id]={id,nome,tipo:'arma',categoria:'fogo',calibre,dano,peso,militar,civil:!militar};
+const MATERIAIS_PROTECAO={
+  revista:{nome:'Revista',protecao:6,peso:2,custo:2},
+  metal:{nome:'Metal',protecao:18,peso:5,custo:5},
+  aluminio:{nome:'Alumínio',protecao:14,peso:3,custo:4},
+  borracha:{nome:'Borracha',protecao:10,peso:3,custo:3},
+  jeans:{nome:'Jeans',protecao:8,peso:2,custo:3},
+  couro:{nome:'Couro',protecao:12,peso:3,custo:4}
+};
+const PARTES_PROTECAO={bracos:{nome:'braços',slot:'bracos'},peito:{nome:'peito',slot:'torso'},pernas:{nome:'pernas',slot:'pernas'}};
+const NOMES_SLOT_EQUIPAMENTO={cabeca:'cabeça',bracos:'braços',torso:'peito',pernas:'pernas',pes:'pés'};
+const RECEITAS_EQUIPAMENTO={};
+for(const [material,dados] of Object.entries(MATERIAIS_PROTECAO)){
+  for(const [parte,local] of Object.entries(PARTES_PROTECAO)){
+    const id=`protecao_${material}_${parte}`;
+    ITENS_LOOT[id]={id,nome:`Proteção de ${dados.nome.toLowerCase()} para ${local.nome}`,tipo:'armadura',slot:local.slot,peso:dados.peso,protecao:dados.protecao,material:dados.nome};
+    RECEITAS_EQUIPAMENTO[id]={itemId:id,custo:{materiais:dados.custo},dur:120};
+  }
 }
-function armaEquipada(p){
+ITENS_LOOT.calcaJeans={id:'calcaJeans',nome:'Calça jeans reforçada',tipo:'roupa',slot:'pernas',peso:2,protecao:5,isolamento:4};
+ITENS_LOOT.jaquetaCouro={id:'jaquetaCouro',nome:'Jaqueta de couro',tipo:'roupa',slot:'torso',peso:3,protecao:7,isolamento:5};
+for(const [itemId,dados] of [['calcaJeans',{dur:90,custo:{materiais:3}}],['jaquetaCouro',{dur:120,custo:{materiais:4}}]])RECEITAS_EQUIPAMENTO[itemId]={itemId,custo:dados.custo,dur:dados.dur};
+function garantirInventario(p){
+  if(!p.inventario || typeof p.inventario!=='object' || Array.isArray(p.inventario))p.inventario={armas:[],mochila:{capacidade:8,itens:[]},equipado:null,equipados:{roupas:{},armaduras:{}}};
+  if(!p.inventario.mochila || typeof p.inventario.mochila!=='object' || Array.isArray(p.inventario.mochila))p.inventario.mochila={capacidade:8,itens:[]};
+  p.inventario.mochila.capacidade=Number.isFinite(Number(p.inventario.mochila.capacidade))?Math.max(1,Number(p.inventario.mochila.capacidade)):8;
+  p.inventario.armas=Array.isArray(p.inventario.armas)?p.inventario.armas:[];
+  p.inventario.mochila.itens=Array.isArray(p.inventario.mochila.itens)?p.inventario.mochila.itens:[];
+  if(!p.inventario.equipados || typeof p.inventario.equipados!=='object' || Array.isArray(p.inventario.equipados))p.inventario.equipados={roupas:{},armaduras:{}};
+  p.inventario.equipados.roupas=(p.inventario.equipados.roupas && typeof p.inventario.equipados.roupas==='object' && !Array.isArray(p.inventario.equipados.roupas))?p.inventario.equipados.roupas:{};
+  p.inventario.equipados.armaduras=(p.inventario.equipados.armaduras && typeof p.inventario.equipados.armaduras==='object' && !Array.isArray(p.inventario.equipados.armaduras))?p.inventario.equipados.armaduras:{};
+  if(!p.inventario.equipados.armas || typeof p.inventario.equipados.armas!=='object' || Array.isArray(p.inventario.equipados.armas))p.inventario.equipados.armas={corpo:null,fogo:null};
+  p.inventario.equipados.armas.corpo??=null;p.inventario.equipados.armas.fogo??=null;
+  p.inventario.armas.forEach(a=>{if(a && !a.categoria){const nome=String(a.nome||'');a.categoria=a.calibre||/pistola|revol|rev|rifle|fuzil|submetralhadora/i.test(nome)?'fogo':'corpo';if(a.categoria==='fogo'&&!a.calibre)a.calibre=/revol|rev/i.test(nome)?'ammo38':'ammo9mm';}});
+}
+function armaEquipada(p,categoria='corpo'){
   garantirInventario(p);
-  return p.inventario.armas.find(a=>a.id===p.inventario.equipado) || p.inventario.armas.find(a=>a.nome===p.arma) || null;
+  const id=p.inventario.equipados.armas[categoria];
+  return p.inventario.armas.find(a=>a.id===id && a.categoria===categoria) || p.inventario.armas.find(a=>a.categoria===categoria && a.id===p.inventario.equipado) || (categoria==='corpo' ? p.inventario.armas.find(a=>(a.categoria==='corpo'||!a.calibre)&&a.id===p.inventario.equipado) || p.inventario.armas.find(a=>(a.categoria==='corpo'||!a.calibre)&&a.nome===p.arma) : p.inventario.armas.find(a=>a.categoria===categoria)) || null;
 }
 function pesoInventario(p){garantirInventario(p);return p.inventario.mochila.itens.reduce((n,i)=>n+(i.peso||1)*(i.quantidade||1),0);}
+function protecaoArmadura(p){
+  garantirInventario(p);
+  const armadura=Object.values(p.inventario.equipados.armaduras||{}),roupa=Object.values(p.inventario.equipados.roupas||{});
+  return clamp([...armadura,...roupa].reduce((total,item)=>total+(Number(item?.protecao)||0),0),0,75);
+}
+function aplicarDanoFisico(p,bruto){
+  const valor=Math.max(0,Number(bruto)||0),protecao=protecaoArmadura(p),dano=Math.max(0,Math.round(valor*(1-protecao/100)));
+  p.vida=Math.max(0,(p.vida??0)-dano);
+  return {bruto:valor,dano,protecao};
+}
 function adicionarItemInventario(p,id,quantidade=1){
   garantirInventario(p);const base=ITENS_LOOT[id];if(!base)return false;
   if(base.tipo==='arma'){p.inventario.armas.push({...base});return true;}
   if(pesoInventario(p)+(base.peso||1)*quantidade>p.inventario.mochila.capacidade)return false;
   const existente=p.inventario.mochila.itens.find(i=>i.id===id);if(existente)existente.quantidade=(existente.quantidade||1)+quantidade;else p.inventario.mochila.itens.push({...base,quantidade});return true;
+}
+function equiparItemInventario(p,id){
+  garantirInventario(p);
+  const item=p.inventario.mochila.itens.find(i=>i.id===id),base=ITENS_LOOT[id]||item;
+  if(!item || !['roupa','armadura'].includes(item.tipo) || !base.slot)return false;
+  const grupo=item.tipo==='roupa'?'roupas':'armaduras',anterior=p.inventario.equipados[grupo][base.slot];
+  if((item.quantidade||1)>1)item.quantidade-=1;
+  else p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==item);
+  if(anterior)p.inventario.mochila.itens.push(anterior);
+  p.inventario.equipados[grupo][base.slot]={...item,quantidade:1};
+  log(`${esc(item.nome)} equipada.`, 'bom');
+  return true;
+}
+function equiparArmaInventario(p,id){
+  garantirInventario(p);
+  const arma=p.inventario.armas.find(a=>a.id===id);if(!arma)return false;
+  const categoria=arma.categoria|| (arma.calibre?'fogo':'corpo');
+  p.inventario.equipados.armas[categoria]=arma.id;
+  if(categoria==='corpo'){p.inventario.equipado=arma.id;p.arma=arma.nome;p.armaBonus=arma.dano||0;}
+  log(`${esc(arma.nome)} equipada no slot de ${categoria==='fogo'?'arma de fogo':'arma corpo a corpo'}.`,'bom');
+  return true;
+}
+function quantidadeMunicao(p,calibre){
+  garantirInventario(p);
+  return p.inventario.mochila.itens.filter(i=>i.tipo==='municao'&&i.calibre===calibre).reduce((n,i)=>n+(i.quantidade||0),0);
+}
+function consumirMunicao(p,calibre,quantidade=1){
+  garantirInventario(p);
+  let restante=quantidade;
+  for(const item of p.inventario.mochila.itens.filter(i=>i.tipo==='municao'&&i.calibre===calibre)){
+    const retirar=Math.min(restante,item.quantidade||0);item.quantidade-=retirar;restante-=retirar;
+    if(item.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==item);
+    if(restante<=0)break;
+  }
+  return restante<=0;
+}
+function abrirCraftEquipamentos(){
+  if(!temInstalacao('oficina')){abrirPainel('Oficina necessária','Construa uma oficina para cortar, costurar e montar proteções.',[{texto:'Abrir construções',fn:abrirConstrucoes},{texto:'Fechar',fn:()=>{}}]);return;}
+  const disponiveis=Object.entries(RECEITAS_EQUIPAMENTO).filter(([id])=>ITENS_LOOT[id]);
+  abrirPainel('Fabricar roupas e proteções','Escolha uma peça. Cada fabricação consome materiais da comunidade e leva tempo de trabalho.',disponiveis.map(([id,receita])=>({texto:`Fabricar ${ITENS_LOOT[id].nome} · ${custoTexto(receita.custo)} · ${receita.dur/60}h`,fn:()=>iniciarCraftEquipamento(id)})).concat([{texto:'Fechar',fn:()=>{}}]));
+}
+function iniciarCraftEquipamento(id){
+  const receita=RECEITAS_EQUIPAMENTO[id],item=ITENS_LOOT[id];
+  if(!receita||!item)return false;
+  if(!temInstalacao('oficina')){log('É preciso ter uma oficina para fabricar equipamentos.','info');return false;}
+  return iniciarAcaoBase('craftarEquipamento',`Fabricar ${item.nome}`,receita.dur,8,receita.custo,{itemId:id});
+}
+function resolverCraftEquipamento(a){
+  const item=ITENS_LOOT[a.itemId];
+  if(!item)return;
+  if(adicionarItemInventario(S.player,a.itemId,1))log(`${item.nome} foi fabricado e guardado na mochila.`,'bom');
+  else {S.recursos.materiais+=(RECEITAS_EQUIPAMENTO[a.itemId]?.custo?.materiais||0);log('A mochila está cheia. Os materiais foram devolvidos.','ruim');}
 }
 function quantidadeItemInventario(p,id){garantirInventario(p);return p.inventario.mochila.itens.find(i=>i.id===id)?.quantidade||0;}
 function consumirItemInventario(p,id,quantidade=1){garantirInventario(p);const item=p.inventario.mochila.itens.find(i=>i.id===id);if(!item || item.quantidade<quantidade)return false;item.quantidade-=quantidade;if(item.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==item);return true;}
@@ -2396,10 +2535,24 @@ function usarItemInventario(p,id){
   if(i.tipo==='medico'){const alvo=p===S.player?membroAtual():p;if(tratarPaciente(alvo,i.efeito)){i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);return true;}}
   if(i.tipo==='mochila'){p.inventario.mochila.capacidade+=i.capacidade;i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);return true;}return false;
 }
-function lootItens(p,local='rua'){
-  const pool=local==='farmacia'?['bandagem','antiseptico','mochila','gazua']:local==='delegacia'?['pistola','municao9','faca','gazua']:local==='cofre'?['bandagem','antiseptico','municao9','gazua']:['faca','bastao','bandagem','mochila','gazua'];
+function lootItens(p,local='rua',estoqueJaReservado=false){
+  if(!estoqueJaReservado&&!reservarSaqueLocal(local))return false;
+  const pool=local==='farmacia'?['bandagem','antiseptico','mochila','casaco','botas','jaquetaCouro']:local==='delegacia'?['faca','gazua','colete','capacete','capaceteMilitar']:local==='cofre'?['bandagem','antiseptico','gazua','colete','capaceteMoto']:['faca','bastao','bandagem','mochila','gazua','camiseta','calca','sapatos','botas','joelheira','calcaJeans','capaceteObra'];
   const achados=[];for(const id of pool)if(Math.random()<.3 && adicionarItemInventario(p,id)){achados.push(ITENS_LOOT[id].nome);}
   if(achados.length)log(`Itens encontrados: ${achados.map(esc).join(', ')}.`,'bom');
+  lootArmas(p,local);
+  lootMunicao(p,local);
+}
+function lootArmas(p,local='rua'){
+  const militar=['bloqueioMilitar','baseMilitar'].includes(local),pool=CATALOGO_ARMAS_FOGO.filter(a=>militar?a[5]:!a[5]).map(a=>a[0]);
+  const achados=[];for(const id of pool)if(Math.random()<(militar?.08:.035)&&adicionarItemInventario(p,id))achados.push(ITENS_LOOT[id].nome);
+  if(achados.length)log(`Armas encontradas: ${achados.map(esc).join(', ')}.`,'bom');
+}
+function lootMunicao(p,local='rua'){
+  const militar=['bloqueioMilitar','baseMilitar'].includes(local),pool=CATALOGO_ARMAS_FOGO.filter(a=>militar?a[5]:!a[5]).map(a=>a[2]);
+  const calibres=[...new Set(pool)],achados=[];
+  for(const id of calibres)if(Math.random()<(militar?.2:.08)){const qtd=rnd(6,18);if(adicionarItemInventario(p,id,qtd))achados.push(`${qtd} ${ITENS_LOOT[id].nome}`);}
+  if(achados.length)log(`Munição encontrada: ${achados.map(esc).join(', ')}.`,'bom');
 }
 function tentarCofreTrancado(local='rua'){
   if(quantidadeItemInventario(S.player,'gazua')<1 || Math.random()>=.3)return;
@@ -2433,7 +2586,15 @@ function abrirLockpick(alvo,recompensa){
   desenhar();
 }
 window.addEventListener('load',()=>{if(window.debugJogo)window.debugJogo.lockpick=()=>{if(!S?.vivo)return false;if(quantidadeItemInventario(S.player,'gazua')<1)adicionarItemInventario(S.player,'gazua');abrirLockpick('um contêiner de teste',gerarLoot({materiais:[2,5],remedios:[0,2],municao:[0,3]},1));return true;};});
-function inventarioTexto(p){garantirInventario(p);const equipada=armaEquipada(p);const armas=p.inventario.armas.map(a=>`<li>⚔ ${esc(a.nome)} · dano ${a.dano}${a===equipada?' · <b>equipada</b>':''}</li>`).join('')||'<li>Nenhuma arma</li>';const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} · ${i.quantidade||1}</li>`).join('')||'<li>Mochila vazia</li>';return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;}
+function inventarioTexto(p){
+  garantirInventario(p);
+  const corpo=armaEquipada(p,'corpo'),fogo=armaEquipada(p,'fogo');
+  const armas=p.inventario.armas.map(a=>`<li>${esc(a.nome)} \u00b7 dano ${a.dano}${a===corpo?' \u00b7 <b>corpo a corpo equipada</b>':a===fogo?' \u00b7 <b>arma de fogo equipada</b>':''}</li>`).join('')||'<li>Nenhuma arma</li>';
+  const roupas=Object.entries(p.inventario.equipados.roupas).map(([slot,item])=>`<li>${esc(item.nome)} · ${esc(NOMES_SLOT_EQUIPAMENTO[slot]||slot)}</li>`).join('')||'<li>Nenhuma roupa equipada</li>';
+  const armaduras=Object.entries(p.inventario.equipados.armaduras).map(([slot,item])=>`<li>${esc(item.nome)} · ${esc(NOMES_SLOT_EQUIPAMENTO[slot]||slot)} · ${item.protecao||0}% proteção</li>`).join('')||'<li>Nenhuma armadura equipada</li>';
+  const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} · ${i.quantidade||1}${i.tipo==='roupa'||i.tipo==='armadura'?` · ${i.tipo}`:''}</li>`).join('')||'<li>Mochila vazia</li>';
+  return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Roupas equipadas</b></p><ul>${roupas}</ul><p><b>Armaduras equipadas</b> · ${protecaoArmadura(p)}% proteção</p><ul>${armaduras}</ul><p><b>Mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;
+}
 
 /* ============================================================
    COMBATE
@@ -2504,7 +2665,7 @@ function ataqueHorda(){
   if(defesa >= poder){
     const perda = Math.max(0, Math.round(n*0.15));
     S.base.barricadas = Math.max(0, S.base.barricadas - perda);
-    if(naBase(membroAtual()))p.vida -= Math.max(0, n*0.3);
+    if(naBase(membroAtual()))aplicarDanoFisico(p,Math.max(0,n*0.3));
     if(S.recursos.municao > 0) S.recursos.municao -= 1;
     log(`Você e o grupo repelem o ataque. ${perda} barricada(s) destruída(s).`, 'bom');
   } else {
@@ -2515,8 +2676,8 @@ function ataqueHorda(){
       if(q > 0){ S.recursos[k] -= q; perdido.push(`${q} ${NOMES_REC[k]}`); }
     });
     const dano = 8 + n*0.5;
-    if(naBase(membroAtual()))p.vida -= dano;
-    log(`OS WALKERS INVADEM A BASE.${naBase(membroAtual()) ? ` Você perde ${Math.round(dano)} de vida.` : ' Você está longe; o grupo tenta conter a invasão.'}`, 'sangue');
+    const danoInvasao=naBase(membroAtual())?aplicarDanoFisico(p,dano):null;
+    log(`OS WALKERS INVADEM A BASE.${danoInvasao ? ` Você perde ${danoInvasao.dano} de vida${danoInvasao.protecao ? ` (${danoInvasao.protecao}% absorvido pela armadura)` : ''}.` : ' Você está longe; o grupo tenta conter a invasão.'}`, 'sangue');
     if(perdido.length) log('Recursos perdidos: ' + perdido.join(', ') + '.', 'ruim');
 
     const vivos = S.sobreviventes.filter(naBase);
@@ -3131,8 +3292,8 @@ function exibirModal(modal){
   m.hidden = false;
   const fonte=modal.midia?esc(modal.midia):'';
   const alarme=modal.titulo==='Um alarme começou a tocar';
-  const prologo=Boolean(PROLOGO_MIDIA[modal.titulo]);
-  m.innerHTML = `<div class="modalBox${prologo?' prologoBox':''}" role="dialog" aria-modal="true"><h2>${modal.titulo}</h2>${fonte?`<img class="modalMidia" src="${fonte}" alt="Imagem do evento" onerror="this.hidden=true">`:''}${alarme?'<audio class="modalAudio" autoplay><source src="assets/snd/car_alarm/car_alarm.mp3" type="audio/mpeg"></audio>':''}<div class="modalTexto${prologo?' prologoTexto':''}">${modal.texto}</div><div class="modalOps"></div></div>`;
+  const prologo=Boolean(PROLOGO_MIDIA[modal.titulo]),inventario=modal.titulo==='Invent\u00e1rio e equipamento';
+  m.innerHTML = `<div class="modalBox${prologo?' prologoBox':''}${inventario?' inventarioBox':''}" role="dialog" aria-modal="true"><h2>${modal.titulo}</h2>${fonte?`<img class="modalMidia" src="${fonte}" alt="Imagem do evento" onerror="this.hidden=true">`:''}${alarme?'<audio class="modalAudio" autoplay><source src="assets/snd/car_alarm/car_alarm.mp3" type="audio/mpeg"></audio>':''}<div class="modalTexto${prologo?' prologoTexto':''}">${modal.texto}</div><div class="modalOps"></div></div>`;
   if(alarme){
     const video=m.querySelector('audio');video.currentTime=2;video.volume=.35*volumeAudio;video.play().catch(()=>{});alarmeModalAtivo=true;
     hordaAudioTimer=setTimeout(()=>iniciarSomHorda(modal),3000);
@@ -3281,8 +3442,11 @@ function assumirLider(membro){
     moral:membro.moral ?? 70,conhecimentosApocalipse:[...(membro.conhecimentosApocalipse || [])],eventosConhecimentoVistos:[...(membro.eventosConhecimentoVistos || [])],especialidade:membro.especialidade,comportamento:{...membro.comportamento},
     imagem:membro.imagem || '',aparencia:membro.aparencia,
     passadoCriminoso:!!membro.passadoCriminoso,passadoRevelado:!!membro.passadoRevelado,
-    arma:'Nenhuma',armaBonus:0,bonusLoot:0,vida:100,vidaMax:100,fome:15,sede:15,energia:100,emExcursao:false
+    arma:'Nenhuma',armaBonus:0,bonusLoot:0,inventario:JSON.parse(JSON.stringify(membro.inventario||{armas:[],mochila:{capacidade:8,itens:[]},equipado:null,equipados:{roupas:{},armaduras:{}}})),vida:100,vidaMax:100,fome:15,sede:15,energia:100,emExcursao:false
   };
+  garantirInventario(S.player);
+  const armaNova=armaEquipada(S.player);
+  if(armaNova){S.player.arma=armaNova.nome;S.player.armaBonus=armaNova.dano||0;}
   // As relações são recalculadas para o novo líder; cada pessoa mantém seus próprios vínculos.
   for(const pessoa of S.sobreviventes) pessoa.relacao = {amizade:50,respeito:50,romance:pessoa.id === membro.parceiro ? 70 : 0};
   membro.vivo=true;
@@ -3338,14 +3502,44 @@ function render(){
   salvarJogo();
 }
 
+// O calendário usa estações de 30 dias e uma variação diária determinística.
+// Assim a temperatura não muda a cada renderização e a campanha sempre começa no verão.
+const ESTACOES_JOGO=[
+  {id:'verao',nome:'Verão',inicio:0,min:22,max:34},
+  {id:'outono',nome:'Outono',inicio:30,min:15,max:27},
+  {id:'inverno',nome:'Inverno',inicio:60,min:7,max:20},
+  {id:'primavera',nome:'Primavera',inicio:90,min:17,max:29}
+];
+function dadosEstacao(tempo=S?.tempoTotal??360){
+  const dia=Math.floor(Math.max(0,tempo)/1440),indice=Math.floor(dia/30)%ESTACOES_JOGO.length;
+  const estacao=ESTACOES_JOGO[indice],diaNaEstacao=dia%30+1;
+  return {estacao,diaNaEstacao,dia:dia+1};
+}
+function temperaturaAtual(tempo=S?.tempoTotal??360){
+  const {estacao,dia}=dadosEstacao(tempo);
+  const semente=(dia*9301+49297)%233280,variacao=(semente/233280-.5)*4;
+  const hora=((tempo%1440)+1440)%1440;
+  const ciclo=Math.cos((hora-14)/24*Math.PI*2)*4;
+  return Math.round((estacao.min+estacao.max)/2+variacao+ciclo);
+}
+function climaAtual(tempo=S?.tempoTotal??360){
+  const {estacao,dia}=dadosEstacao(tempo),bloco=Math.floor((((tempo%1440)+1440)%1440)/360);
+  const semente=(dia*92821+bloco*68917+estacao.inicio*31)%100;
+  if(semente<12)return 'Tempestade';
+  if(semente<38)return 'Chuva';
+  if(semente<68)return 'Nublado';
+  return 'Ensolarado';
+}
+
 function renderTopo(){
   const h = Math.floor((S.tempoTotal % 1440)/60);
   const m = S.tempoTotal % 60;
   const periodo = h < 6 ? 'Madrugada' : h < 12 ? 'Manhã' : h < 18 ? 'Tarde' : 'Noite';
 
+  const clima=dadosEstacao(S.tempoTotal);
   document.getElementById('tempo').innerHTML =
     `DIA ${S.dia} &nbsp;·&nbsp; ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}
-     <small>${periodo}</small>`;
+     <small>${periodo} · ${clima.estacao.nome} · dia ${clima.diaNaEstacao}/30 · ${climaAtual(S.tempoTotal)} · ${temperaturaAtual(S.tempoTotal)} °C</small>`;
 
   const r = S.recursos;
   document.getElementById('recursos').innerHTML =
@@ -3383,7 +3577,9 @@ function renderStatus(){
     <div class="statLinha"><span>Sede</span><b>${Math.round(p.sede)}</b></div>
     ${bar(p.sede, 100, '#3f7fd4')}
     <div class="statLinha" style="margin-top:10px;border-top:1px solid #2b332e;padding-top:8px">
-      <span>Arma</span><b>${p.arma}</b></div>
+      <span>Corpo a corpo</span><b>${esc(armaEquipada(p,'corpo')?.nome || 'Nenhuma')}</b></div>
+    <div class="statLinha"><span>Arma de fogo</span><b>${esc(armaEquipada(p,'fogo')?.nome || 'Nenhuma')}</b></div>
+    <div class="statLinha"><span>Proteção</span><b>${protecaoArmadura(p)}%</b></div>
     <div class="statLinha"><span>Força</span><b>${p.forca}</b></div>
     <div class="statLinha"><span>Agilidade</span><b>${p.agilidade}</b></div>
     <div class="statLinha"><span>Inteligência</span><b>${p.inteligencia}</b></div>
@@ -3411,7 +3607,7 @@ function renderBase(){
   const e=S.base.excursao;
   const ordem=S.base.ordemRadio&&ORDENS_RADIO[S.base.ordemRadio.tipo];
   const resgates=S.sobreviventes.filter(m=>m.expedicao?.tipo==='resgate');
-  document.getElementById('dadosBase').innerHTML=`<p class="notaBase"><b>${local.nome}</b> · ${S.base.instalacoes.length}/${local.slots} instalações</p>
+  document.getElementById('dadosBase').innerHTML=`<p class="notaBase"><b>${local.nome}</b> · ${S.base.instalacoes.length}/${local.slots} instalações</p>    <p class="notaBase">Saques nas proximidades: <b>${estoqueLootRestante('rua')}</b> restantes. Ao esgotar, só uma nova base renova os arredores.</p>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/barricada.png" alt=""> Barricadas</span><b>${S.base.barricadas}</b></div>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/base.png" alt=""> Defesa</span><b>${Math.round(calcularDefesa())}</b></div>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/base.png" alt=""> Moradores</span><b>${moradores()}/${capacidadeBase()}</b></div>
@@ -3683,13 +3879,33 @@ function abrirPerfilPrincipal(){
     [{texto:membro?.doenca || membro?.ferido ? 'Tratar ferimento · 1 remédio' : 'Fechar perfil',fn:()=>membro?.doenca || membro?.ferido ? iniciarTratamento(membro.id) : fecharModal()},{texto:'Usar um item da mochila',fn:()=>abrirInventario()},{texto:'Fechar perfil',fn:()=>{}}]);
 }
 
+function slotInventarioVisual(nome,item){
+  return `<div class="slotEquipamento${item?'':' vazio'}"><strong>${nome}</strong><span>${item?`${esc(item.nome)}${item.protecao?` \u00b7 ${item.protecao}%`:''}`:'Vazio'}</span></div>`;
+}
+function renderInventarioVisual(p){
+  garantirInventario(p);
+  const eq=p.inventario.equipados,armas=p.inventario.armas||[],itens=p.inventario.mochila.itens||[];
+  const armaCorpo=armaEquipada(p,'corpo'),armaFogo=armaEquipada(p,'fogo');
+  const estoqueBase=typeof garantirInventarioBase==='function'&&naBase(membroAtual())?(garantirInventarioBase().itens||[]).filter(i=>i.tipo==='muni\u00e7\u00e3o'&&i.quantidade>0):[];
+  const acao=(tipo,id)=>`<button type="button" onclick="acaoInventarioVisual('${tipo}','${esc(id)}')">${tipo==='equipar'?'Equipar':tipo==='arma'?'Equipar':'Usar'}</button>`;
+  const extra=(id)=>naBase(membroAtual())?`<div class="itemInventarioAcoes"><button type="button" onclick="acaoInventarioVisual('guardarBase','${esc(id)}')">Guardar base</button><button type="button" onclick="acaoInventarioVisual('desconstruir','${esc(id)}')">Desconstruir</button></div>`:'';
+  const cards=[...armas.map(a=>`<div class="itemInventario"><div><b>${esc(a.nome)}</b><small>${a.categoria==='fogo'?'Arma de fogo':'Arma corpo a corpo'}${a.calibre?` \u00b7 ${esc(a.calibre)}`:''} \u00b7 dano ${a.dano}${a.militar?' \u00b7 militar':''}</small></div>${acao('arma',a.id)}${extra(a.id)}</div>`),...itens.map(i=>`<div class="itemInventario"><div><b>${esc(i.nome)}</b><small>${i.tipo||'item'} \u00b7 x${i.quantidade||1}</small></div>${i.tipo==='roupa'||i.tipo==='armadura'?acao('equipar',i.id):i.tipo==='medico'||i.tipo==='mochila'?acao('usar',i.id):''}${extra(i.id)}</div>`)].join('')||'<span class="idle">A mochila est\u00e1 vazia.</span>';
+  const ammoBase=estoqueBase.map(i=>{const qtd=Math.min(10,i.quantidade);return `<div class="itemInventario"><div><b>${esc(i.nome)}</b><small>Estoque da base \u00b7 ${i.quantidade} unidades</small></div><button type="button" onclick="acaoInventarioVisual('municaoBase','${esc(i.id)}',${qtd})">Pegar ${qtd}</button></div>`;}).join('');
+  return `<div class="inventarioVisual"><div class="inventarioColuna"><h3 class="inventarioTitulo">Equipamento</h3>${slotInventarioVisual('Arma corpo a corpo',armaCorpo)}${slotInventarioVisual('Arma de fogo',armaFogo)}${slotInventarioVisual('Headwear \u00b7 cabe\u00e7a',eq.armaduras.cabeca)}${slotInventarioVisual('Peito \u00b7 armadura',eq.armaduras.torso)}${slotInventarioVisual('Peito \u00b7 roupa',eq.roupas.torso)}${slotInventarioVisual('Bra\u00e7os',eq.armaduras.bracos)}${slotInventarioVisual('Pernas \u00b7 armadura',eq.armaduras.pernas)}${slotInventarioVisual('Pernas \u00b7 roupa',eq.roupas.pernas)}${slotInventarioVisual('P\u00e9s',eq.roupas.pes)}</div><div class="inventarioCorpo"><img src="${imagemCorpo(p)}" alt="Silhueta do corpo" onerror="this.hidden=true"><div class="inventarioProtecao">Prote\u00e7\u00e3o total: <b>${protecaoArmadura(p)}%</b></div></div><div class="inventarioMochila"><div class="inventarioMochilaCabecalho"><b>Mochila</b><span>${pesoInventario(p)}/${p.inventario.mochila.capacidade}</span></div><div class="inventarioItens">${cards}</div>${ammoBase?`<h3 class="inventarioTitulo" style="margin-top:14px">Muni\u00e7\u00e3o na base</h3><div class="inventarioItens">${ammoBase}</div>`:''}<p class="inventarioLegenda">Clique em uma pe\u00e7a para equip\u00e1-la. A roupa e a armadura ocupam slots diferentes.</p></div></div>`;
+}
+function acaoInventarioVisual(tipo,id,quantidade=10){
+  const p=S.player;garantirInventario(p);
+  if(tipo==='equipar')equiparItemInventario(p,id);
+  else if(tipo==='arma')equiparArmaInventario(p,id);
+  else if(tipo==='municaoBase'&&typeof transferirMunicaoBase==='function')transferirMunicaoBase(id,quantidade);
+  else if(tipo==='guardarBase'&&typeof transferirItemParaBase==='function')transferirItemParaBase(id,quantidade);
+  else if(tipo==='desconstruir'&&typeof desconstruirItemInventario==='function')desconstruirItemInventario(id);
+  else if(tipo==='usar'&&!usarItemInventario(p,id))log('N\u00e3o foi poss\u00edvel usar esse item.','info');
+  fecharModal();render();abrirInventario();
+}
 function abrirInventario(){
-  const p=S.player;garantirInventario(p);const equipada=armaEquipada(p);
-  abrirPainel('Mochila e equipamento',`<p>Capacidade: ${pesoInventario(p)}/${p.inventario.mochila.capacidade}. Arma equipada: ${esc(equipada?.nome || 'Nenhuma')}.</p>${inventarioTexto(p)}`,[
-    ...p.inventario.mochila.itens.filter(i=>i.tipo==='medico'||i.tipo==='mochila').map(i=>({texto:`Usar ${i.nome}`,fn:()=>{if(!usarItemInventario(p,i.id))log('Não foi possível usar esse item.','info');}})),
-    ...p.inventario.armas.map(a=>({texto:`Equipar ${a.nome} · dano ${a.dano}`,fn:()=>{p.arma=a.nome;p.armaBonus=a.dano;p.inventario.equipado=a.id;log(`${esc(a.nome)} equipada.`,'bom');}})),
-    {texto:'Fechar mochila',fn:()=>{}}
-  ]);
+  const p=S.player;garantirInventario(p);
+  abrirModal('Invent\u00e1rio e equipamento',renderInventarioVisual(p),[{texto:'Fechar invent\u00e1rio',fn:()=>{}}],true);
 }
 
 function renderProgresso(){
@@ -3759,6 +3975,7 @@ function validarSave(dados){
   e.base.corteAguaDia ??= null;
   e.base.energiaCidadeRestaurada ??= false;
   e.base.aguaCidadeRestaurada ??= false;
+  e.base.estoqueLoot ??= {};
   e.base.muralHorarios ??= false;
   e.base.vagasVeiculo ??= LOCAIS_BASE[e.base.local]?.vagasVeiculo || 1;
   e.base.veiculos ??= [];
@@ -3806,8 +4023,9 @@ function validarSave(dados){
   }
   garantirInventario(e.player);
   if(![...SKILLS,'vida','vidaMax','fome','sede','energia','moral','experiencia','nivel'].every(k=>numero(e.player[k])) || !Array.isArray(e.player.perks) || !e.player.comportamento || !Object.keys(NOMES_REC).every(k=>numero(e.recursos[k])) || !['barricadas','ameaca','moral'].every(k=>numero(e.base[k]))) throw Error('Atributos inválidos.');
-  if(e.player.vidaMax <= 0 || !texto(e.player.nome) || !texto(e.player.especialidade) || !['Nenhuma','Revólver'].includes(e.player.arma) || !numero(e.player.armaBonus) || !numero(e.player.bonusLoot) || !e.player.perks.every(texto) || !imagemValida(e.player.imagem) || !comportamentoValido(e.player.comportamento)) throw Error('Protagonista inválido.');
-  if(e.acao && (!['comer','beber','perto','expedicao','excursao','localizarVeiculo','customizarVeiculo','fortificar','cacar','descansar','dormir','procurar','familia','ajudar','interacao','bebe','gerador','radio','construir','demolir','muralHorarios','procurarBase','mudarBase','planoMuro','tratarDoenca','restaurarServico'].includes(e.acao.tipo) || !numero(e.acao.fim) || !numero(e.acao.dur) || e.acao.dur === 0)) throw Error('Ação inválida.');
+  const nomesArmasValidos=new Set(['Nenhuma','Rev\uFFFDlver','Rev\u00f3lver',...Object.values(ITENS_LOOT).filter(i=>i?.tipo==='arma').map(i=>i.nome)]);
+  if(e.player.vidaMax <= 0 || !texto(e.player.nome) || !texto(e.player.especialidade) || !nomesArmasValidos.has(e.player.arma) || !numero(e.player.armaBonus) || !numero(e.player.bonusLoot) || !e.player.perks.every(texto) || !imagemValida(e.player.imagem) || !comportamentoValido(e.player.comportamento)) throw Error('Protagonista inv\u00e1lido.');
+  if(e.acao && (!['comer','beber','perto','expedicao','excursao','localizarVeiculo','customizarVeiculo','fortificar','cacar','descansar','dormir','procurar','familia','ajudar','interacao','bebe','gerador','radio','construir','craftarEquipamento','fabricarMunicao','demolir','muralHorarios','procurarBase','mudarBase','planoMuro','tratarDoenca','restaurarServico'].includes(e.acao.tipo) || !numero(e.acao.fim) || !numero(e.acao.dur) || e.acao.dur === 0)) throw Error('Ação inválida.');
   if(e.acao && !texto(e.acao.nome)) throw Error('Descrição de aviso inválida.');
   if(e.acao?.tipo === 'interacao' && (!['conversar','abracar','profunda','flertar','beijar','amor','namorar','casar','treinar','divertir','ajudar'].includes(e.acao.interacao) || !Number.isInteger(e.acao.pessoaId) || !e.sobreviventes[e.acao.pessoaId])) throw Error('Interaviso inválida.');
   if(e.acao?.tipo === 'bebe' && !ids.has(e.acao.pessoaId)) throw Error('Parceiro inválido.');

@@ -14,6 +14,16 @@ Depois, acesse `http://localhost:8000/last_days.html`.
 
 ## Changelog
 
+### 16/09/2026
+
+- Adicionados slots separados para armas corpo a corpo e armas de fogo, com catalogo de pistolas, revolveres, submetralhadoras e rifles.
+- Armas civis agora aparecem com baixa chance em saques comuns; armas de uso militar ficam restritas a bloqueios e bases militares encontrados em expedicoes longas.
+- Municao passou a ser organizada por calibre, tem peso no inventario e e consumida durante o combate. A oficina permite fabricar municao e guardar o resultado no inventario da base.
+- O inventario da base aceita transferencias do jogador, acumula itens iguais e permite retirar ou desconstruir unidades para obter materiais da comunidade.
+- Saques proximos agora possuem estoque finito: buscas repetidas podem nao render itens, a duracao das saidas dos Scavengers aumenta quando a regiao e esvaziada e mudar de base renova o estoque local.
+- O modal de inventario exibe silhueta, slots de equipamento, mochila e transferencias de municao, mantendo os equipamentos separados do inventario compartilhado.
+
+
 ### 15/09/2026
 
 - Scavengers passaram a ter ciclos variáveis: ficam fora de 3 a 6 horas e descansam de 2 a 5 horas antes da próxima saída.

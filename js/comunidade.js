@@ -23,50 +23,90 @@ const ITENS_BASE = {
   kitMedico:{nome:'Kit médico',tipo:'saúde',peso:1,desc:'Materiais básicos para primeiros socorros.'},
   pecasMecanicas:{nome:'Peças mecânicas',tipo:'manutenção',peso:2,desc:'Peças reaproveitáveis para veículos e geradores.'}
 };
-const INVENTARIO_BASE_INICIAL = [
-  {id:'gerador',quantidade:1},
-  {id:'ferramentas',quantidade:2},
-  {id:'bateria',quantidade:4},
-  {id:'lampiao',quantidade:1},
-  {id:'kitMedico',quantidade:2},
-  {id:'pecasMecanicas',quantidade:1}
+for(const [id,dados] of Object.entries(DADOS_MUNICAO||{}))ITENS_BASE[id]={nome:dados.nome,tipo:'muni\u00e7\u00e3o',peso:dados.peso,calibre:dados.calibre,desc:`Muni\u00e7\u00e3o para armas de calibre ${dados.calibre}.`};
+for(const [id,item] of Object.entries(ITENS_LOOT||{}))if(!ITENS_BASE[id])ITENS_BASE[id]={nome:item.nome,tipo:item.tipo,peso:item.peso||1,slot:item.slot,protecao:item.protecao,calibre:item.calibre,dano:item.dano,militar:item.militar,desc:item.desc||`Item guardado no estoque da base.`};
+const RECEITAS_MUNICAO={
+  ammo22:{quantidade:12,materiais:1},ammo9mm:{quantidade:12,materiais:1},ammo45:{quantidade:10,materiais:2},ammo38:{quantidade:10,materiais:1},ammo44:{quantidade:8,materiais:2},ammo50:{quantidade:6,materiais:3},ammo9x19:{quantidade:12,materiais:2},ammo45acp:{quantidade:10,materiais:2},ammo40:{quantidade:10,materiais:2},ammo22lr:{quantidade:12,materiais:1},ammo556:{quantidade:10,materiais:2},ammo762x39:{quantidade:10,materiais:2},ammo3006:{quantidade:8,materiais:2},ammo762x51:{quantidade:8,materiais:3},ammo4570:{quantidade:6,materiais:3},ammo50bmg:{quantidade:4,materiais:4}
+};
+const INVENTARIO_BASE_INICIAL=[
+  {id:'gerador',quantidade:1},{id:'ferramentas',quantidade:2},{id:'bateria',quantidade:4},{id:'lampiao',quantidade:1},{id:'kitMedico',quantidade:2},{id:'pecasMecanicas',quantidade:1},{id:'ammo22',quantidade:12},{id:'ammo38',quantidade:6}
 ];
-function inventarioBaseInicial(){
-  return {capacidade:32,itens:INVENTARIO_BASE_INICIAL.map(item=>({...ITENS_BASE[item.id],id:item.id,quantidade:item.quantidade}))};
-}
+function inventarioBaseInicial(){return {capacidade:32,itens:INVENTARIO_BASE_INICIAL.map(item=>({...ITENS_BASE[item.id],id:item.id,quantidade:item.quantidade}))};}
 function garantirInventarioBase(base=S?.base){
   if(!base)return null;
   if(!base.inventario || typeof base.inventario!=='object' || Array.isArray(base.inventario))base.inventario=inventarioBaseInicial();
   base.inventario.capacidade=Math.max(1,Math.floor(Number(base.inventario.capacidade)||32));
   if(!Array.isArray(base.inventario.itens))base.inventario.itens=[];
-  base.inventario.itens=base.inventario.itens.filter(item=>item && ITENS_BASE[item.id]).map(item=>({...ITENS_BASE[item.id],...item,id:item.id,quantidade:Math.max(0,Math.floor(Number(item.quantidade)||0))})).filter(item=>item.quantidade>0);
+  base.inventario.itens=base.inventario.itens.filter(item=>item&&ITENS_BASE[item.id]).map(item=>({...ITENS_BASE[item.id],...item,id:item.id,quantidade:Math.max(0,Math.floor(Number(item.quantidade)||0))})).filter(item=>item.quantidade>0);
   return base.inventario;
 }
-function quantidadeItemBase(id){
-  const inventario=garantirInventarioBase();
-  return inventario?.itens.find(item=>item.id===id)?.quantidade || 0;
-}
+function quantidadeItemBase(id){return garantirInventarioBase()?.itens.find(item=>item.id===id)?.quantidade||0;}
 function adicionarItemBase(id,quantidade=1){
-  const base=ITENS_BASE[id],inventario=garantirInventarioBase();
-  const qtd=Math.max(1,Math.floor(Number(quantidade)||1));
-  if(!base || !inventario)return false;
+  const base=ITENS_BASE[id],inventario=garantirInventarioBase(),qtd=Math.max(1,Math.floor(Number(quantidade)||1));
+  if(!base||!inventario)return false;
   const existente=inventario.itens.find(item=>item.id===id);
-  if(!existente && pesoInventarioBase()+(base.peso||1)*qtd>inventario.capacidade)return false;
-  if(existente){existente.quantidade+=qtd;return true;}
-  inventario.itens.push({...base,id,quantidade:qtd});return true;
+  if(!existente&&pesoInventarioBase()+(base.peso||1)*qtd>inventario.capacidade)return false;
+  if(existente)existente.quantidade+=qtd;else inventario.itens.push({...base,id,quantidade:qtd});return true;
 }
-function pesoInventarioBase(){
-  return (garantirInventarioBase()?.itens||[]).reduce((total,item)=>total+(item.peso||1)*(item.quantidade||1),0);
+function removerItemBase(id,quantidade=1){
+  const inventario=garantirInventarioBase(),item=inventario?.itens.find(x=>x.id===id),qtd=Math.max(1,Math.floor(Number(quantidade)||1));
+  if(!item||item.quantidade<qtd)return false;
+  item.quantidade-=qtd;if(item.quantidade<=0)inventario.itens=inventario.itens.filter(x=>x!==item);return true;
 }
-function inventarioBaseTexto(){
-  const inventario=garantirInventarioBase();
-  if(!inventario?.itens.length)return '<span class="idle">Inventário vazio.</span>';
-  return inventario.itens.map(item=>`<span class="itemBase"><b>${esc(item.nome)}</b> · ${item.quantidade} · ${esc(item.tipo)}</span>`).join('');
-}
+function pesoInventarioBase(){return (garantirInventarioBase()?.itens||[]).reduce((total,item)=>total+(item.peso||1)*(item.quantidade||1),0);}
+function inventarioBaseTexto(){const inventario=garantirInventarioBase();if(!inventario?.itens.length)return '<span class="idle">Invent\u00e1rio vazio.</span>';return inventario.itens.map(item=>`<span class="itemBase"><b>${esc(item.nome)}</b> \u00b7 ${item.quantidade} \u00b7 ${esc(item.tipo)}</span>`).join('');}
+function atualizarInventarioDepoisAcaoBase(){fecharModal();render();abrirInventarioBase();}
+function acaoInventarioBase(tipo,id){if(tipo==='retirar')transferirItemBase(id,1);else if(tipo==='desconstruir')desconstruirItemBase(id);atualizarInventarioDepoisAcaoBase();}
 function abrirInventarioBase(){
   const inventario=garantirInventarioBase();
-  abrirPainel('Inventário da base',`<p>Equipamentos e itens guardados para uso da comunidade. Peso: <b>${pesoInventarioBase()}/${inventario.capacidade}</b>.</p><div class="listaInventarioBase">${inventario.itens.map(item=>`<div><b>${esc(item.nome)}</b> · ${item.quantidade}<br><span>${esc(item.desc)}</span></div>`).join('') || '<p class="idle">Nenhum item armazenado.</p>'}</div>`,[{texto:'Fechar inventário',fn:()=>{}}]);
+  const receitas=Object.entries(RECEITAS_MUNICAO).filter(([id])=>ITENS_BASE[id]).map(([id,r])=>({texto:`Fabricar ${ITENS_BASE[id].nome} \u00b7 ${r.quantidade} unidades \u00b7 ${r.materiais} materiais`,fn:()=>iniciarFabricacaoMunicao(id)}));
+  const itens=inventario.itens.map(item=>`<div class="itemBase"><b>${esc(item.nome)}</b> \u00b7 ${item.quantidade}<br><span>${esc(item.desc||'Item guardado na base.')}</span><div class="itemBaseAcoes"><button type="button" onclick="acaoInventarioBase('retirar','${esc(item.id)}')">Retirar 1</button><button type="button" onclick="acaoInventarioBase('desconstruir','${esc(item.id)}')">Desconstruir 1</button></div></div>`).join('');
+  abrirPainel('Invent\u00e1rio da base',`<p>Itens guardados para a comunidade. Peso: <b>${pesoInventarioBase()}/${inventario.capacidade}</b>.</p><div class="listaInventarioBase">${itens||'<p class="idle">Nenhum item armazenado.</p>'}</div><p class="notaBase">Itens iguais acumulam quantidade. Retirar respeita o peso da mochila; desconstruir converte o item em materiais.</p>`,[...receitas,{texto:'Fechar invent\u00e1rio',fn:()=>{}}]);
 }
+function iniciarFabricacaoMunicao(id){const receita=RECEITAS_MUNICAO[id],item=ITENS_BASE[id];if(!receita||!item)return false;if(!temInstalacao('oficina')){log('Construa uma oficina para fabricar muni\u00e7\u00e3o.','info');return false;}return iniciarAcaoBase('fabricarMunicao',`Fabricar ${item.nome}`,60,5,{materiais:receita.materiais},{ammoId:id,ammoQuantidade:receita.quantidade});}
+function resolverFabricacaoMunicao(a){if(!a?.ammoId||!adicionarItemBase(a.ammoId,a.ammoQuantidade||1)){S.recursos.materiais+=RECEITAS_MUNICAO[a?.ammoId]?.materiais||0;log('O invent\u00e1rio da base est\u00e1 cheio. Os materiais foram devolvidos.','ruim');return;}log(`${a.ammoQuantidade||1} unidades de ${ITENS_BASE[a.ammoId].nome} foram fabricadas e guardadas na base.`,'bom');}
+function transferirMunicaoBase(id,quantidade=10){return transferirItemBase(id,quantidade);}
+function adicionarItemGenericoInventario(p,item,quantidade=1){
+  garantirInventario(p);const qtd=Math.max(1,Math.floor(Number(quantidade)||1));
+  if(pesoInventario(p)+(item.peso||1)*qtd>p.inventario.mochila.capacidade)return false;
+  const existente=p.inventario.mochila.itens.find(i=>i.id===item.id);if(existente)existente.quantidade=(existente.quantidade||1)+qtd;else p.inventario.mochila.itens.push({...item,quantidade:qtd});return true;
+}
+function transferirItemBase(id,quantidade=1){
+  if(!naBase(membroAtual())){log('A retirada s\u00f3 pode ser feita quando voc\u00ea est\u00e1 na base.','info');return false;}
+  const qtd=Math.max(1,Math.floor(Number(quantidade)||1)),item=ITENS_BASE[id],estoque=garantirInventarioBase(),disponivel=estoque?.itens.find(x=>x.id===id);
+  if(!item||!disponivel||disponivel.quantidade<qtd){log('N\u00e3o h\u00e1 quantidade suficiente no estoque da base.','info');return false;}
+  const player=S.player;
+  if(item.tipo==='arma'){
+    for(let n=0;n<qtd;n++)if(!adicionarItemInventario(player,id,1)){log('N\u00e3o foi poss\u00edvel retirar a arma.','info');return false;}
+  }else if(ITENS_LOOT[id]? !adicionarItemInventario(player,id,qtd) : !adicionarItemGenericoInventario(player,{...item,id},qtd)){log('A mochila n\u00e3o tem espa\u00e7o para esse item.','info');return false;}
+  removerItemBase(id,qtd);log(`${qtd} unidade(s) de ${item.nome} foram retiradas do estoque da base.`,'bom');return true;
+}
+function itemEquipadoInventario(p,id){garantirInventario(p);if(Object.values(p.inventario.equipados.armas||{}).includes(id))return true;if(p.inventario.equipado===id)return true;return Object.values(p.inventario.equipados.roupas||{}).some(i=>i?.id===id)||Object.values(p.inventario.equipados.armaduras||{}).some(i=>i?.id===id);}
+function transferirItemParaBase(id,quantidade=1){
+  if(!naBase(membroAtual())){log('O armazenamento s\u00f3 pode ser feito quando voc\u00ea est\u00e1 na base.','info');return false;}
+  const p=S.player;garantirInventario(p);const baseItem=ITENS_LOOT[id]||ITENS_BASE[id];if(!baseItem){log('Esse item n\u00e3o pode ser armazenado na base.','info');return false;}
+  const qtd=Math.max(1,Math.floor(Number(quantidade)||1));
+  if(itemEquipadoInventario(p,id)){log('Desequipe o item antes de guard\u00e1-lo ou desconstru\u00ed-lo.','info');return false;}
+  const arma=p.inventario.armas.find(a=>a.id===id),mochila=p.inventario.mochila.itens.find(i=>i.id===id),disponivel=arma?(p.inventario.armas.filter(a=>a.id===id).length):(mochila?.quantidade||0);
+  if(disponivel<qtd){log('Voc\u00ea n\u00e3o possui essa quantidade no invent\u00e1rio.','info');return false;}
+  if(!adicionarItemBase(id,qtd)){log('O invent\u00e1rio da base est\u00e1 cheio.','info');return false;}
+  if(arma){let restantes=qtd;p.inventario.armas=p.inventario.armas.filter(a=>{if(a.id===id&&restantes>0){restantes--;return false;}return true;});}
+  else{mochila.quantidade-=qtd;if(mochila.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==mochila);}
+  log(`${qtd} unidade(s) de ${baseItem.nome} foram guardadas no invent\u00e1rio da base.`,'bom');return true;
+}
+function rendimentoDesconstrucao(item){return Math.max(1,Math.floor((Number(item?.peso)||1)+(Number(item?.protecao)||0)/10+(Number(item?.dano)||0)/5));}
+function desconstruirItemBase(id){
+  if(!naBase(membroAtual())){log('A desconstru\u00e7\u00e3o s\u00f3 pode ser feita na base.','info');return false;}
+  const item=garantirInventarioBase()?.itens.find(i=>i.id===id);if(!item)return false;const ganho=rendimentoDesconstrucao(item);if(!removerItemBase(id,1))return false;S.recursos.materiais=clamp((S.recursos.materiais||0)+ganho,0,1000000000);log(`${item.nome} foi desconstru\u00eddo. +${ganho} materiais para a comunidade.`,'bom');return true;
+}
+function desconstruirItemInventario(id){
+  if(!naBase(membroAtual())){log('A desconstru\u00e7\u00e3o s\u00f3 pode ser feita na base.','info');return false;}
+  const p=S.player;garantirInventario(p);if(itemEquipadoInventario(p,id)){log('Desequipe o item antes de desconstru\u00ed-lo.','info');return false;}
+  const arma=p.inventario.armas.find(a=>a.id===id),item=arma||p.inventario.mochila.itens.find(i=>i.id===id);if(!item)return false;const ganho=rendimentoDesconstrucao(item);
+  if(arma)p.inventario.armas.splice(p.inventario.armas.indexOf(arma),1);else{item.quantidade--;if(item.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==item);}
+  S.recursos.materiais=clamp((S.recursos.materiais||0)+ganho,0,1000000000);log(`${item.nome} foi desconstru\u00eddo. +${ganho} materiais para a comunidade.`,'bom');return true;
+}
+
 const FUNCOES_NPC = {
   guarda:{nome:'Guarda',desc:'Protege o muro em turnos. Precisa estar saudável e na base.'},
   scavenger:{nome:'Scavenger',desc:'Sai por 4 horas em busca de comida, água e materiais; descansa 2 horas entre saídas. Pode voltar ferido.'},
@@ -124,7 +164,7 @@ function criarBase(local='casa', anterior={}){
   return {barricadas:2,ameaca:8,moral:60,...anterior,local,instalacoes:[],descobertas:[local],atencaoHumana:0,
     eletricidadeLigada:true,corteEletricoDia:null,aguaLigada:true,corteAguaDia:null,
     energiaCidadeRestaurada:false,aguaCidadeRestaurada:false,
-    vagasVeiculo:LOCAIS_BASE[local]?.vagasVeiculo || 1,veiculos:anterior.veiculos || [],proximoVeiculoId:anterior.proximoVeiculoId || 1,ordemRadio:anterior.ordemRadio ?? null,excursao:anterior.excursao ?? null,muralHorarios:Boolean(anterior.muralHorarios),inventario:anterior.inventario || inventarioBaseInicial(),
+    vagasVeiculo:LOCAIS_BASE[local]?.vagasVeiculo || 1,veiculos:anterior.veiculos || [],proximoVeiculoId:anterior.proximoVeiculoId || 1,ordemRadio:anterior.ordemRadio ?? null,excursao:anterior.excursao ?? null,muralHorarios:Boolean(anterior.muralHorarios),inventario:anterior.inventario || inventarioBaseInicial(),estoqueLoot:anterior.estoqueLoot || {},
     silencioAte:0,geradorAte:0,armadilhas:0,proximaArmadilha:0,proximaHorda:0};
 }
 function atualizarEletricidade(){
@@ -252,7 +292,7 @@ function abrirConstrucoes(){
     texto:`Construir ${i.nome} · ${custoTexto(i)} · ${i.dur/60}h`,fn:()=>iniciarConstrucao(id)
   }));
   abrirPainel('Construções da base',`<p>${local.nome}: <b>${S.base.instalacoes.length}/${local.slots} espaços usados</b>. Cada instalação ocupa um espaço e aumenta um pouco o movimento.</p><p class="materiaisDetalhes"><b>Estoque:</b> ${detalharMateriais(S.recursos.materiais)}. Os componentes são uma estimativa de planejamento; a contagem do jogo continua agrupada em materiais.</p><ul>${instaladas || '<li>Nenhuma instalação construída.</li>'}</ul><div class="catalogoBase">${Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([,i])=>`<p><b>${i.nome}</b><br>${i.desc}</p>`).join('')}</div>`,[
-    ...opcoes,...S.base.instalacoes.map(id=>({texto:`Desmontar ${INSTALACOES[id].nome} · 2h · recupera ${Math.floor(INSTALACOES[id].materiais/2)} materiais`,fn:()=>iniciarDemolicao(id)})),{texto:'Procurar locais e mudar de base',fn:abrirLocaisBase},{texto:'Fechar',fn:()=>{}}
+    ...opcoes,...S.base.instalacoes.map(id=>({texto:`Desmontar ${INSTALACOES[id].nome} · 2h · recupera ${Math.floor(INSTALACOES[id].materiais/2)} materiais`,fn:()=>iniciarDemolicao(id)})),{texto:'Fabricar roupas e proteções',fn:abrirCraftEquipamentos},{texto:'Procurar locais e mudar de base',fn:abrirLocaisBase},{texto:'Fechar',fn:()=>{}}
   ]);
 }
 function iniciarConstrucao(id){
@@ -309,7 +349,7 @@ function resolverMudanca(a){
   const descobertas=[...S.base.descobertas], moral=S.base.moral,inventario=garantirInventarioBase(S.base),veiculos=(S.base.veiculos||[]).slice(0,LOCAIS_BASE[a.destino].vagasVeiculo).map(v=>({...v,estado:'pronto'}));
   S.recursos.materiais+=Math.floor(materiais/2);
   S.base=criarBase(a.destino,{moral,ameaca:15,veiculos,proximoVeiculoId:(S.base.proximoVeiculoId||1),inventario});S.base.descobertas=descobertas;
-  for(const m of S.sobreviventes) m.proximaSaida=S.tempoTotal+120;
+  for(const m of S.sobreviventes) m.proximaSaida=S.tempoTotal+rnd(3,6)*60;
   log(`A comunidade se instalou em ${LOCAIS_BASE[a.destino].nome}. Recuperou ${Math.floor(materiais/2)} materiais das antigas instalações.`,'bom');
 }
 
@@ -355,9 +395,10 @@ function atualizarScavengers(){
       m.expedicao=null;const descanso=rnd(2,5)*60;m.proximaSaida=S.tempoTotal+descanso;
       const bonus=/Scavenger|Batedor|Caçador/.test(m.especialidade)?1:0;
       const feriu=Math.random()<.12+S.base.ameaca*.001;
-      const ganhos={comida:rnd(2,4)+bonus,agua:rnd(1,3)+bonus,materiais:rnd(1,3),remedios:rnd(0,1)};
+      const saqueDisponivel=reservarSaqueLocal('rua');
+      const ganhos=saqueDisponivel?{comida:rnd(2,4)+bonus,agua:rnd(1,3)+bonus,materiais:rnd(1,3),remedios:rnd(0,1)}:{};
       if(feriu){criarFerimento(m,pick(['corte','hematoma','osso']),pick(Object.keys(LOCAIS_CORPO)));ganhos.materiais=0;}
-      aplicarGanhos(ganhos);ganharExperienciaPessoa(m,2);
+      if(saqueDisponivel)aplicarGanhos(ganhos);else log(`${esc(m.nome)} voltou sem encontrar suprimentos. As proximidades j\u00e1 foram esvaziadas.`,'info');ganharExperienciaPessoa(m,2);
       S.base.ameaca=clamp(S.base.ameaca+2,0,100);
       log(`${esc(m.nome)} voltou da busca automática${feriu?' com ferimentos. Precisa de cuidados antes de sair de novo.':`. Descansará por ${descanso/60} horas.`}`,feriu?'ruim':'bom');
     }
@@ -724,6 +765,7 @@ function validarComunidade(e){
   if(!Array.isArray(b.veiculos) || !Number.isInteger(b.vagasVeiculo) || b.vagasVeiculo<1 || b.veiculos.length>b.vagasVeiculo || !Number.isInteger(b.proximoVeiculoId) || b.veiculos.some(v=>!v || typeof v.id!=='string' || typeof v.nome!=='string' || !['suv','caminhonete','quatroPortas','duasPortas'].includes(v.tipo) || !numero(v.capacidade) || v.capacidade<1 || !numero(v.combustivel) || !numero(v.carga) || !numero(v.velocidade) || !Array.isArray(v.customizacoes) || v.customizacoes.some(c=>!['portaMalas','suspensao','blindagem','tanque'].includes(c)) || !['pronto','em excursão'].includes(v.estado)))throw Error('Garagem da base inválida.');
   if(b.ordemRadio && (!ORDENS_RADIO[b.ordemRadio.tipo] || !Number.isInteger(b.ordemRadio.inicio) || !Number.isInteger(b.ordemRadio.fim) || !Number.isInteger(b.ordemRadio.ultimoDia)))throw Error('Ordem de rádio inválida.');
   if(b.excursao && (!['a caminho','no local','retornando'].includes(b.excursao.status) || typeof b.excursao.alvoId!=='string' || !Array.isArray(b.excursao.participantes) || !Array.isArray(b.excursao.veiculos) || !numero(b.excursao.chegada) || !numero(b.excursao.localFim) || !numero(b.excursao.retorno)))throw Error('Excursão inválida.');
+  if(!b.estoqueLoot || typeof b.estoqueLoot!=='object' || Array.isArray(b.estoqueLoot) || Object.values(b.estoqueLoot).some(v=>!Number.isInteger(v)||v<0||v>1000000))throw Error('Estoque de saque inv\u00e1lido.');
   if(!['atencaoHumana','silencioAte','geradorAte','armadilhas','proximaArmadilha','proximaHorda'].every(k=>numero(b[k])) || typeof b.eletricidadeLigada!=='boolean' || typeof b.aguaLigada!=='boolean' || typeof b.energiaCidadeRestaurada!=='boolean' || typeof b.aguaCidadeRestaurada!=='boolean' || typeof b.muralHorarios!=='boolean' || (b.muralHorarios && !b.instalacoes.includes('radio')) || (b.corteEletricoDia!==null && !Number.isInteger(b.corteEletricoDia)) || (b.corteAguaDia!==null && !Number.isInteger(b.corteAguaDia)) || b.armadilhas>9 || b.atencaoHumana>100 || b.ameaca>100)throw Error('Pressão da base inválida.');
   if(!e.comunidade || !numero(e.comunidade.ultimoDiaDoenca) || !numero(e.comunidade.ultimoEvento))throw Error('Rotina da comunidade inválida.');
   for(const m of e.familia.membros){
@@ -737,6 +779,8 @@ function validarComunidade(e){
   }
   const a=e.acao;
   if(a?.tipo==='construir' && (!INSTALACOES[a.obra] || a.localOrigem!==b.local || b.instalacoes.includes(a.obra) || b.instalacoes.length>=LOCAIS_BASE[b.local].slots))throw Error('Construção em andamento inválida.');
+  if(a?.tipo==='craftarEquipamento' && !RECEITAS_EQUIPAMENTO[a.itemId])throw Error('Fabricação inválida.');
+  if(a?.tipo==='fabricarMunicao' && !RECEITAS_MUNICAO[a.ammoId])throw Error('Fabricação de munição inválida.');
   if(a?.tipo==='demolir' && (!b.instalacoes.includes(a.obra) || (a.obra==='alojamento' && moradores(e)+(e.familia.gravidez?1:0)>capacidadeBase(e)-2)))throw Error('Desmontagem inválida.');
   if(a?.tipo==='mudarBase' && (!LOCAIS_BASE[a.destino] || !b.descobertas.includes(a.destino) || moradores(e)+(e.familia.gravidez?1:0)>LOCAIS_BASE[a.destino].capacidade))throw Error('Mudança inválida.');
   if(a?.tipo==='planoMuro' && !PLANOS_MURO[a.plano])throw Error('Plano do muro inválido.');
