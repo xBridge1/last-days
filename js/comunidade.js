@@ -24,7 +24,7 @@ const ITENS_BASE = {
   pecasMecanicas:{nome:'Peças mecânicas',tipo:'manutenção',peso:2,desc:'Peças reaproveitáveis para veículos e geradores.'}
 };
 for(const [id,dados] of Object.entries(DADOS_MUNICAO||{}))ITENS_BASE[id]={nome:dados.nome,tipo:'muni\u00e7\u00e3o',peso:dados.peso,calibre:dados.calibre,desc:`Muni\u00e7\u00e3o para armas de calibre ${dados.calibre}.`};
-for(const [id,item] of Object.entries(ITENS_LOOT||{}))if(!ITENS_BASE[id])ITENS_BASE[id]={nome:item.nome,tipo:item.tipo,peso:item.peso||1,slot:item.slot,protecao:item.protecao,calibre:item.calibre,dano:item.dano,militar:item.militar,desc:item.desc||`Item guardado no estoque da base.`};
+for(const [id,item] of Object.entries(ITENS_LOOT||{}))if(!ITENS_BASE[id])ITENS_BASE[id]={nome:item.nome,tipo:item.tipo,peso:item.peso||1,slot:item.slot,protecao:item.protecao,calibre:item.calibre,dano:item.dano,militar:item.militar,categoria:item.categoria,capacidade:item.capacidade,efeito:item.efeito,isolamento:item.isolamento,material:item.material,civil:item.civil,desc:item.desc||`Item guardado no estoque da base.`};
 const RECEITAS_MUNICAO={
   ammo22:{quantidade:12,materiais:1},ammo9mm:{quantidade:12,materiais:1},ammo45:{quantidade:10,materiais:2},ammo38:{quantidade:10,materiais:1},ammo44:{quantidade:8,materiais:2},ammo50:{quantidade:6,materiais:3},ammo9x19:{quantidade:12,materiais:2},ammo45acp:{quantidade:10,materiais:2},ammo40:{quantidade:10,materiais:2},ammo22lr:{quantidade:12,materiais:1},ammo556:{quantidade:10,materiais:2},ammo762x39:{quantidade:10,materiais:2},ammo3006:{quantidade:8,materiais:2},ammo762x51:{quantidade:8,materiais:3},ammo4570:{quantidade:6,materiais:3},ammo50bmg:{quantidade:4,materiais:4}
 };
@@ -81,16 +81,31 @@ function transferirItemBase(id,quantidade=1){
   }else if(ITENS_LOOT[id]? !adicionarItemInventario(player,id,qtd) : !adicionarItemGenericoInventario(player,{...item,id},qtd)){log('A mochila n\u00e3o tem espa\u00e7o para esse item.','info');return false;}
   removerItemBase(id,qtd);log(`${qtd} unidade(s) de ${item.nome} foram retiradas do estoque da base.`,'bom');return true;
 }
-function itemEquipadoInventario(p,id){garantirInventario(p);if(Object.values(p.inventario.equipados.armas||{}).includes(id))return true;if(p.inventario.equipado===id)return true;return Object.values(p.inventario.equipados.roupas||{}).some(i=>i?.id===id)||Object.values(p.inventario.equipados.armaduras||{}).some(i=>i?.id===id);}
+function quantidadeEquipadaInventario(p,id){
+  garantirInventario(p);const eq=p.inventario.equipados;
+  return Object.values(eq.armas||{}).filter(valor=>valor===id).length
+    + (eq.mochila?.id===id ? 1 : 0)
+    + Object.values(eq.roupas||{}).filter(item=>item?.id===id).length
+    + Object.values(eq.armaduras||{}).filter(item=>item?.id===id).length;
+}
+function itemEquipadoInventario(p,id){return quantidadeEquipadaInventario(p,id)>0;}
 function transferirItemParaBase(id,quantidade=1){
   if(!naBase(membroAtual())){log('O armazenamento s\u00f3 pode ser feito quando voc\u00ea est\u00e1 na base.','info');return false;}
   const p=S.player;garantirInventario(p);const baseItem=ITENS_LOOT[id]||ITENS_BASE[id];if(!baseItem){log('Esse item n\u00e3o pode ser armazenado na base.','info');return false;}
   const qtd=Math.max(1,Math.floor(Number(quantidade)||1));
-  if(itemEquipadoInventario(p,id)){log('Desequipe o item antes de guard\u00e1-lo ou desconstru\u00ed-lo.','info');return false;}
-  const arma=p.inventario.armas.find(a=>a.id===id),mochila=p.inventario.mochila.itens.find(i=>i.id===id),disponivel=arma?(p.inventario.armas.filter(a=>a.id===id).length):(mochila?.quantidade||0);
+  const armas=p.inventario.armas.filter(a=>a.id===id),mochila=p.inventario.mochila.itens.find(i=>i.id===id);
+  const quantidadeTotal=armas.length+(mochila?.quantidade||0),disponivel=quantidadeTotal-quantidadeEquipadaInventario(p,id);
   if(disponivel<qtd){log('Voc\u00ea n\u00e3o possui essa quantidade no invent\u00e1rio.','info');return false;}
   if(!adicionarItemBase(id,qtd)){log('O invent\u00e1rio da base est\u00e1 cheio.','info');return false;}
-  if(arma){let restantes=qtd;p.inventario.armas=p.inventario.armas.filter(a=>{if(a.id===id&&restantes>0){restantes--;return false;}return true;});}
+  if(armas.length){
+    let restantes=qtd,manterEquipadas=quantidadeEquipadaInventario(p,id);
+    p.inventario.armas=p.inventario.armas.filter(a=>{
+      if(a.id!==id)return true;
+      if(manterEquipadas>0){manterEquipadas--;return true;}
+      if(restantes>0){restantes--;return false;}
+      return true;
+    });
+  }
   else{mochila.quantidade-=qtd;if(mochila.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(i=>i!==mochila);}
   log(`${qtd} unidade(s) de ${baseItem.nome} foram guardadas no invent\u00e1rio da base.`,'bom');return true;
 }
@@ -125,22 +140,74 @@ const DOENCAS = {
   infeccao:{nome:'Infecção de ferimento',porHora:2.6,recuperacao:960,sistemica:true}
 };
 const TIPOS_FERIMENTO={
-  corte:{nome:'Corte normal',gravidade:'leve',dano:2,recuperacao:240},
-  corteProfundo:{nome:'Corte profundo',gravidade:'grave',dano:5,recuperacao:720},
-  ralado:{nome:'Ralado',gravidade:'leve',dano:1,recuperacao:160},
-  hematoma:{nome:'Hematoma',gravidade:'leve',dano:1,recuperacao:200},
-  osso:{nome:'Osso quebrado',gravidade:'grave',dano:4,recuperacao:1440},
-  mordida:{nome:'Mordida',gravidade:'grave',dano:8,recuperacao:960}
+  corte:{nome:'Corte normal',gravidade:'leve',dano:2,recuperacao:2880},
+  corteProfundo:{nome:'Corte profundo',gravidade:'grave',dano:5,recuperacao:10080},
+  ralado:{nome:'Ralado',gravidade:'leve',dano:1,recuperacao:4320},
+  hematoma:{nome:'Hematoma',gravidade:'leve',dano:1,recuperacao:10080},
+  osso:{nome:'Osso quebrado',gravidade:'grave',dano:4,recuperacao:60480},
+  mordida:{nome:'Mordida',gravidade:'grave',dano:8,recuperacao:30240}
 };
-const LOCAIS_CORPO={cabeca:'Cabeça',torax:'Tórax',braco:'Braço',mao:'Mão',perna:'Perna',pe:'Pé'};
-function statusGravidade(v){return v>=70?'grave':v>=35?'médio':'leve';}
+const LOCAIS_CORPO={cabeca:'Cabe&ccedil;a',torax:'T&oacute;rax',braco:'Bra&ccedil;o',mao:'M&atilde;o',perna:'Perna',pe:'P&eacute;',abdomen:'Abdomen',pescoco:'Pescoco',coxa:'Coxa'};
+function statusGravidade(v){return v>=70?'grave':v>=35?'medio':'leve';}
+function normalizarGravidade(valor){
+  const texto=String(valor||'').toLowerCase();
+  if(texto==='grave')return 'grave';
+  if(texto==='leve')return 'leve';
+  if(texto==='medio'||(texto.startsWith('m')&&texto.endsWith('dio')))return 'medio';
+  return 'leve';
+}
+function gravidadeValida(valor){
+  const texto=String(valor||'').toLowerCase();
+  return texto==='leve'||texto==='grave'||texto==='medio'||(texto.startsWith('m')&&texto.endsWith('dio'));
+}
+function rotuloGravidade(valor){
+  const nivel=normalizarGravidade(valor);
+  return nivel==='medio'?'m&eacute;dio':nivel;
+}
 function imagemCorpo(m){
   return m?.genero==='feminino'?'assets/UI/body_feminino.png':'assets/UI/body_masculino.png';
 }
+const DECALQUES_FERIMENTO={
+  corte:'ferimento-corte-leve',corteProfundo:'ferimento-corte-profundo',ralado:'ferimento-ralado',
+  hematoma:'ferimento-hematoma',osso:'ferimento-osso-quebrado',mordida:'ferimento-mordida',infeccao:'ferimento-infeccao'
+};
+const REGIOES_FERIMENTO={
+  cabeca:['cabeca'],torax:['torax'],abdomen:['abdomen'],pescoco:['pescoco'],
+  braco:['braco-direito','braco-esquerdo'],mao:['mao-direita','mao-esquerda'],
+  perna:['perna-direita','perna-esquerda'],coxa:['coxa-direita','coxa-esquerda'],pe:['pe-direito','pe-esquerdo']
+};
+const DECALQUES_DOENCA={febre:'doenca-gripe',gripe:'doenca-gripe',virose:'doenca-virose',pesteRoxa:'doenca-peste-roxa',intoxicacao:'doenca-virose',infeccao:'ferimento-infeccao'};
+function decalqueFerimento(f){
+  if(!f)return DECALQUES_FERIMENTO.corte;
+  if(f.tipo==='corte')return f.gravidade==='grave'?'ferimento-corte-grave':normalizarGravidade(f.gravidade)==='medio'?'ferimento-corte-medio':'ferimento-corte-leve';
+  return DECALQUES_FERIMENTO[f.tipo]||DECALQUES_FERIMENTO.corte;
+}
+function regiaoFerimento(f,index=0){
+  const opcoes=REGIOES_FERIMENTO[f?.local]||REGIOES_FERIMENTO.torax;
+  return opcoes[index%opcoes.length];
+}
+function localFerimentoTexto(m,f){
+  const indice=Math.max(0,(m?.ferimentos||[]).indexOf(f));
+  const regiao=regiaoFerimento(f,indice);
+  const lado=regiao.endsWith('-direito')?' direito':regiao.endsWith('-esquerdo')?' esquerdo':'';
+  return (LOCAIS_CORPO[f?.local]||f?.local||'corpo')+lado;
+}
+function formatarTempoRecuperacao(minutos){
+  const total=Math.max(0,Math.ceil(Number(minutos)||0)),dias=Math.floor(total/1440),horas=Math.ceil((total%1440)/60);
+  if(dias)return dias+' dia'+(dias===1?'':'s')+(horas?' e '+horas+'h':'');
+  return Math.max(1,horas)+'h';
+}
+function mapaCorporal(m){
+  const ferimentos=(m?.ferimentos||[]).filter(Boolean);
+  const regioes=ferimentos.map((f,i)=>'<img class="mapaRegiao" src="assets/UI/regioes/'+regiaoFerimento(f,i)+'.png" alt="" aria-hidden="true" onerror="this.hidden=true">').join('');
+  const tipos=ferimentos.map(f=>'<img class="decalqueMini" src="assets/UI/decalques/'+decalqueFerimento(f)+'.png" alt="'+(TIPOS_FERIMENTO[f.tipo]?.nome||'Ferimento')+'" title="'+(TIPOS_FERIMENTO[f.tipo]?.nome||'Ferimento')+'" onerror="this.hidden=true">').join('');
+  const doenca=m?.doenca?.tipo&&DECALQUES_DOENCA[m.doenca.tipo]?'<img class="decalqueMini" src="assets/UI/decalques/'+DECALQUES_DOENCA[m.doenca.tipo]+'.png" alt="'+(DOENCAS[m.doenca.tipo]?.nome||'Doenca')+'" title="'+(DOENCAS[m.doenca.tipo]?.nome||'Doenca')+'" onerror="this.hidden=true">':'';
+  return '<div class="mapaCorporalColuna"><div class="mapaCorporal"><img class="mapaCorporalBase" src="'+imagemCorpo(m)+'" alt="Mapa corporal" onerror="this.hidden=true">'+regioes+'</div>'+(tipos||doenca?'<div class="mapaDecalques" aria-label="Decalques de saude">'+tipos+doenca+'</div>':'')+'</div>';
+}
 function criarFerimento(m,tipo='corte',local='braco',gravidade=null){
   const base=TIPOS_FERIMENTO[tipo]||TIPOS_FERIMENTO.corte;
-  const nivel=gravidade||base.gravidade;
-  const intensidade=nivel==='grave'?75:nivel==='médio'?50:25;
+  const nivel=normalizarGravidade(gravidade||base.gravidade);
+  const intensidade=nivel==='grave'?75:nivel==='medio'?50:25;
   const f={tipo,local,gravidade:nivel,intensidade,intensidadeInicial:intensidade,inicio:S.tempoTotal,ultimoAvanco:S.tempoTotal,recuperacao:base.recuperacao,repousoNecessario:base.recuperacao,repousoAcumulado:0,tratado:false,riscoMorte:nivel==='grave',fim:S.tempoTotal+base.recuperacao};
   m.ferimentos=m.ferimentos||[];m.ferimentos.push(f);m.ferido=true;return f;
 }
@@ -371,7 +438,7 @@ function atribuirFuncao(i,tarefa){
 function situacaoNPC(m){
   const ferimento=piorFerimento(m);
   if(m.doenca) return `<span class="saudeRuim">${DOENCAS[m.doenca.tipo].nome} · corpo todo afetado · gravidade ${Math.ceil(m.doenca.gravidade)}% · recuperação ${Math.max(0,Math.ceil((m.doenca.fim-S.tempoTotal)/60))}h</span>`;
-  if(ferimento){const estado=ferimento.tratado?'tratado · repouso necessário':'risco ativo · precisa de tratamento';const restante=ferimento.repousoNecessario?Math.max(0,Math.ceil((ferimento.repousoNecessario-(ferimento.repousoAcumulado||0))/60)):Math.max(0,Math.ceil((ferimento.fim-S.tempoTotal)/60));return `<span class="saudeRuim">${TIPOS_FERIMENTO[ferimento.tipo].nome} · ${LOCAIS_CORPO[ferimento.local]} · ${ferimento.gravidade} · ${estado} · repouso restante ${restante}h</span>`;}
+  if(ferimento){const tratado=Boolean(ferimento.tratado),estado=tratado?'Tratado &middot; risco controlado':'Risco ativo &middot; precisa de tratamento';const restante=ferimento.repousoNecessario?Math.max(0,Math.ceil((ferimento.repousoNecessario-(ferimento.repousoAcumulado||0))/60)):Math.max(0,Math.ceil((ferimento.fim-S.tempoTotal)/60));return '<span class="'+(tratado?'saudeTratado':'saudeRuim')+'">'+(TIPOS_FERIMENTO[ferimento.tipo]?.nome||'Ferimento')+' &middot; '+localFerimentoTexto(m,ferimento)+' &middot; '+rotuloGravidade(ferimento.gravidade)+' &middot; '+estado+' &middot; recupera&ccedil;&atilde;o restante '+formatarTempoRecuperacao(restante*60)+'; repouso obrigat&oacute;rio</span>';}
   if(m.expedicao)return `Fora da base · volta em ${Math.max(0,m.expedicao.fim-S.tempoTotal)} min`;
   if(m.tarefa==='scavenger' && m.proximaSaida>S.tempoTotal)return `Descansando · próxima saída em ${Math.max(0,Math.ceil((m.proximaSaida-S.tempoTotal)/60))}h`;
   if(S.base.muralHorarios && !horarioMuralAtivo(m))return `Fora do turno · ${nomeHorarioMural(m)}`;
@@ -494,8 +561,8 @@ function resolverTratamento(a){
 function abrirSaude(){
   const pacientes=S.familia.membros.filter(m=>naBase(m) && (m.doenca || m.ferido));
   const medicos=S.sobreviventes.filter(m=>m.tarefa==='medico' && aptoTrabalho(m)).length;
-  abrirPainel('Saúde da comunidade',`<p><b>${medicos} médico(s) disponível(is)</b> · ${S.recursos.remedios} remédios · ${temInstalacao('enfermaria')?'enfermaria pronta':'sem enfermaria'}</p><p>Doenças sistêmicas afetam o corpo todo. Ferimentos mostram o local atingido. O tratamento reduz o tempo de recuperação e elimina o risco de morte, mas o repouso continua obrigatório.</p>${pacientes.map(m=>`<div class="cartaoSaude"><img src="${imagemCorpo(m)}" alt="Mapa corporal de ${esc(m.nome)}"><p><b>${esc(m.nome)}</b><br>${situacaoNPC(m)}</p></div>`).join('') || '<p>Ninguém precisa de cuidados agora.</p>'}`,[
-    ...pacientes.map(m=>({texto:`Tratar ${m.nome} · 1 remédio · 1h`,fn:()=>iniciarTratamento(m.id)})),
+  abrirPainel('Saúde da comunidade',`<p><b>${medicos} médico(s) disponível(is)</b> · ${S.recursos.remedios} remédios · ${temInstalacao('enfermaria')?'enfermaria pronta':'sem enfermaria'}</p><p>Doenças sistêmicas afetam o corpo todo. Ferimentos mostram o local atingido. O tratamento reduz o tempo de recuperação e elimina o risco de morte, mas o repouso continua obrigatório.</p>${pacientes.map(m=>`<div class="cartaoSaude">${mapaCorporal(m)}<p><b>${esc(m.nome)}</b><br>${situacaoNPC(m)}</p></div>`).join('') || '<p>Ninguém precisa de cuidados agora.</p>'}`,[
+    ...pacientes.map(m=>{const pendente=Boolean(m.doenca)||(m.ferimentos||[]).some(f=>!f.tratado);const f=piorFerimento(m);const restante=f?.repousoNecessario?Math.max(0,Math.ceil((f.repousoNecessario-(f.repousoAcumulado||0))/60)):0;return {texto:pendente?'Tratar '+m.nome+' - 1 remedio - 1h':'Tratado - repouso '+formatarTempoRecuperacao(restante*60),fn:pendente?()=>iniciarTratamento(m.id):()=>{},disabled:!pendente};}),
     {texto:'Ver funções do grupo',fn:abrirGrupo},{texto:'Fechar',fn:()=>{}}
   ]);
 }
@@ -770,11 +837,11 @@ function validarComunidade(e){
   if(!e.comunidade || !numero(e.comunidade.ultimoDiaDoenca) || !numero(e.comunidade.ultimoEvento))throw Error('Rotina da comunidade inválida.');
   for(const m of e.familia.membros){
     if(!Array.isArray(m.ferimentos))m.ferimentos=[];
-    for(const f of m.ferimentos){f.intensidadeInicial ??= f.intensidade;f.repousoNecessario ??= f.recuperacao;f.repousoAcumulado ??= 0;f.tratado ??= false;f.riscoMorte ??= f.gravidade==='grave';}
+    for(const f of m.ferimentos){f.gravidade=normalizarGravidade(f.gravidade);f.intensidadeInicial ??= f.intensidade;f.repousoNecessario ??= f.recuperacao;f.repousoAcumulado ??= 0;f.tratado ??= false;f.riscoMorte ??= f.gravidade==='grave';}
     if(!numero(m.proximaSaida) || !numero(m.proximoAtendimento))throw Error('Horários de trabalho inválidos.');
     const d=m.doenca,x=m.expedicao;
     if(d && (!DOENCAS[d.tipo] || !numero(d.gravidade) || d.gravidade>100 || !numero(d.ultimoAvanco) || !numero(d.aviso) || !numero(d.fim)))throw Error('Doença inválida.');
-    if(!Array.isArray(m.ferimentos) || m.ferimentos.some(f=>!TIPOS_FERIMENTO[f.tipo] || !LOCAIS_CORPO[f.local] || !['leve','médio','grave'].includes(f.gravidade) || !numero(f.intensidade) || f.intensidade>100 || !numero(f.intensidadeInicial) || f.intensidadeInicial>100 || !numero(f.inicio) || !numero(f.fim) || !numero(f.repousoNecessario) || f.repousoNecessario<1 || !numero(f.repousoAcumulado) || f.repousoAcumulado>f.repousoNecessario || typeof f.tratado!=='boolean' || typeof f.riscoMorte!=='boolean'))throw Error('Ferimento inválido.');
+    if(!Array.isArray(m.ferimentos) || m.ferimentos.some(f=>!TIPOS_FERIMENTO[f.tipo] || !LOCAIS_CORPO[f.local] || !gravidadeValida(f.gravidade) || !numero(f.intensidade) || f.intensidade>100 || !numero(f.intensidadeInicial) || f.intensidadeInicial>100 || !numero(f.inicio) || !numero(f.fim) || !numero(f.repousoNecessario) || f.repousoNecessario<1 || !numero(f.repousoAcumulado) || f.repousoAcumulado>f.repousoNecessario || typeof f.tratado!=='boolean' || typeof f.riscoMorte!=='boolean'))throw Error('Ferimento inválido.');
     if(x && (!numero(x.inicio) || !numero(x.fim) || x.fim<x.inicio || (x.tipo==='resgate' ? typeof x.alvoNome!=='string' : m.tarefa!=='scavenger')))throw Error('Saída de scavenger inválida.');
   }
   const a=e.acao;

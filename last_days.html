@@ -422,6 +422,7 @@ body{
 .modalBox h2{
   color:#e4eae5; font-size:20px; margin-bottom:12px; letter-spacing:1px;
 }
+.modalBox{scrollbar-gutter:stable}.modalBox::-webkit-scrollbar{width:8px}.modalBox::-webkit-scrollbar-thumb{background:#3a211f;border-radius:4px}.modalBox h2{line-height:1.3;overflow-wrap:anywhere}.modalOps{display:grid;gap:8px}.modalOps button{margin-bottom:0}.modalOps button:disabled{opacity:.42;cursor:not-allowed;transform:none}.modalOps button:disabled:hover{background:var(--painel2);border-color:var(--borda)}
 .modalBox p{ color:#a9b5ac; font-size:14px; line-height:1.7; margin-bottom:20px; }
 .modalOps button{
   display:block; width:100%; text-align:left; font-family:inherit;
@@ -470,13 +471,26 @@ body{
 .servicosBase{margin-top:9px;padding-top:8px;border-top:1px solid #2b332e;font-size:12px}
 .servicoStatus{display:flex;align-items:center;gap:4px;margin-top:5px}
 .listaInventarioBase{display:grid;gap:8px;margin-top:10px}.listaInventarioBase div{padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:#0f1311;font-size:12px}.listaInventarioBase span,.itemBase{color:var(--txt2);font-size:11px}.itemBase{display:block;margin-top:4px}.itemBaseAcoes{display:flex;gap:6px;margin-top:7px}.itemBaseAcoes button{padding:4px 7px;border:1px solid #713939;border-radius:4px;background:#241617;color:#e3b3b3;cursor:pointer;font:inherit;font-size:10px}.itemBaseAcoes button:hover{background:#3a1f1f;border-color:#ad5555}
-.saudeRuim{color:#df895d}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
-.cartaoSaude{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;border-top:1px solid var(--borda);padding:8px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{margin:0}
+.saudeRuim{color:#df895d}.saudeRuim,.saudeTratado{display:block;line-height:1.55;overflow-wrap:anywhere}.saudeTratado{color:#70c98a;font-weight:600}.mapaCorporalColuna{display:flex;flex-direction:column;align-items:center;gap:4px;width:90px}.mapaCorporal{position:relative;width:90px;height:120px;overflow:hidden;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.mapaCorporalBase,.mapaRegiao{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.mapaCorporalBase{z-index:1}.mapaRegiao{z-index:2;opacity:.5;mix-blend-mode:screen}.mapaDecalques{display:flex;justify-content:center;gap:3px;min-height:24px}.decalqueMini{width:22px!important;height:28px!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:0!important}.cartaoSaude .mapaCorporalBase,.cartaoSaude .mapaRegiao{object-fit:fill;border:0;background:transparent}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
+.cartaoSaude{display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px;align-items:start;border-top:1px solid var(--borda);padding:12px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{min-width:0;margin:0;padding:10px 12px;background:#171c19;border:1px solid #303b34;border-radius:6px;line-height:1.55;overflow-wrap:anywhere}
 .notaBase{font-size:11px;color:var(--txt2);line-height:1.5;margin:8px 0}
 .conhecimentosApocalipse{display:grid;gap:7px;margin:8px 0}.conhecimentoApocalipse{display:block;padding:8px 9px;border:1px solid #4b3434;border-radius:5px;background:#171211}.conhecimentoApocalipse b{display:block;color:#dca3a3;font-size:12px}.conhecimentoApocalipse small{display:block;margin-top:3px;color:var(--txt2);font-size:11px;line-height:1.45}
 .listaHorarios{display:grid;gap:6px;margin:10px 0}.linhaHorario{display:flex;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:var(--painel2);font-size:12px}.linhaHorario span{color:var(--txt2);text-align:right}
 .materiaisDetalhes{font-size:12px;color:#b6c2b8;line-height:1.6;padding:8px 10px;border-left:3px solid #8b1a1a;background:#1a1d1b}
 .modalBox.inventarioBox{max-width:980px}.inventarioVisual{display:grid;grid-template-columns:minmax(150px,1fr) 210px minmax(220px,1.25fr);gap:14px;align-items:stretch}.inventarioColuna{display:grid;gap:8px;align-content:start}.inventarioTitulo{margin:0 0 4px;color:#dca3a3;font-size:12px;letter-spacing:1px;text-transform:uppercase}.slotEquipamento{min-height:54px;padding:8px;border:1px solid #4b3434;border-radius:6px;background:linear-gradient(135deg,#191b19,#111412);font-size:11px}.slotEquipamento strong{display:block;color:#c7d1c9;font-size:10px;text-transform:uppercase;letter-spacing:.8px}.slotEquipamento span{display:block;margin-top:6px;color:#e4eae5;line-height:1.35}.slotEquipamento.vazio span{color:#68746b;font-style:italic}.inventarioCorpo{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:340px;padding:8px;border:1px solid #4b3434;border-radius:7px;background:radial-gradient(circle at center,#202722,#101310 70%)}.inventarioCorpo img{width:100%;height:300px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}.inventarioProtecao{margin-top:4px;color:#e5c56b;font-size:12px;text-align:center}.inventarioMochila{min-height:340px;padding:10px;border:1px solid #4b3434;border-radius:7px;background:#0f1311}.inventarioMochilaCabecalho{display:flex;justify-content:space-between;gap:8px;color:#dbe3dc;font-size:12px;border-bottom:1px solid #2b332e;padding-bottom:8px;margin-bottom:8px}.inventarioItens{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:7px;max-height:310px;overflow:auto}.itemInventario{display:flex;flex-direction:column;justify-content:space-between;gap:7px;min-height:64px;padding:8px;border:1px solid #303b34;border-radius:5px;background:#171c19;color:#bdc9bf;font-size:11px}.itemInventario b{display:block;color:#e4eae5;font-size:11px;line-height:1.3}.itemInventario small{color:#89958c}.itemEquipado{display:block;padding:5px 4px;border:1px solid #6f5930;border-radius:4px;background:#272014;color:#e5c56b;text-align:center;font-size:10px}.itemInventario button{width:100%;padding:5px 4px;border:1px solid #713939;border-radius:4px;background:#241617;color:#e3b3b3;cursor:pointer;font:inherit;font-size:10px}.itemInventario button:hover{background:#3a1f1f;border-color:#ad5555}.itemInventarioAcoes{display:flex;gap:5px}.itemInventarioAcoes button{font-size:9px;padding:4px 3px}.inventarioLegenda{margin:9px 0 0;color:#89958c;font-size:11px;line-height:1.45}@media(max-width:760px){.inventarioVisual{grid-template-columns:1fr 1fr}.inventarioCorpo{grid-column:1 / -1;grid-row:1}.inventarioColuna{grid-row:2}.inventarioMochila{grid-column:1 / -1;grid-row:3}}@media(max-width:460px){.inventarioVisual{display:flex;flex-direction:column}.inventarioCorpo{order:-1}.inventarioCorpo img{height:250px}.inventarioItens{max-height:none}}
+</style>
+
+<style>
+@media(max-width:600px){
+  #modal{padding:10px}
+  .modalBox{padding:18px;max-height:calc(100vh - 20px);border-radius:8px}
+  .modalBox h2{font-size:18px}
+  .modalBox p{font-size:13px;line-height:1.6}
+  .modalOps button{padding:11px 12px;font-size:13px}
+  .cartaoSaude{grid-template-columns:78px minmax(0,1fr);gap:9px}
+  .cartaoSaude img,.mapaCorporal{width:78px;height:112px}
+  .cartaoSaude p{padding:9px;font-size:12px}
+}
 </style>
 </head>
 <body>
@@ -2450,6 +2464,13 @@ function garantirInventario(p){
   if(!p.inventario.equipados || typeof p.inventario.equipados!=='object' || Array.isArray(p.inventario.equipados))p.inventario.equipados={roupas:{},armaduras:{}};
   p.inventario.equipados.roupas=(p.inventario.equipados.roupas && typeof p.inventario.equipados.roupas==='object' && !Array.isArray(p.inventario.equipados.roupas))?p.inventario.equipados.roupas:{};
   p.inventario.equipados.armaduras=(p.inventario.equipados.armaduras && typeof p.inventario.equipados.armaduras==='object' && !Array.isArray(p.inventario.equipados.armaduras))?p.inventario.equipados.armaduras:{};
+  if(!Object.prototype.hasOwnProperty.call(p.inventario.equipados,'mochila'))p.inventario.equipados.mochila=null;
+  // Saves antigos aumentavam a capacidade e removiam a mochila. Preserve essa informacao visualmente.
+  if(!Number.isFinite(Number(p.inventario.mochila.capacidadeBase))){
+    const capacidadeAtual=Number(p.inventario.mochila.capacidade)||8;
+    p.inventario.mochila.capacidadeBase=8;
+    if(!p.inventario.equipados.mochila && capacidadeAtual>8)p.inventario.equipados.mochila={id:'mochila-legado',nome:'Mochila equipada',tipo:'mochila',peso:0,capacidade:capacidadeAtual-8};
+  }
   if(!p.inventario.equipados.armas || typeof p.inventario.equipados.armas!=='object' || Array.isArray(p.inventario.equipados.armas))p.inventario.equipados.armas={corpo:null,fogo:null};
   p.inventario.equipados.armas.corpo??=null;p.inventario.equipados.armas.fogo??=null;
   p.inventario.armas.forEach(a=>{if(a && !a.categoria){const nome=String(a.nome||'');a.categoria=a.calibre||/pistola|revol|rev|rifle|fuzil|submetralhadora/i.test(nome)?'fogo':'corpo';if(a.categoria==='fogo'&&!a.calibre)a.calibre=/revol|rev/i.test(nome)?'ammo38':'ammo9mm';}});
@@ -2533,7 +2554,13 @@ function consumirItemInventario(p,id,quantidade=1){garantirInventario(p);const i
 function usarItemInventario(p,id){
   garantirInventario(p);const i=p.inventario.mochila.itens.find(x=>x.id===id);if(!i)return false;
   if(i.tipo==='medico'){const alvo=p===S.player?membroAtual():p;if(tratarPaciente(alvo,i.efeito)){i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);return true;}}
-  if(i.tipo==='mochila'){p.inventario.mochila.capacidade+=i.capacidade;i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);return true;}return false;
+  if(i.tipo==='mochila'){
+    if(p.inventario.equipados.mochila){log('J\u00e1 existe uma mochila equipada. Desequipe-a antes de trocar.','info');return false;}
+    p.inventario.mochila.capacidade+=Number(i.capacidade)||0;
+    p.inventario.equipados.mochila={...i,quantidade:1};
+    i.quantidade--;if(i.quantidade<=0)p.inventario.mochila.itens=p.inventario.mochila.itens.filter(x=>x!==i);
+    log(`${esc(p.inventario.equipados.mochila.nome)} equipada. Capacidade: ${p.inventario.mochila.capacidade}.`,'bom');return true;
+  }return false;
 }
 function lootItens(p,local='rua',estoqueJaReservado=false){
   if(!estoqueJaReservado&&!reservarSaqueLocal(local))return false;
@@ -2589,11 +2616,13 @@ window.addEventListener('load',()=>{if(window.debugJogo)window.debugJogo.lockpic
 function inventarioTexto(p){
   garantirInventario(p);
   const corpo=armaEquipada(p,'corpo'),fogo=armaEquipada(p,'fogo');
-  const armas=p.inventario.armas.map(a=>`<li>${esc(a.nome)} \u00b7 dano ${a.dano}${a===corpo?' \u00b7 <b>corpo a corpo equipada</b>':a===fogo?' \u00b7 <b>arma de fogo equipada</b>':''}</li>`).join('')||'<li>Nenhuma arma</li>';
-  const roupas=Object.entries(p.inventario.equipados.roupas).map(([slot,item])=>`<li>${esc(item.nome)} · ${esc(NOMES_SLOT_EQUIPAMENTO[slot]||slot)}</li>`).join('')||'<li>Nenhuma roupa equipada</li>';
-  const armaduras=Object.entries(p.inventario.equipados.armaduras).map(([slot,item])=>`<li>${esc(item.nome)} · ${esc(NOMES_SLOT_EQUIPAMENTO[slot]||slot)} · ${item.protecao||0}% proteção</li>`).join('')||'<li>Nenhuma armadura equipada</li>';
-  const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} · ${i.quantidade||1}${i.tipo==='roupa'||i.tipo==='armadura'?` · ${i.tipo}`:''}</li>`).join('')||'<li>Mochila vazia</li>';
-  return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Roupas equipadas</b></p><ul>${roupas}</ul><p><b>Armaduras equipadas</b> · ${protecaoArmadura(p)}% proteção</p><ul>${armaduras}</ul><p><b>Mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;
+  const armas=p.inventario.armas.map(a=>`${esc(a.nome)} \u00b7 dano ${a.dano}${a===corpo?' \u00b7 <b>corpo a corpo equipada</b>':a===fogo?' \u00b7 <b>arma de fogo equipada</b>':''}`).map(x=>`<li>${x}</li>`).join('')||'<li>Nenhuma arma</li>';
+  const roupas=Object.entries(p.inventario.equipados.roupas).map(([slot,item])=>`<li>${esc(item.nome)} \u00b7 ${esc(NOMES_SLOT_EQUIPAMENTO[slot]||slot)}</li>`).join('')||'<li>Nenhuma roupa equipada</li>';
+  const armaduras=Object.entries(p.inventario.equipados.armaduras).map(([slot,item])=>`<li>${esc(item.nome)} \u00b7 ${esc(NOMES_SLOT_EQUIPAMENTO[slot]||slot)} \u00b7 ${item.protecao||0}% prote\u00e7\u00e3o</li>`).join('')||'<li>Nenhuma armadura equipada</li>';
+  const mochila=p.inventario.equipados.mochila;
+  const mochilaTexto=mochila?`${esc(mochila.nome)} \u00b7 +${mochila.capacidade||0} espa\u00e7os`:'Mochila padr\u00e3o';
+  const itens=p.inventario.mochila.itens.map(i=>`<li>${esc(i.nome)} \u00b7 ${i.quantidade||1}${i.tipo==='roupa'||i.tipo==='armadura'?` \u00b7 ${i.tipo}`:''}</li>`).join('')||'<li>Mochila vazia</li>';
+  return `<p><b>Armas</b></p><ul>${armas}</ul><p><b>Roupas equipadas</b></p><ul>${roupas}</ul><p><b>Armaduras equipadas</b> \u00b7 ${protecaoArmadura(p)}% prote\u00e7\u00e3o</p><ul>${armaduras}</ul><p><b>Mochila equipada</b>: ${mochilaTexto}</p><p><b>Conte\u00fado da mochila</b> (${pesoInventario(p)}/${p.inventario.mochila.capacidade})</p><ul>${itens}</ul>`;
 }
 
 /* ============================================================
@@ -3234,13 +3263,13 @@ const EVENTOS_MIDIA={
   'O cheiro dos mortos':'assets/eventos/conhecimentos/dia-10-disfarce-cheiro.gif',
   'Um alarme começou a tocar':'assets/eventos/alarme.gif',
   'Uma manada passa perto':'assets/eventos/manada.gif',
-  'Uma refeição compartilhada':'assets/eventos/cotidianos/refeicao-compartilhada.gif',
-  'Chuva no telhado':'assets/eventos/cotidianos/chuva-telhado.gif',
-  'Uma lembrança entre os escombros':'assets/eventos/cotidianos/lembranca-escombros.gif',
-  'Silêncio no corredor':'assets/eventos/cotidianos/silencio-corredor.gif',
-  'sente sua falta':'assets/eventos/relacionamentos/saudade-casal.gif',
-  'Pesadelo de':'assets/eventos/relacionamentos/pesadelo-casal.gif',
-  'pede para você ficar':'assets/eventos/relacionamentos/medo-saida.gif'
+  'Uma refeição compartilhada':'assets/eventos/cotidianos/refeicao-compartilhada.png',
+  'Chuva no telhado':'assets/eventos/cotidianos/chuva-telhado.png',
+  'Uma lembrança entre os escombros':'assets/eventos/cotidianos/lembranca-escombros.png',
+  'Silêncio no corredor':'assets/eventos/cotidianos/silencio-corredor.png',
+  'sente sua falta':['assets/eventos/relacionamentos/saudade-casal.png','assets/eventos/relacionamentos/saudade-casal2.png'],
+  'Pesadelo de':'assets/eventos/relacionamentos/pesadelo-casal.png',
+  'pede para você ficar':'assets/eventos/relacionamentos/medo-saida.png'
 
 };
 const PROLOGO_MIDIA={
@@ -3263,12 +3292,19 @@ const PROLOGO_MIDIA={
   'A saída':'fuga-carro',
   'A saída da cidade':'fuga-carro'
 };
+const INDICES_MIDIA={};
+function escolherMidia(midia,chave){
+  if(!Array.isArray(midia))return midia;
+  const indice=INDICES_MIDIA[chave]||0;
+  INDICES_MIDIA[chave]=indice+1;
+  return midia[indice%midia.length];
+}
 function midiaDoEvento(titulo){
   const chave=Object.keys(PROLOGO_MIDIA).find(k=>titulo.includes(k))||Object.keys(PROLOGO_MIDIA).find(k=>titulo.normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(k.normalize('NFD').replace(/[\u0300-\u036f]/g,'')))||titulo;
   if(PROLOGO_MIDIA[chave]){const genero=S?.player?.genero==='feminino'?'feminino':'masculino';return `assets/eventos/prologo/${genero}/${PROLOGO_MIDIA[chave]}.png`;}
-  const exata=EVENTOS_MIDIA[titulo];if(exata)return exata;
+  const exata=EVENTOS_MIDIA[titulo];if(exata)return escolherMidia(exata,titulo);
   const parcial=Object.entries(EVENTOS_MIDIA).find(([chave])=>titulo.includes(chave));
-  return parcial?.[1]||null;
+  return parcial?escolherMidia(parcial[1],parcial[0]):null;
 }
 function abrirModal(titulo, texto, opcoes, painel=false, midia=null){
   const modal = {titulo,texto,opcoes,painel,midia:midia||midiaDoEvento(titulo)};
@@ -3302,6 +3338,7 @@ function exibirModal(modal){
   modal.opcoes.forEach(o=>{
     const b = document.createElement('button');
     b.textContent = o.texto;
+    b.disabled = Boolean(o.disabled);
     b.onclick = ()=>{
       if(modalAtivo !== modal) return;
       if(alarme && !alarmeAudio) iniciarSomHorda(modal);
@@ -3855,7 +3892,7 @@ function abrirPerfilFamilia(id){
      <b>Idade:</b> ${idadeMembro(membro)} anos<br>
      <b>Parentesco:</b> ${esc(membro.parentesco)}<br>
      <b>Especialidade:</b> ${esc(membro.especialidade || 'Membro da comunidade')}</p>
-     ${membro.ferimentos?.length || membro.doenca ? `<div class="cartaoSaude"><img src="${imagemCorpo(membro)}" alt="Mapa corporal"><p>${situacaoNPC(membro)}</p></div>` : ''}
+     ${membro.ferimentos?.length || membro.doenca ? `<div class="cartaoSaude">${mapaCorporal(membro)}<p>${situacaoNPC(membro)}</p></div>` : ''}
      <p><b>Inventário</b><br>${inventarioTexto(membro)}</p><p><b>Conhecimentos do apocalipse</b></p><div class="conhecimentosApocalipse">${textoConhecimentosApocalipse(membro)}</div><p><b>Skills</b><br>
      Força ${skills.forca ?? 2} · Agilidade ${skills.agilidade ?? 2}<br>
      Inteligência ${skills.inteligencia ?? 2} · Carisma ${skills.carisma ?? 2}<br>
@@ -3874,13 +3911,13 @@ function abrirPerfilPrincipal(){
     <p><b>Gênero:</b> ${rotuloGenero(p.genero)}<br><b>Idade:</b> ${idadeAtual()} anos<br><b>Especialidade:</b> ${esc(p.especialidade || 'Sobrevivente')}</p>
     <p><b>Nível ${p.nivel || 1}</b> · Experiência ${p.experiencia || 0}<br><b>Ânimo:</b> ${Math.round(p.moral ?? 70)}</p>
     <p><b>Força</b> ${p.forca} · <b>Agilidade</b> ${p.agilidade}<br><b>Inteligência</b> ${p.inteligencia} · <b>Carisma</b> ${p.carisma}<br><b>Resistência</b> ${p.resistencia}</p>
-    <div class="cartaoSaude"><img src="${imagemCorpo(membro || p)}" alt="Mapa corporal do personagem"><p>${membro?.doenca || membro?.ferido ? situacaoNPC(membro) : 'Nenhum ferimento registrado.'}</p></div>
+    <div class="cartaoSaude">${mapaCorporal(membro || p)}<p>${membro?.doenca || membro?.ferido ? situacaoNPC(membro) : 'Nenhum ferimento registrado.'}</p></div>
     <p><b>Comportamento:</b> ${esc(comportamentoTexto(p.comportamento || {}))}<br><b>Perks:</b> ${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</p><p><b>Inventário</b><br>${inventarioTexto(p)}</p><p><b>Conhecimentos do apocalipse</b></p><div class="conhecimentosApocalipse">${textoConhecimentosApocalipse(p)}</div>`,
     [{texto:membro?.doenca || membro?.ferido ? 'Tratar ferimento · 1 remédio' : 'Fechar perfil',fn:()=>membro?.doenca || membro?.ferido ? iniciarTratamento(membro.id) : fecharModal()},{texto:'Usar um item da mochila',fn:()=>abrirInventario()},{texto:'Fechar perfil',fn:()=>{}}]);
 }
 
 function slotInventarioVisual(nome,item,acao){
-  const conteudo=item ? esc(item.nome)+(item.protecao ? ' &middot; '+item.protecao+'%' : '') : 'Vazio';
+  const conteudo=item ? esc(item.nome)+(item.protecao ? ' \u00b7 '+item.protecao+'%' : '')+(item.tipo==='mochila' ? ' \u00b7 +'+(item.capacidade||0)+' espa\u00e7os' : '') : 'Vazio';
   const botao=item&&acao ? '<button type="button" onclick="acaoInventarioVisual(\''+acao.tipo+'\',\''+esc(acao.valor)+'\')">'+acao.texto+'</button>' : '';
   return '<div class="slotEquipamento'+(item?'':' vazio')+'"><strong>'+nome+'</strong><span>'+conteudo+'</span>'+botao+'</div>';
 }
@@ -3888,19 +3925,39 @@ function renderInventarioVisual(p){
   garantirInventario(p);
   const eq=p.inventario.equipados,armas=p.inventario.armas||[],itens=p.inventario.mochila.itens||[];
   const armaCorpo=armaEquipada(p,'corpo'),armaFogo=armaEquipada(p,'fogo');
-  const idsArmasEquipadas=new Set(Object.values(eq.armas||{}).filter(Boolean));
+  const armasRestantesEquipadas={};
+  Object.values(eq.armas||{}).filter(Boolean).forEach(id=>armasRestantesEquipadas[id]=(armasRestantesEquipadas[id]||0)+1);
   const estoqueBase=typeof garantirInventarioBase==='function'&&naBase(membroAtual())?(garantirInventarioBase().itens||[]).filter(i=>i.tipo==='muni\u00e7\u00e3o'&&i.quantidade>0):[];
-  const acao=(tipo,id)=>`<button type="button" onclick="acaoInventarioVisual('${tipo}','${esc(id)}')">${tipo==='equipar'?'Equipar':tipo==='arma'?'Equipar':'Usar'}</button>`;
+  const acao=(tipo,id,rotulo)=>`<button type="button" onclick="acaoInventarioVisual('${tipo}','${esc(id)}')">${rotulo|| (tipo==='equipar'?'Equipar':tipo==='arma'?'Equipar':'Usar')}</button>`;
   const extra=(id)=>naBase(membroAtual())?`<div class="itemInventarioAcoes"><button type="button" onclick="acaoInventarioVisual('guardarBase','${esc(id)}')">Guardar base</button><button type="button" onclick="acaoInventarioVisual('desconstruir','${esc(id)}')">Desconstruir</button></div>`:'';
-  const cards=[...armas.map(a=>`<div class="itemInventario"><div><b>${esc(a.nome)}</b><small>${a.categoria==='fogo'?'Arma de fogo':'Arma corpo a corpo'}${a.calibre?` \u00b7 ${esc(a.calibre)}`:''} \u00b7 dano ${a.dano}${a.militar?' \u00b7 militar':''}</small></div>${idsArmasEquipadas.has(a.id)?'<span class="itemEquipado">Equipada</span>':acao('arma',a.id)}${idsArmasEquipadas.has(a.id)?'':extra(a.id)}</div>`),...itens.map(i=>`<div class="itemInventario"><div><b>${esc(i.nome)}</b><small>${i.tipo||'item'} \u00b7 x${i.quantidade||1}</small></div>${i.tipo==='roupa'||i.tipo==='armadura'?acao('equipar',i.id):i.tipo==='medico'||i.tipo==='mochila'?acao('usar',i.id):''}${extra(i.id)}</div>`)].join('')||'<span class="idle">A mochila est\u00e1 vazia.</span>';
+  const armasCards=armas.map(a=>{
+    const equipado=(armasRestantesEquipadas[a.id]||0)>0;
+    if(equipado)armasRestantesEquipadas[a.id]--;
+    return `<div class="itemInventario"><div><b>${esc(a.nome)}</b><small>${a.categoria==='fogo'?'Arma de fogo':'Arma corpo a corpo'}${a.calibre?` \u00b7 ${esc(a.calibre)}`:''} \u00b7 dano ${a.dano}${a.militar?' \u00b7 militar':''}</small></div>${equipado?'<span class="itemEquipado">Equipada</span>':acao('arma',a.id)}${equipado?'':extra(a.id)}</div>`;
+  }).join('');
+  const itensCards=itens.map(i=>`<div class="itemInventario"><div><b>${esc(i.nome)}</b><small>${i.tipo||'item'} \u00b7 x${i.quantidade||1}</small></div>${i.tipo==='roupa'||i.tipo==='armadura'?acao('equipar',i.id):i.tipo==='medico'?acao('usar',i.id,'Usar'):i.tipo==='mochila'?acao('usar',i.id,'Equipar'):''}${extra(i.id)}</div>`).join('');
+  const cards=armasCards+itensCards||'<span class="idle">A mochila est\u00e1 vazia.</span>';
   const ammoBase=estoqueBase.map(i=>{const qtd=Math.min(10,i.quantidade);return `<div class="itemInventario"><div><b>${esc(i.nome)}</b><small>Estoque da base \u00b7 ${i.quantidade} unidades</small></div><button type="button" onclick="acaoInventarioVisual('municaoBase','${esc(i.id)}',${qtd})">Pegar ${qtd}</button></div>`;}).join('');
-  return `<div class="inventarioVisual"><div class="inventarioColuna"><h3 class="inventarioTitulo">Equipamento</h3>${slotInventarioVisual('Arma corpo a corpo',armaCorpo,{tipo:'desequiparArma',valor:'corpo',texto:'Desequipar'})}${slotInventarioVisual('Arma de fogo',armaFogo,{tipo:'desequiparArma',valor:'fogo',texto:'Desequipar'})}${slotInventarioVisual('Headwear \u00b7 cabe\u00e7a',eq.armaduras.cabeca)}${slotInventarioVisual('Peito \u00b7 armadura',eq.armaduras.torso)}${slotInventarioVisual('Peito \u00b7 roupa',eq.roupas.torso)}${slotInventarioVisual('Bra\u00e7os',eq.armaduras.bracos)}${slotInventarioVisual('Pernas \u00b7 armadura',eq.armaduras.pernas)}${slotInventarioVisual('Pernas \u00b7 roupa',eq.roupas.pernas)}${slotInventarioVisual('P\u00e9s',eq.roupas.pes)}</div><div class="inventarioCorpo"><img src="${imagemCorpo(p)}" alt="Silhueta do corpo" onerror="this.hidden=true"><div class="inventarioProtecao">Prote\u00e7\u00e3o total: <b>${protecaoArmadura(p)}%</b></div></div><div class="inventarioMochila"><div class="inventarioMochilaCabecalho"><b>Mochila</b><span>${pesoInventario(p)}/${p.inventario.mochila.capacidade}</span></div><div class="inventarioItens">${cards}</div>${ammoBase?`<h3 class="inventarioTitulo" style="margin-top:14px">Muni\u00e7\u00e3o na base</h3><div class="inventarioItens">${ammoBase}</div>`:''}<p class="inventarioLegenda">Clique em uma pe\u00e7a para equip\u00e1-la. A roupa e a armadura ocupam slots diferentes.</p></div></div>`;
+  const mochilaSlot=eq.mochila||{nome:'Mochila padr\u00e3o',tipo:'mochila',capacidade:0};
+  const acaoMochila=eq.mochila?{tipo:'desequiparMochila',valor:'mochila',texto:'Desequipar'}:null;
+  return `<div class="inventarioVisual"><div class="inventarioColuna"><h3 class="inventarioTitulo">Equipamento</h3>${slotInventarioVisual('Arma corpo a corpo',armaCorpo,{tipo:'desequiparArma',valor:'corpo',texto:'Desequipar'})}${slotInventarioVisual('Arma de fogo',armaFogo,{tipo:'desequiparArma',valor:'fogo',texto:'Desequipar'})}${slotInventarioVisual('Mochila',mochilaSlot,acaoMochila)}${slotInventarioVisual('Headwear \u00b7 cabe\u00e7a',eq.armaduras.cabeca)}${slotInventarioVisual('Peito \u00b7 armadura',eq.armaduras.torso)}${slotInventarioVisual('Peito \u00b7 roupa',eq.roupas.torso)}${slotInventarioVisual('Bra\u00e7os',eq.armaduras.bracos)}${slotInventarioVisual('Pernas \u00b7 armadura',eq.armaduras.pernas)}${slotInventarioVisual('Pernas \u00b7 roupa',eq.roupas.pernas)}${slotInventarioVisual('P\u00e9s',eq.roupas.pes)}</div><div class="inventarioCorpo"><img src="${imagemCorpo(p)}" alt="Silhueta do corpo" onerror="this.hidden=true"><div class="inventarioProtecao">Prote\u00e7\u00e3o total: <b>${protecaoArmadura(p)}%</b></div></div><div class="inventarioMochila"><div class="inventarioMochilaCabecalho"><b>Conte\u00fado da mochila</b><span>${pesoInventario(p)}/${p.inventario.mochila.capacidade}</span></div><div class="inventarioItens">${cards}</div>${ammoBase?`<h3 class="inventarioTitulo" style="margin-top:14px">Muni\u00e7\u00e3o na base</h3><div class="inventarioItens">${ammoBase}</div>`:''}<p class="inventarioLegenda">A mochila equipada aparece no slot ao lado do corpo. Itens iguais acumulam quantidade; armas duplicadas podem ser guardadas mesmo quando outra unidade est\u00e1 equipada.</p></div></div>`;
 }
+
 function desequiparArmaInventario(p,categoria){
   garantirInventario(p);const arma=armaEquipada(p,categoria);if(!arma)return false;
   p.inventario.equipados.armas[categoria]=null;
   if(categoria==='corpo'&&p.inventario.equipado===arma.id){p.inventario.equipado=null;p.arma='Nenhuma';p.armaBonus=0;}
   log(esc(arma.nome)+' foi desequipada.','info');return true;
+}
+function desequiparMochilaInventario(p){
+  garantirInventario(p);const atual=p.inventario.equipados.mochila;if(!atual)return false;
+  const capacidadeBase=Number(p.inventario.mochila.capacidadeBase)||8;
+  const capacidadeNova=Math.max(1,Math.min(p.inventario.mochila.capacidade-(Number(atual.capacidade)||0),capacidadeBase));
+  if(pesoInventario(p)+(Number(atual.peso)||1)>capacidadeNova){log('N\u00e3o h\u00e1 espa\u00e7o para guardar a mochila desequipada.','info');return false;}
+  p.inventario.mochila.capacidade=capacidadeNova;p.inventario.equipados.mochila=null;
+  const existente=p.inventario.mochila.itens.find(i=>i.id===atual.id);
+  if(existente)existente.quantidade=(existente.quantidade||1)+1;else if(atual.id!=='mochila-legado')p.inventario.mochila.itens.push({...atual,quantidade:1});
+  log(`${esc(atual.nome)} foi desequipada. Capacidade: ${capacidadeNova}.`,'info');return true;
 }
 function acaoInventarioVisual(tipo,id,quantidade=1){
   const p=S.player;garantirInventario(p);
@@ -3910,6 +3967,7 @@ function acaoInventarioVisual(tipo,id,quantidade=1){
   else if(tipo==='guardarBase'&&typeof transferirItemParaBase==='function')transferirItemParaBase(id,quantidade);
   else if(tipo==='desconstruir'&&typeof desconstruirItemInventario==='function')desconstruirItemInventario(id);
   else if(tipo==='desequiparArma')desequiparArmaInventario(p,id);
+  else if(tipo==='desequiparMochila')desequiparMochilaInventario(p);
   else if(tipo==='usar'&&!usarItemInventario(p,id))log('N\u00e3o foi poss\u00edvel usar esse item.','info');
   fecharModal();render();abrirInventario();
 }
