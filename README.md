@@ -14,6 +14,14 @@ Depois, acesse `http://localhost:8000/last_days.html`.
 
 ## Changelog
 
+### 17/09/2026
+
+- Corrigida a transferência de itens entre o inventário do personagem e o inventário da base, incluindo pilhas de itens e armas duplicadas.
+- A unidade de uma arma que está equipada permanece no personagem; as outras unidades podem ser guardadas normalmente.
+- Propriedades dos itens, como capacidade de mochila, agora são preservadas ao guardar e retirar itens da base.
+- Adicionado um slot visual de mochila equipada, com capacidade exibida e opção de desequipar.
+- Saves antigos com mochila ampliada recebem uma migração automática para o novo slot.
+
 ### 16/09/2026
 
 - Adicionados slots separados para armas corpo a corpo e armas de fogo, com catalogo de pistolas, revolveres, submetralhadoras e rifles.
