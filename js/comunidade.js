@@ -13,8 +13,10 @@ const INSTALACOES = {
   alojamento:{nome:'Alojamento',materiais:8,dur:240,ruido:.15,desc:'Espaço para mais 2 moradores.'},
   torre:{nome:'Torre de vigia',materiais:10,dur:240,ruido:.2,desc:'+8 defesa. Os guardas ajudam a proteger o muro.'},
   gerador:{nome:'Central de energia',materiais:12,combustivel:2,dur:240,ruido:.1,desc:'Ligar o gerador recupera mais energia e moral. O motor atrai atenção por 6 horas.'},
-  radio:{nome:'Rádio de comunicação',materiais:8,dur:180,ruido:.08,desc:'Permite conversar com outros acampamentos, emitir ordens e coordenar excursões de longa duração.'}
+  radio:{nome:'Rádio de comunicação',materiais:8,dur:180,ruido:.08,desc:'Permite conversar com outros acampamentos, emitir ordens e coordenar excursões de longa duração.'},
+  estoque:{nome:'Estoque',materiais:10,dur:240,ruido:.12,desc:'+24 de capacidade para guardar itens e municao da comunidade.'}
 };
+function capacidadeInventarioBase(base=S?.base){return 32 + ((base?.instalacoes||[]).includes('estoque') ? 24 : 0);}
 const ITENS_BASE = {
   gerador:{nome:'Gerador portátil',tipo:'energia',peso:8,desc:'Equipamento necessário para produzir energia quando a rede cai.'},
   ferramentas:{nome:'Caixa de ferramentas',tipo:'manutenção',peso:3,desc:'Ferramentas manuais para reparos e construções.'},
@@ -35,7 +37,7 @@ function inventarioBaseInicial(){return {capacidade:32,itens:INVENTARIO_BASE_INI
 function garantirInventarioBase(base=S?.base){
   if(!base)return null;
   if(!base.inventario || typeof base.inventario!=='object' || Array.isArray(base.inventario))base.inventario=inventarioBaseInicial();
-  base.inventario.capacidade=Math.max(1,Math.floor(Number(base.inventario.capacidade)||32));
+  base.inventario.capacidade=capacidadeInventarioBase(base);
   if(!Array.isArray(base.inventario.itens))base.inventario.itens=[];
   base.inventario.itens=base.inventario.itens.filter(item=>item&&ITENS_BASE[item.id]).map(item=>({...ITENS_BASE[item.id],...item,id:item.id,quantidade:Math.max(0,Math.floor(Number(item.quantidade)||0))})).filter(item=>item.quantidade>0);
   return base.inventario;
@@ -45,7 +47,7 @@ function adicionarItemBase(id,quantidade=1){
   const base=ITENS_BASE[id],inventario=garantirInventarioBase(),qtd=Math.max(1,Math.floor(Number(quantidade)||1));
   if(!base||!inventario)return false;
   const existente=inventario.itens.find(item=>item.id===id);
-  if(!existente&&pesoInventarioBase()+(base.peso||1)*qtd>inventario.capacidade)return false;
+  if(pesoInventarioBase()+(base.peso||1)*qtd>inventario.capacidade)return false;
   if(existente)existente.quantidade+=qtd;else inventario.itens.push({...base,id,quantidade:qtd});return true;
 }
 function removerItemBase(id,quantidade=1){
@@ -58,10 +60,11 @@ function inventarioBaseTexto(){const inventario=garantirInventarioBase();if(!inv
 function atualizarInventarioDepoisAcaoBase(){fecharModal();render();abrirInventarioBase();}
 function acaoInventarioBase(tipo,id){if(tipo==='retirar')transferirItemBase(id,1);else if(tipo==='desconstruir')desconstruirItemBase(id);atualizarInventarioDepoisAcaoBase();}
 function abrirInventarioBase(){
-  const inventario=garantirInventarioBase();
+  const inventario=garantirInventarioBase(),peso=pesoInventarioBase(),cheio=peso>=inventario.capacidade;
   const receitas=Object.entries(RECEITAS_MUNICAO).filter(([id])=>ITENS_BASE[id]).map(([id,r])=>({texto:`Fabricar ${ITENS_BASE[id].nome} \u00b7 ${r.quantidade} unidades \u00b7 ${r.materiais} materiais`,fn:()=>iniciarFabricacaoMunicao(id)}));
   const itens=inventario.itens.map(item=>`<div class="itemBase"><b>${esc(item.nome)}</b> \u00b7 ${item.quantidade}<br><span>${esc(item.desc||'Item guardado na base.')}</span><div class="itemBaseAcoes"><button type="button" onclick="acaoInventarioBase('retirar','${esc(item.id)}')">Retirar 1</button><button type="button" onclick="acaoInventarioBase('desconstruir','${esc(item.id)}')">Desconstruir 1</button></div></div>`).join('');
-  abrirPainel('Invent\u00e1rio da base',`<p>Itens guardados para a comunidade. Peso: <b>${pesoInventarioBase()}/${inventario.capacidade}</b>.</p><div class="listaInventarioBase">${itens||'<p class="idle">Nenhum item armazenado.</p>'}</div><p class="notaBase">Itens iguais acumulam quantidade. Retirar respeita o peso da mochila; desconstruir converte o item em materiais.</p>`,[...receitas,{texto:'Fechar invent\u00e1rio',fn:()=>{}}]);
+  const aviso=cheio?'<p class="avisoModal"><b>Estoque cheio.</b> Construa a instala\u00e7\u00e3o Estoque ou retire itens antes de guardar mais.</p>':'';
+  abrirPainel('Invent\u00e1rio da base',`<p>Itens guardados para a comunidade. Peso: <b>${peso}/${inventario.capacidade}</b>.</p>${aviso}<div class="listaInventarioBase">${itens||'<p class="idle">Nenhum item armazenado.</p>'}</div><p class="notaBase">Itens iguais acumulam quantidade. Retirar respeita o peso da mochila; desconstruir converte o item em materiais.</p>`,[...receitas,{texto:'Fechar invent\u00e1rio',fn:()=>{}}]);
 }
 function iniciarFabricacaoMunicao(id){const receita=RECEITAS_MUNICAO[id],item=ITENS_BASE[id];if(!receita||!item)return false;if(!temInstalacao('oficina')){log('Construa uma oficina para fabricar muni\u00e7\u00e3o.','info');return false;}return iniciarAcaoBase('fabricarMunicao',`Fabricar ${item.nome}`,60,5,{materiais:receita.materiais},{ammoId:id,ammoQuantidade:receita.quantidade});}
 function resolverFabricacaoMunicao(a){if(!a?.ammoId||!adicionarItemBase(a.ammoId,a.ammoQuantidade||1)){S.recursos.materiais+=RECEITAS_MUNICAO[a?.ammoId]?.materiais||0;log('O invent\u00e1rio da base est\u00e1 cheio. Os materiais foram devolvidos.','ruim');return;}log(`${a.ammoQuantidade||1} unidades de ${ITENS_BASE[a.ammoId].nome} foram fabricadas e guardadas na base.`,'bom');}
@@ -354,11 +357,21 @@ function iniciarAcaoBase(tipo,nome,dur,energia,custo={},extra={}){
 
 function abrirConstrucoes(){
   const local=LOCAIS_BASE[S.base.local];
-  const instaladas=S.base.instalacoes.map(id=>`<li><b>${INSTALACOES[id].nome}</b> — ${INSTALACOES[id].desc}</li>`).join('');
-  const opcoes=Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([id,i])=>({
-    texto:`Construir ${i.nome} · ${custoTexto(i)} · ${i.dur/60}h`,fn:()=>iniciarConstrucao(id)
-  }));
-  abrirPainel('Construções da base',`<p>${local.nome}: <b>${S.base.instalacoes.length}/${local.slots} espaços usados</b>. Cada instalação ocupa um espaço e aumenta um pouco o movimento.</p><p class="materiaisDetalhes"><b>Estoque:</b> ${detalharMateriais(S.recursos.materiais)}. Os componentes são uma estimativa de planejamento; a contagem do jogo continua agrupada em materiais.</p><ul>${instaladas || '<li>Nenhuma instalação construída.</li>'}</ul><div class="catalogoBase">${Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([,i])=>`<p><b>${i.nome}</b><br>${i.desc}</p>`).join('')}</div>`,[
+  const instaladas=S.base.instalacoes.map(id=>`<li><b>${INSTALACOES[id].nome}</b> - ${INSTALACOES[id].desc}</li>`).join('');
+  const semEspaco=S.base.instalacoes.length>=local.slots;
+  const baseLotada=moradores()+(S.familia.gravidez?1:0)>=capacidadeBase();
+  const aviso=baseLotada?'<p class="avisoModal"><b>Base lotada.</b> Construa um alojamento ou procure uma base maior.</p>':'';
+  const opcoes=Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([id,i])=>{
+    const faltam=Object.keys(NOMES_REC).filter(k=>(i[k]||0)>S.recursos[k]);
+    const semRecursos=faltam.length>0;
+    const faltamTexto=faltam.map(k=>`${i[k]} ${NOMES_REC[k]}`).join(' · ');
+    const motivo=semEspaco?'A base atingiu o limite de instalações. Procure um local maior.':semRecursos?`Faltam recursos: ${faltamTexto}.`:'';
+    const bloqueio=semEspaco?' · sem espaço':semRecursos?` · faltam ${faltamTexto}`:'';
+    return {
+      texto:`Construir ${i.nome} - ${custoTexto(i)} - ${i.dur/60}h${bloqueio}`,disabled:semEspaco||semRecursos,title:motivo,fn:()=>iniciarConstrucao(id)
+    };
+  });
+  abrirPainel('Construções da base',`${aviso}<p>${local.nome}: <b>${S.base.instalacoes.length}/${local.slots} espaços usados</b>. Cada instalação ocupa um espaço e aumenta um pouco o movimento.</p><p class="materiaisDetalhes"><b>Estoque:</b> ${detalharMateriais(S.recursos.materiais)}. Os componentes são uma estimativa de planejamento; a contagem do jogo continua agrupada em materiais.</p><ul>${instaladas || '<li>Nenhuma instalação construída.</li>'}</ul><div class="catalogoBase">${Object.entries(INSTALACOES).filter(([id])=>!temInstalacao(id)).map(([,i])=>`<p><b>${i.nome}</b><br>${i.desc}</p>`).join('')}</div>`,[
     ...opcoes,...S.base.instalacoes.map(id=>({texto:`Desmontar ${INSTALACOES[id].nome} · 2h · recupera ${Math.floor(INSTALACOES[id].materiais/2)} materiais`,fn:()=>iniciarDemolicao(id)})),{texto:'Fabricar roupas e proteções',fn:abrirCraftEquipamentos},{texto:'Procurar locais e mudar de base',fn:abrirLocaisBase},{texto:'Fechar',fn:()=>{}}
   ]);
 }
@@ -378,6 +391,7 @@ function iniciarDemolicao(id){
   if(id==='oficina' && S.acao?.tipo==='customizarVeiculo'){log('A oficina está ocupada com uma customização em andamento.','info');return;}
   if(id==='radio' && (S.base.ordemRadio || S.base.excursao || S.base.muralHorarios)){log('O rádio está sendo usado para coordenar a comunidade, a excursão e o mural de horários.','info');return;}
   if(id==='alojamento' && moradores()+(S.familia.gravidez?1:0)>capacidadeBase()-2){log('O alojamento ainda é necessário para abrigar a comunidade.','info');return;}
+  if(id==='estoque' && pesoInventarioBase()>32){log('Esvazie o estoque ate 32 de peso antes de desmontar esta instalacao.','info');return;}
   iniciarAcaoBase('demolir',`Desmontar ${INSTALACOES[id].nome}`,120,10,{}, {obra:id});
 }
 function resolverDemolicao(a){
@@ -408,6 +422,7 @@ function iniciarMudanca(id){
   const l=LOCAIS_BASE[id];if(!l || !S.base.descobertas.includes(id) || id===S.base.local)return;
   if(moradores()+(S.familia.gravidez?1:0)>l.capacidade){log('Esse abrigo não comporta a comunidade e a gestação em andamento.','ruim');return;}
   if(S.sobreviventes.some(m=>m.vivo && m.expedicao)){log('Espere os scavengers voltarem antes da mudança.','info');return;}
+  if(pesoInventarioBase()>32){log('Reduza o estoque da base para 32 de peso antes de mudar de abrigo.','info');return;}
   if(S.base.excursao){log('Espere a excursão retornar antes de mudar a comunidade.','info');return;}
   iniciarAcaoBase('mudarBase',`Mudar para ${l.nome}`,360,25,l,{destino:id});
 }

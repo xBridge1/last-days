@@ -208,33 +208,68 @@ body{
 
 /* ====== JOGO ====== */
 #topo{
-  display:flex; justify-content:space-between; align-items:center;
-  gap:16px; flex-wrap:wrap;
-  background:var(--painel); border:1px solid var(--borda);
-  border-radius:8px; padding:12px 18px; margin-bottom:14px;
+  display:grid; grid-template-columns:minmax(220px,.8fr) minmax(360px,1.25fr) minmax(360px,1fr);
+  align-items:center; gap:16px;
+  background:transparent; border:0; border-radius:0;
+  padding:14px 18px; margin:0;
 }
 #tempo{ font-size:17px; font-weight:700; letter-spacing:2px; color:#dbe3dc; }
-#tempo small{ display:block; font-size:11px; color:var(--txt2); letter-spacing:1px; font-weight:400; }
-#recursos{ display:flex; gap:16px; flex-wrap:wrap; font-size:14px; }
+#tempo small{ display:block; font-size:11px; color:var(--txt2); letter-spacing:1px; font-weight:400; margin-top:3px; }
+#topoAmeaca{display:grid;grid-template-columns:minmax(150px,1fr) minmax(170px,1.1fr);align-items:center;gap:7px 10px;min-width:0}
+.topoAmeacaResumo{display:grid;grid-template-columns:auto minmax(50px,1fr);align-items:center;gap:7px 10px;width:100%;min-width:0}
+.topoAmeacaTitulo{display:flex;align-items:center;gap:5px;color:#d8ded9;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;white-space:nowrap}
+.topoAmeacaTitulo img{width:18px;height:18px;object-fit:contain}
+.topoAmeacaValor{color:#e5b1a8;font-size:15px}
+.topoAmeacaBarra{height:7px;grid-column:2;background:#0a0c0b;border-radius:4px;overflow:hidden}
+.topoAmeacaBarra b{display:block;height:100%;background:linear-gradient(90deg,#6a9c5a,#c9a227,#c0392b);transition:width .35s}
+.topoAmeacaMeta{grid-column:2;color:var(--txt2);font-size:10px;line-height:1.35}
+.topoAmeacaMuro{width:100%;height:82px;grid-column:2;grid-row:1 / span 2;border:1px solid var(--borda);border-radius:5px;background:#0a0c0b;overflow:hidden;cursor:pointer;padding:0}
+.topoAmeacaMuro img{width:100%;height:100%;object-fit:contain;background:#0a0c0b}
+#topoAmeaca .servicoStatus{font-size:10px;margin:0;white-space:nowrap}
+#topoAmeaca .statIcon{width:16px;height:16px}
+#recursos{ display:flex; justify-content:center; gap:12px; flex-wrap:wrap; font-size:14px; min-width:0; }
 .recItem{ display:flex; align-items:center; gap:5px; min-width:72px; }
+.recItem[title]{cursor:help}
 .recItem img{ width:22px; height:22px; object-fit:contain; flex:0 0 22px; }
 .statIcon{width:20px;height:20px;object-fit:contain;vertical-align:middle;margin-right:5px}
 .recItem b{ color:#e8eee9; font-weight:600; }
 
 #grid{
   display:grid;
-  grid-template-columns: 270px 1fr 250px;
+  grid-template-columns: minmax(430px,500px) minmax(0,1fr) minmax(250px,290px);
   gap:14px;
   align-items:start;
 }
+@media(max-width:1100px){
+  #topo{grid-template-columns:minmax(220px,1fr) minmax(320px,1.5fr)}
+  #topoAmeaca{grid-column:1 / -1}
+}
 @media(max-width:1050px){
   #grid{ grid-template-columns:1fr; }
+}
+@media(max-width:700px){
+  .painelComunidade{display:block}
+  .comunidadeSecao + .comunidadeSecao{border-left:0;border-top:1px solid var(--borda)}
+  #topo{display:block;padding:12px 14px}
+  #tempo,#recursos{margin-bottom:10px}
+  #recursos{justify-content:flex-start}
+  #topoAmeaca{display:block;min-width:0;padding-top:9px;border-top:1px solid var(--borda)}
+  .topoAmeacaResumo{margin-bottom:8px}
+  #topoAmeaca .visorMuro{height:90px}
+  .perfilTopo{padding:12px 14px}
 }
 
 .painel{
   background:var(--painel); border:1px solid var(--borda);
   border-radius:8px; padding:14px; margin-bottom:12px;
 }
+.painelJogoTopo{padding:0;overflow:hidden;margin-bottom:14px}
+.painelComunidade{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(210px,1fr);padding:0;overflow:hidden}
+.comunidadeSecao{padding:14px}
+.comunidadeSecao + .comunidadeSecao{border-left:1px solid var(--borda);background:#121714}
+.comunidadeSecao h3{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--txt2);margin:0 0 12px;border-bottom:1px solid var(--borda);padding-bottom:7px}
+.comunidadeSecao .painelResumoAcao h3{margin:0;border:0;padding:0}
+#painelFamilia[hidden]{display:none!important}
 .painel h3{
   font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
   color:var(--txt2); margin-bottom:12px;
@@ -246,6 +281,28 @@ body{
   font-size:13.5px; padding:4px 0; color:var(--txt2);
 }
 .statLinha b{ color:#d5ddd6; font-weight:600; }
+#statusJogador{padding:12px}
+.perfilTopo{display:grid;grid-template-columns:minmax(180px,.8fr) minmax(360px,1.8fr) minmax(260px,1fr);gap:14px;align-items:center;padding:12px 18px;margin:0;border-top:1px solid var(--borda);border-radius:0;background:#111512}
+.perfilTopoIdentidade{min-width:0}.perfilTopoNomeLinha{display:flex;align-items:center;gap:8px;min-width:0}.perfilTopoNomeLinha .nomePerfil{width:auto;flex:1;min-width:0}.perfilTopoInventario{flex:0 0 auto;padding:5px 8px;border:1px solid #6f3030;border-radius:4px;background:#211516;color:#dca3a3;font:600 10px/1.2 inherit;cursor:pointer;white-space:nowrap}.perfilTopoInventario:hover,.perfilTopoInventario:focus-visible{background:#3a1f1f;border-color:#c0392b;color:#fff;outline:2px solid rgba(192,57,43,.3);outline-offset:2px}
+.perfilTopoIdentidade .nomePerfil{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.perfilTopoMeta,.perfilTopoEstado{display:block;color:var(--txt2);font-size:11px;line-height:1.35;margin-top:4px;overflow-wrap:anywhere}
+.perfilTopoEstado{color:#9fb0a3}
+.perfilTopoNecessidades{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.perfilTopoNecessidades>span{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:2px 5px;min-width:0;color:var(--txt2);font-size:10px}
+.perfilTopoNecessidades img{width:16px;height:16px;grid-row:1 / span 2;object-fit:contain}
+.perfilTopoNecessidades b{color:#dbe3dc;font-size:11px;white-space:nowrap}
+.perfilTopoBarra{display:block;grid-column:2;height:4px;background:#0a0c0b;border-radius:3px;overflow:hidden}
+.perfilTopoBarra b{display:block;height:100%;transition:width .2s}
+.perfilTopoDetalhes{grid-column:1 / -1;display:flex;flex-wrap:wrap;justify-content:flex-start;gap:5px 14px;padding-top:8px;border-top:1px solid var(--borda);color:var(--txt2);font-size:10px;line-height:1.35}
+.perfilTopoDetalhes span{white-space:nowrap}
+.perfilTopoDetalhes b{color:#dbe3dc;margin-left:3px}
+.perfilTopoGravidez{color:#dca3a3!important}
+#statusJogador .statLinha{padding:3px 0;gap:8px;align-items:flex-start;font-size:12px}
+#statusJogador .statLinha b{max-width:64%;text-align:right;overflow-wrap:anywhere}
+#statusJogador .barraMini{margin:2px 0 6px}
+#statusJogador .notaBase{margin:4px 0 7px}
+@media(max-width:1050px){.perfilTopo{grid-template-columns:1fr 1.5fr}.perfilTopoDetalhes{grid-column:1 / -1;justify-content:flex-start}}
+@media(max-width:700px){.perfilTopo{display:block}.perfilTopoNecessidades{margin-top:10px}.perfilTopoDetalhes{margin-top:10px;justify-content:flex-start}}
 
 .barraMini{
   height:5px; background:#0a0c0b; border-radius:3px;
@@ -306,6 +363,8 @@ body{
   box-shadow:0 0 0 1px rgba(139,26,26,.35) inset;
 }
 .acaoBtn:disabled{ opacity:.35; cursor:not-allowed; }
+.acaoGrupoTitulo{margin:13px 0 6px;padding:6px 7px;border-bottom:1px solid var(--borda);color:#c58d91;font-size:10px;letter-spacing:1.4px;text-transform:uppercase}
+.acaoGrupoTitulo:first-child{margin-top:0}
 #acoes{max-height:calc(100vh - 220px);overflow-y:auto;padding-right:5px;scrollbar-gutter:stable}
 #acoes::-webkit-scrollbar{width:7px}
 #acoes::-webkit-scrollbar-thumb{background:#3a211f;border-radius:4px}
@@ -340,6 +399,14 @@ body{
 .relBar i b{ display:block; height:100%; background:#6a9c5a; }
 .relBar.romance i b{ background:#b44e68; }
 .relBar.respeito i b{ background:#c9a227; }
+.perfilSecao{margin:13px 0;padding-top:11px;border-top:1px solid var(--borda)}
+.perfilSecaoTitulo{display:flex;align-items:center;justify-content:space-between;color:#dbe3dc;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+.perfilVinculos{display:grid;gap:5px;color:var(--txt2);font-size:12px;line-height:1.45}
+.perfilVinculos b{color:#c7d1c9}
+.perfilArvore{margin-top:9px;border:1px solid var(--borda);border-radius:6px;background:#0f1311;padding:8px}
+.perfilArvore summary{cursor:pointer;color:#c58d91;font-size:11px;letter-spacing:.7px}
+.perfilArvore[open] summary{margin-bottom:8px}
+.modalSectionTitle{margin:12px 0 5px;padding:7px 8px;border-left:3px solid var(--sangue2);background:#1b1515;color:#d6aaa7;font-size:10px;letter-spacing:1.4px;text-transform:uppercase}
 .nivelBadge{ color:#c9a227; font-size:11px; }
 .acaoRelacao{ display:block; width:100%; margin-top:7px; padding:8px; text-align:left; background:#0a0c0b; border:1px solid var(--borda); color:var(--txt); border-radius:4px; cursor:pointer; font:inherit; font-size:12px; }
 .acaoRelacao:hover{ border-color:var(--sangue2); }
@@ -349,6 +416,18 @@ body{
 .gravidezPainel strong{ display:block; color:#e3b5bd; font-size:12px; }
 .gravidezPainel span{ display:block; color:#b78b92; font-size:10.5px; margin-top:3px; }
 .perfilPrincipalImagem{ display:block; width:100%; max-height:300px; object-fit:cover; border-radius:6px; border:1px solid var(--borda); background:#0a0c0b; margin-bottom:15px; }
+.perfilIdentidade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:0 0 12px}
+.perfilFicha{padding:8px;background:#0f1311;border:1px solid var(--borda);border-radius:5px;min-width:0}
+.perfilFicha span{display:block;color:var(--txt2);font-size:9px;letter-spacing:1px;text-transform:uppercase}
+.perfilFicha b{display:block;color:#dbe3dc;font-size:12px;margin-top:3px;overflow-wrap:anywhere}
+.perfilMetricas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.perfilMetrica{padding:7px;border-left:2px solid #6a9c5a;background:#101613}
+.perfilMetrica span{display:block;color:var(--txt2);font-size:10px}
+.perfilMetrica b{display:block;color:#e2e9e3;font-size:14px;margin-top:2px}
+.perfilAtributos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 10px}
+.perfilAtributos span{display:flex;justify-content:space-between;color:var(--txt2);font-size:11px;border-bottom:1px solid #202821;padding-bottom:3px}
+.perfilAtributos b{color:#dbe3dc}
+@media(max-width:520px){.perfilIdentidade,.perfilMetricas{grid-template-columns:1fr 1fr}.perfilIdentidade .perfilFicha:last-child{grid-column:1 / -1}}
 
 /* FAMÍLIA */
 .familiaAtual{
@@ -422,6 +501,7 @@ body{
 .modalBox h2{
   color:#e4eae5; font-size:20px; margin-bottom:12px; letter-spacing:1px;
 }
+.modalCabecalho{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}.modalCabecalho h2{margin:0;min-width:0}.modalFechar{flex:0 0 auto;width:30px;height:30px;padding:0;border:1px solid #8b3030;border-radius:5px;background:#281516;color:#e05b5b;font:700 24px/26px Arial,sans-serif;cursor:pointer;transition:.15s}.modalFechar:hover,.modalFechar:focus-visible{background:#5e1e1e;border-color:#d35b5b;color:#fff;outline:2px solid rgba(211,91,91,.35);outline-offset:2px}.modalFechar:active{transform:scale(.94)}
 .modalBox{scrollbar-gutter:stable}.modalBox::-webkit-scrollbar{width:8px}.modalBox::-webkit-scrollbar-thumb{background:#3a211f;border-radius:4px}.modalBox h2{line-height:1.3;overflow-wrap:anywhere}.modalOps{display:grid;gap:8px}.modalOps button{margin-bottom:0}.modalOps button:disabled{opacity:.42;cursor:not-allowed;transform:none}.modalOps button:disabled:hover{background:var(--painel2);border-color:var(--borda)}
 .modalBox p{ color:#a9b5ac; font-size:14px; line-height:1.7; margin-bottom:20px; }
 .modalOps button{
@@ -449,6 +529,9 @@ body{
 .painelConfigAudio{position:absolute;top:48px;right:0;width:238px;padding:12px;border:1px solid #6f2525;border-radius:7px;background:#121614;box-shadow:0 8px 28px rgba(0,0,0,.55)}
 .painelConfigAudio h3{margin:0 0 9px;color:#d9b0b0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
 .painelConfigAudio .controleSom{justify-content:space-between}
+.configSaveControls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:12px 0 0;padding-top:10px;border-top:1px solid var(--borda)}
+.configSaveControls button,.configSaveControls .uploadSave{padding:7px 5px;font-size:10px;text-align:center;white-space:nowrap}
+.configSaveControls #saveStatus{grid-column:1 / -1;min-height:15px;font-size:10px;text-align:center}
 .miniPlayerTema{margin-top:12px;padding-top:10px;border-top:1px solid var(--borda)}
 .miniPlayerTema label{display:block;margin-bottom:6px;color:var(--txt2);font-size:11px}
 .miniPlayerTema select{width:100%;padding:7px 8px;border:1px solid var(--borda);border-radius:4px;background:#0a0c0b;color:var(--txt);font:inherit;font-size:12px}
@@ -465,15 +548,20 @@ body{
 .visorMuro{display:block;width:100%;padding:0;border:1px solid var(--borda);border-radius:6px;overflow:hidden;background:#080d0a;color:var(--txt);cursor:pointer;margin:10px 0;text-align:left}
 .visorMuro img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
 .visorMuro span{display:block;padding:7px 9px;font-size:11px;line-height:1.5}
+#topoAmeaca .visorMuro{width:100%;height:82px;margin:0;border-radius:5px;background:#0a0c0b}
+#topoAmeaca .visorMuro img{width:100%;height:100%;aspect-ratio:auto;object-fit:contain;background:#0a0c0b}
 .baseComandos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
 .baseComandos button{padding:8px 5px;border:1px solid var(--borda);border-radius:4px;background:var(--painel2);color:var(--txt);cursor:pointer;font:inherit;font-size:11px}
 .baseComandos button:disabled,.acaoBtn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.7)}
 .servicosBase{margin-top:9px;padding-top:8px;border-top:1px solid #2b332e;font-size:12px}
+.capacidadeBaseAviso{color:var(--txt2);font-size:10px}
 .servicoStatus{display:flex;align-items:center;gap:4px;margin-top:5px}
 .listaInventarioBase{display:grid;gap:8px;margin-top:10px}.listaInventarioBase div{padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:#0f1311;font-size:12px}.listaInventarioBase span,.itemBase{color:var(--txt2);font-size:11px}.itemBase{display:block;margin-top:4px}.itemBaseAcoes{display:flex;gap:6px;margin-top:7px}.itemBaseAcoes button{padding:4px 7px;border:1px solid #713939;border-radius:4px;background:#241617;color:#e3b3b3;cursor:pointer;font:inherit;font-size:10px}.itemBaseAcoes button:hover{background:#3a1f1f;border-color:#ad5555}
 .saudeRuim{color:#df895d}.saudeRuim,.saudeTratado{display:block;line-height:1.55;overflow-wrap:anywhere}.saudeTratado{color:#70c98a;font-weight:600}.mapaCorporalColuna{display:flex;flex-direction:column;align-items:center;gap:4px;width:90px}.mapaCorporal{position:relative;width:90px;height:120px;overflow:hidden;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.mapaCorporalBase,.mapaRegiao{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.mapaCorporalBase{z-index:1}.mapaRegiao{z-index:2;opacity:.5;mix-blend-mode:screen}.mapaDecalques{display:flex;justify-content:center;gap:3px;min-height:24px}.decalqueMini{width:22px!important;height:28px!important;object-fit:contain!important;background:transparent!important;border:0!important;border-radius:0!important}.cartaoSaude .mapaCorporalBase,.cartaoSaude .mapaRegiao{object-fit:fill;border:0;background:transparent}.catalogoBase{border-top:1px solid var(--borda);padding-top:10px}.catalogoBase p{font-size:12px;line-height:1.6}
 .cartaoSaude{display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px;align-items:start;border-top:1px solid var(--borda);padding:12px 0}.cartaoSaude img{width:90px;height:120px;object-fit:contain;background:#0a0c0b;border:1px solid var(--borda);border-radius:5px}.cartaoSaude p{min-width:0;margin:0;padding:10px 12px;background:#171c19;border:1px solid #303b34;border-radius:6px;line-height:1.55;overflow-wrap:anywhere}
 .notaBase{font-size:11px;color:var(--txt2);line-height:1.5;margin:8px 0}
+.avisosJogo{display:grid;gap:6px;margin:0 0 12px}.avisoJogo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 11px;border:1px solid #6f3c2e;border-left:3px solid #d4793f;border-radius:5px;background:#211816;color:#e4c1ae;font-size:11px;line-height:1.4}.avisoJogo strong{color:#f0d0b9}.avisoJogo button{flex:0 0 auto;padding:5px 8px;border:1px solid #8b4b3d;border-radius:4px;background:#2b1a17;color:#efb6a2;font:600 10px/1.2 inherit;cursor:pointer}.avisoJogo button:hover,.avisoJogo button:focus-visible{background:#55251f;border-color:#d4793f;color:#fff;outline:2px solid rgba(212,121,63,.25);outline-offset:2px}.avisoModal{padding:9px 11px;border:1px solid #6f3c2e;border-left:3px solid #d4793f;border-radius:5px;background:#211816;color:#e4c1ae;font-size:12px;line-height:1.5}.avisoModal b{color:#f0d0b9}
+
 .conhecimentosApocalipse{display:grid;gap:7px;margin:8px 0}.conhecimentoApocalipse{display:block;padding:8px 9px;border:1px solid #4b3434;border-radius:5px;background:#171211}.conhecimentoApocalipse b{display:block;color:#dca3a3;font-size:12px}.conhecimentoApocalipse small{display:block;margin-top:3px;color:var(--txt2);font-size:11px;line-height:1.45}
 .listaHorarios{display:grid;gap:6px;margin:10px 0}.linhaHorario{display:flex;justify-content:space-between;gap:10px;padding:8px 9px;border:1px solid var(--borda);border-radius:5px;background:var(--painel2);font-size:12px}.linhaHorario span{color:var(--txt2);text-align:right}
 .materiaisDetalhes{font-size:12px;color:#b6c2b8;line-height:1.6;padding:8px 10px;border-left:3px solid #8b1a1a;background:#1a1d1b}
@@ -527,6 +615,12 @@ body{
       </div>
       <span id="temaStatus" role="status" aria-live="polite">Pronto para tocar</span>
     </div>
+    <div class="controlesSave configSaveControls">
+      <button type="button" onclick="salvarJogo(true)">Salvar</button>
+      <button type="button" onclick="exportarJogo()">Exportar</button>
+      <label class="uploadSave">Carregar<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label>
+      <span id="saveStatus" role="status" aria-live="polite"></span>
+    </div>
   </div>
 </div>
 
@@ -565,17 +659,22 @@ body{
 
 <!-- ============ JOGO ============ -->
 <div id="jogo" class="tela" hidden>
-  <header id="topo">
-    <div id="tempo"></div>
-    <div id="recursos"></div>
-    <div class="controlesSave"><button onclick="salvarJogo(true)">Salvar</button><button onclick="exportarJogo()">Exportar partida</button><label class="uploadSave">Carregar partida<input type="file" accept="application/json,.json" hidden onchange="importarJogo(event)"></label><span id="saveStatus" role="status" aria-live="polite"></span></div>
-  </header>
+  <section class="painel painelJogoTopo">
+    <header id="topo">
+      <div id="tempo"></div>
+      <div id="recursos"></div>
+      <div id="topoAmeaca" aria-live="polite"></div>
+    </header>
+    <div class="perfilTopo" id="statusJogador"></div>
+  </section>
+  <div id="avisosJogo" class="avisosJogo" role="status" aria-live="polite"></div>
   <div id="grid">
     <aside>
-      <div class="painel" id="statusJogador"></div>
-      <div class="painel" id="painelBase"></div>
-      <div class="painel" id="painelSobreviventes"></div>
-      <div class="painel" id="painelFamilia"></div>
+      <div class="painel painelComunidade" id="painelComunidade">
+        <section class="comunidadeSecao" id="painelBase"></section>
+        <section class="comunidadeSecao" id="painelSobreviventes"></section>
+      </div>
+      <div class="painel" id="painelFamilia" hidden aria-hidden="true"></div>
     </aside>
     <main>
       <div id="progresso"></div>
@@ -1101,7 +1200,17 @@ function fecharPainelAudio(){
   botao?.setAttribute('aria-expanded','false');
 }
 document.addEventListener('click',evento=>{if(!evento.target.closest('#configAudioGlobal'))fecharPainelAudio();});
-document.addEventListener('keydown',evento=>{if(evento.key==='Escape')fecharPainelAudio();});
+document.addEventListener('keydown',evento=>{
+  if(evento.key==='Escape'){
+    if(modalFechavel(modalAtivo)){fecharModal();evento.preventDefault();return;}
+    fecharPainelAudio();
+    return;
+  }
+  const alvo=evento.target,editando=alvo && (['INPUT','TEXTAREA','SELECT'].includes(alvo.tagName)||alvo.isContentEditable);
+  if(!editando && !evento.ctrlKey && !evento.metaKey && !evento.altKey && evento.key.toLowerCase()==='i' && !modalAtivo && S?.vivo && !document.getElementById('jogo')?.hidden){
+    abrirInventario();evento.preventDefault();
+  }
+});
 
 function tocarAudioExpedicao(){
   if(expedicaoAudio)return;
@@ -1577,24 +1686,24 @@ function consumoBaseDiario(){
    ACOES
 ============================================================ */
 const ACOES = [
-  { id:'comer',     nome:'Comer',                   desc:'~20min · reduz a fome · consome 1 comida' },
-  { id:'beber',     nome:'Beber água',              desc:'~20min · reduz a sede · consome 1 água' },
-  { id:'perto',     nome:'Saquear casas próximas',  desc:'~1-2h · risco baixo · pouco loot' },
-  { id:'expedicao', nome:'Expedição distante',      desc:'~4-9h · risco alto · muito loot' },
-  { id:'excursao',  nome:'Planejar excursão',       desc:'Vários dias · equipe, carga, rádio e veículos' },
-  { id:'localizarVeiculo', nome:'Localizar veículo', desc:'~4h · encontra um veículo para a garagem' },
-  { id:'fortificar',nome:'Fortificar a base',       desc:'~2-4h · consome 4 materiais (40 pregos, 20 tábuas e 4 ferramentas)' },
-  { id:'cacar',     nome:'Carregar e buscar água',     desc:'~3h · comida e água' },
-  { id:'descansar', nome:'Descansar',               desc:'~2h · recupera vida e energia' },
-  { id:'dormir',    nome:'Dormir',                  desc:'8h · recupera bastante energia, mas pode ser interrompido' },
-  { id:'procurar',  nome:'Procurar sobreviventes',  desc:'~4h · recruta aliados' },
-   { id:'familia',   nome:'Cuidar da família',       desc:'~6h · fortalece ou aumenta a linhagem' },
-  { id:'gerador', nome:'Ligar o gerador', desc:'~1h · requer 1 gerador e 1 combustível · +5 moral · +10 energia · faz barulho' },
-  { id:'radio', nome:'Usar o rádio', desc:'Ordens internas, contatos e planejamento de excursões' },
-  { id:'construcoes',nome:'Construções e abrigos',desc:'Instalações, espaços e mudança de base' },
-  { id:'muro',nome:'Observar o muro',desc:'Ver a rua e planejar a redução de ameaça' },
-  { id:'saude',nome:'Saúde da comunidade',desc:'Doenças, ferimentos e tratamento' },
-  { id:'ajudar',    nome:'Ajudar no acampamento',   desc:'~2h · aprende e melhora o moral' }
+  {id:'comer',nome:'Comer',desc:'~20min \u00b7 reduz a fome \u00b7 consome 1 comida'},
+  {id:'beber',nome:'Beber \u00e1gua',desc:'~20min \u00b7 reduz a sede \u00b7 consome 1 \u00e1gua'},
+  {id:'perto',nome:'Saquear casas pr\u00f3ximas',desc:'~1-2h \u00b7 risco baixo \u00b7 pouco loot'},
+  {id:'expedicao',nome:'Expedi\u00e7\u00e3o distante',desc:'~4-9h \u00b7 risco alto \u00b7 muito loot'},
+  {id:'excursao',nome:'Planejar excurs\u00e3o',desc:'V\u00e1rios dias \u00b7 equipe, carga, r\u00e1dio e ve\u00edculos'},
+  {id:'localizarVeiculo',nome:'Localizar ve\u00edculo',desc:'~4h \u00b7 encontra um ve\u00edculo para a garagem'},
+  {id:'fortificar',nome:'Fortificar a base',desc:'~2-4h \u00b7 consome 4 materiais (40 pregos, 20 t\u00e1buas e 4 ferramentas)'},
+  {id:'cacar',nome:'Carregar e buscar \u00e1gua',desc:'~3h \u00b7 comida e \u00e1gua'},
+  {id:'descansar',nome:'Descansar',desc:'~2h \u00b7 recupera vida e energia'},
+  {id:'dormir',nome:'Dormir',desc:'8h \u00b7 recupera bastante energia, mas pode ser interrompido'},
+  {id:'procurar',nome:'Procurar sobreviventes',desc:'~4h \u00b7 recruta aliados'},
+  {id:'familia',nome:'Cuidar da fam\u00edlia',desc:'~6h \u00b7 fortalece ou aumenta a linhagem'},
+  {id:'gerador',nome:'Ligar o gerador',desc:'~1h \u00b7 requer 1 gerador e 1 combust\u00edvel \u00b7 +5 moral \u00b7 +10 energia \u00b7 faz barulho'},
+  {id:'radio',nome:'Usar o r\u00e1dio',desc:'Ordens internas, contatos e planejamento de excurs\u00f5es'},
+  {id:'construcoes',nome:'Constru\u00e7\u00f5es e abrigos',desc:'Instala\u00e7\u00f5es, espa\u00e7os e mudan\u00e7a de base'},
+  {id:'muro',nome:'Observar o muro',desc:'Ver a rua e planejar a redu\u00e7\u00e3o de amea\u00e7a'},
+  {id:'saude',nome:'Sa\u00fade da comunidade',desc:'Doen\u00e7as, ferimentos e tratamento'},
+  {id:'ajudar',nome:'Ajudar no acampamento',desc:'~2h \u00b7 aprende e melhora o moral'}
 ];
 
 function membroAtual(){
@@ -1617,19 +1726,29 @@ function acoesDisponiveis(){
 }
 
 function construirAcoes(){
-  const box = document.getElementById('acoes');
-  box.innerHTML = '';
+  const box=document.getElementById('acoes');
+  box.innerHTML='';
   const repousoObrigatorio=Boolean(membroAtual()?.ferido);
-  acoesDisponiveis().forEach(a=>{
-    const b = document.createElement('button');
-    b.className = 'acaoBtn';
-    b.dataset.id = a.id;
-    const podeRepousar=['comer','beber','descansar','dormir','saude'].includes(a.id);
-    b.disabled = (a.id === 'excursao' && !radioInstalado()) || (repousoObrigatorio && !podeRepousar);
-    if(b.disabled)b.title = a.id === 'excursao' && !radioInstalado() ? 'Construa um rádio na base para liberar excursões.' : repousoObrigatorio ? 'Você precisa repousar enquanto se recupera de um ferimento.' : '';
-    b.innerHTML = `<strong>${a.nome}</strong><span>${a.desc}</span>`;
-    b.onclick = ()=> clicarAcao(a.id);
-    box.appendChild(b);
+  const disponiveis=acoesDisponiveis();
+  const grupos=[
+    ['Sobreviv&ecirc;ncia',['comer','beber','descansar','dormir']],
+    ['Explora&ccedil;&atilde;o',['perto','expedicao','excursao','localizarVeiculo','procurar']],
+    ['Base e defesa',['fortificar','cacar','gerador','construcoes','muro','radio']],
+    ['Comunidade',['familia','ajudar','saude']]
+  ];
+  grupos.forEach(([titulo,ids])=>{
+    const itens=disponiveis.filter(a=>ids.includes(a.id));
+    if(!itens.length)return;
+    const cabecalho=document.createElement('div');cabecalho.className='acaoGrupoTitulo';cabecalho.innerHTML=titulo;box.appendChild(cabecalho);
+    itens.forEach(a=>{
+      const b=document.createElement('button');b.className='acaoBtn';b.dataset.id=a.id;
+      const podeRepousar=['comer','beber','descansar','dormir','saude'].includes(a.id);
+      const bloqueado=(a.id==='excursao'&&!radioInstalado())||(repousoObrigatorio&&!podeRepousar);
+      b.dataset.bloqueado=bloqueado?'1':'0';b.disabled=bloqueado;
+      if(bloqueado)b.title=a.id==='excursao'?'Construa um radio na base para liberar excursao.':repousoObrigatorio?'Voce precisa repousar enquanto se recupera.':'';
+      b.innerHTML=`<strong>${a.nome}</strong><span>${a.desc}</span>`;
+      b.onclick=()=>clicarAcao(a.id);box.appendChild(b);
+    });
   });
 }
 
@@ -3306,6 +3425,10 @@ function midiaDoEvento(titulo){
   const parcial=Object.entries(EVENTOS_MIDIA).find(([chave])=>titulo.includes(chave));
   return parcial?escolherMidia(parcial[1],parcial[0]):null;
 }
+function modalFechavel(modal){
+  return Boolean(modal?.painel) && modal.titulo!=='Combate' && modal.titulo!=='Minigame de lockpick';
+}
+
 function abrirModal(titulo, texto, opcoes, painel=false, midia=null){
   const modal = {titulo,texto,opcoes,painel,midia:midia||midiaDoEvento(titulo)};
   if(modalAtivo){
@@ -3329,16 +3452,25 @@ function exibirModal(modal){
   const fonte=modal.midia?esc(modal.midia):'';
   const alarme=modal.titulo==='Um alarme começou a tocar';
   const prologo=Boolean(PROLOGO_MIDIA[modal.titulo]),inventario=modal.titulo==='Invent\u00e1rio e equipamento';
-  m.innerHTML = `<div class="modalBox${prologo?' prologoBox':''}${inventario?' inventarioBox':''}" role="dialog" aria-modal="true"><h2>${modal.titulo}</h2>${fonte?`<img class="modalMidia" src="${fonte}" alt="Imagem do evento" onerror="this.hidden=true">`:''}${alarme?'<audio class="modalAudio" autoplay><source src="assets/snd/car_alarm/car_alarm.mp3" type="audio/mpeg"></audio>':''}<div class="modalTexto${prologo?' prologoTexto':''}">${modal.texto}</div><div class="modalOps"></div></div>`;
+  // Paineis informativos podem ser fechados; eventos e decisoes criticas continuam exigindo uma escolha.
+  const podeFechar=modalFechavel(modal);
+  const botaoFechar=podeFechar?'<button type="button" class="modalFechar" aria-label="Fechar modal" title="Fechar">&times;</button>':'';
+  m.innerHTML = `<div class="modalBox${prologo?' prologoBox':''}${inventario?' inventarioBox':''}" role="dialog" aria-modal="true"><div class="modalCabecalho"><h2>${modal.titulo}</h2>${botaoFechar}</div>${fonte?`<img class="modalMidia" src="${fonte}" alt="Imagem do evento" onerror="this.hidden=true">`:''}${alarme?'<audio class="modalAudio" autoplay><source src="assets/snd/car_alarm/car_alarm.mp3" type="audio/mpeg"></audio>':''}<div class="modalTexto${prologo?' prologoTexto':''}">${modal.texto}</div><div class="modalOps"></div></div>`;
+  const botaoFecharEl=m.querySelector('.modalFechar');
+  if(botaoFecharEl)botaoFecharEl.onclick=()=>{if(modalAtivo===modal)fecharModal();};
+  m.onclick=evento=>{if(evento.target===m && modalFechavel(modal))fecharModal();};
   if(alarme){
     const video=m.querySelector('audio');video.currentTime=2;video.volume=.35*volumeAudio;video.play().catch(()=>{});alarmeModalAtivo=true;
     hordaAudioTimer=setTimeout(()=>iniciarSomHorda(modal),3000);
   }
   const box = m.querySelector('.modalOps');
   modal.opcoes.forEach(o=>{
+    if(o.tipo==='cabecalho'){const titulo=document.createElement('div');titulo.className='modalSectionTitle';titulo.textContent=o.texto;box.appendChild(titulo);return;}
     const b = document.createElement('button');
     b.textContent = o.texto;
     b.disabled = Boolean(o.disabled);
+    if(o.disabled)b.setAttribute('aria-disabled','true');
+    if(o.title)b.title=o.title;
     b.onclick = ()=>{
       if(modalAtivo !== modal) return;
       if(alarme && !alarmeAudio) iniciarSomHorda(modal);
@@ -3526,11 +3658,33 @@ function formatarHora(t){
 /* ============================================================
    RENDERIZACAO
 ============================================================ */
+function renderAvisosJogo(){
+  const box=document.getElementById('avisosJogo');
+  if(!box || !S)return;
+  const avisos=[];
+  const mochila=S.player?.inventario?.mochila;
+  if(mochila && typeof pesoInventario==='function'){
+    const peso=pesoInventario(S.player),capacidade=Number(mochila.capacidade)||0;
+    if(capacidade>0 && peso>=capacidade)avisos.push({texto:`Mochila cheia (${peso}/${capacidade}). Libere espa&ccedil;o antes de recolher mais itens.`,acao:'Abrir invent&aacute;rio',fn:()=>abrirInventario()});
+  }
+  const moradoresAtuais=typeof moradores==='function'?moradores():0;
+  const limiteMoradores=typeof capacidadeBase==='function'?capacidadeBase():0;
+  if(limiteMoradores>0 && moradoresAtuais>=limiteMoradores)avisos.push({texto:`Base lotada (${moradoresAtuais}/${limiteMoradores} moradores). Construa alojamento ou procure uma base maior.`,acao:'Ver constru&ccedil;&otilde;es',fn:()=>abrirConstrucoes()});
+  const local=S.base && typeof LOCAIS_BASE!=='undefined' ? LOCAIS_BASE[S.base.local] : null;
+  if(local && S.base.instalacoes.length>=local.slots)avisos.push({texto:`Espa&ccedil;os de constru&ccedil;&atilde;o esgotados (${S.base.instalacoes.length}/${local.slots}).`,acao:'Ver constru&ccedil;&otilde;es',fn:()=>abrirConstrucoes()});
+  if(typeof garantirInventarioBase==='function' && typeof pesoInventarioBase==='function'){
+    const estoque=garantirInventarioBase(),peso=pesoInventarioBase();
+    if(estoque && peso>=estoque.capacidade)avisos.push({texto:`Estoque da base cheio (${peso}/${estoque.capacidade}). Construa um estoque ou retire itens.`,acao:'Abrir estoque',fn:()=>abrirInventarioBase()});
+  }
+  box.innerHTML=avisos.map((aviso,i)=>`<div class="avisoJogo"><strong>${aviso.texto}</strong><button type="button" data-aviso="${i}">${aviso.acao}</button></div>`).join('');
+  box.querySelectorAll('[data-aviso]').forEach(botao=>botao.onclick=()=>avisos[Number(botao.dataset.aviso)]?.fn());
+}
 function render(){
   if(!S) return;
   sincronizarEstado();
   renderTopo();
   renderStatus();
+  renderAvisosJogo();
   renderBase();
   renderSobreviventes();
   renderFamilia();
@@ -3581,60 +3735,62 @@ function renderTopo(){
   const r = S.recursos;
   document.getElementById('recursos').innerHTML =
     Object.keys(NOMES_REC).map(k=>
-      `<span class="recItem"><img src="assets/UI/icons/${ICONES[k]}.png" alt="${NOMES_REC[k]}" onerror="this.hidden=true"> <b>${r[k]}</b></span>`
+      `<span class="recItem" title="${NOMES_REC[k]}" aria-label="${NOMES_REC[k]}: ${r[k]}"><img src="assets/UI/icons/${ICONES[k]}.png" alt="${NOMES_REC[k]}" onerror="this.hidden=true"> <b>${r[k]}</b></span>`
     ).join('');
+  const topoAmeaca=document.getElementById('topoAmeaca');
+  if(topoAmeaca){
+    const faixa=typeof faixaMuro==='function'?faixaMuro():{nome:'Arredores',cor:'#c0392b'};
+    const ruido=typeof barulhoBase==='function'?barulhoBase():{porHora:0,total:0};
+    const energia=S.base?.eletricidadeLigada&&S.recursos.eletricidade>0?'funcionando':'indisponivel';
+    const agua=S.base?.aguaLigada&&S.recursos.agua>0?'funcionando':'indisponivel';
+    topoAmeaca.innerHTML=`<div class="topoAmeacaResumo"><div class="topoAmeacaTitulo"><img src="assets/UI/icons/ameaca.png" alt=""> Amea&ccedil;a <b class="topoAmeacaValor" id="porcentagemMuro">${Math.round(S.base.ameaca)}%</b></div><div class="topoAmeacaBarra"><b id="barraMuro" style="width:${S.base.ameaca}%;background:${faixa.cor}"></b></div><div class="topoAmeacaMeta" id="legendaMuro">${faixa.nome} &middot; cerca de ${typeof zumbisFora==='function'?zumbisFora():Math.round(S.base.ameaca/2)} zumbis &middot; ru&iacute;do ${(ruido.porHora>=0?'+':'')}${ruido.porHora.toFixed(1)}/h &middot; energia: ${energia} &middot; &aacute;gua: ${agua}</div></div><button class="topoAmeacaMuro visorMuro" onclick="abrirMuro()" aria-label="Observar os arredores da base"><img id="imagemMuro" alt="Arredores da base"></button>`;
+  }
   atualizarControleSom();
 }
 
 function renderStatus(){
-  const p = S.player;
-  const membroAtual = S.familia.membros.find(m=>m.id === S.familia.atual);
-  const nomeAtual = membroAtual?.nome || S.familia.liderança?.nome || 'Sobrevivente';
-  const gravidezAtual = S.familia.gravidez && membroAtual && S.familia.gravidez.maeId === membroAtual.id ? dadosGravidez() : null;
-  const bar = (v, max, cor) =>
-    `<div class="barraMini"><div style="width:${clamp(v/max*100,0,100)}%;background:${cor}"></div></div>`;
-
-  document.getElementById('statusJogador').innerHTML = `
-    <h3><button class="nomePerfil" onclick="abrirPerfilPrincipal()">${esc(nomeAtual)}</button></h3>
-    <div class="statLinha"><span>Idade</span><b>${idadeAtual()} anos</b></div>
-    <div class="notaBase">${p.emExcursao ? `Em excursão · ${esc(S.base.excursao?.alvoNome || 'fora da base')}` : (membroAtual?.doenca || membroAtual?.ferido) ? situacaoNPC(membroAtual) : 'Saudável'}</div>
-    <div class="statLinha"><span>Experiência</span><b>${p.experiencia || 0}</b></div>
-    <div class="statLinha"><span>Nível</span><b>${p.nivel || 1}</b></div>
-    <div class="statLinha"><span>Ânimo</span><b>${Math.round(p.moral ?? 70)}</b></div>
-    <div class="statLinha"><span>Perks</span><b>${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</b></div>
-    <div class="statLinha"><span>Conhecimentos</span><b>${garantirConhecimentos(p).length}/${Object.keys(CONHECIMENTOS_APOCALIPSE).length}</b></div>
-    <div class="statLinha"><span>Comportamento</span><b>${esc(comportamentoTexto(p.comportamento || {}))}</b></div>
-    ${gravidezAtual ? `<div class="gravidezPainel" onclick="abrirEstagioGravidez()"><strong>${gravidezAtual.nome}</strong><span>${gravidezAtual.dias}/280 dias · clique para acompanhar</span></div>` : ''}
-    <div class="statLinha"><span>Vida</span><b>${Math.round(p.vida)}/${p.vidaMax}</b></div>
-    ${bar(p.vida, p.vidaMax, '#a83232')}
-    <div class="statLinha"><span>Energia</span><b>${Math.round(p.energia)}</b></div>
-    ${bar(p.energia, 100, '#c9a227')}
-    <div class="statLinha"><span>Fome</span><b>${Math.round(p.fome)}</b></div>
-    ${bar(p.fome, 100, '#d4793f')}
-    <div class="statLinha"><span>Sede</span><b>${Math.round(p.sede)}</b></div>
-    ${bar(p.sede, 100, '#3f7fd4')}
-    <div class="statLinha" style="margin-top:10px;border-top:1px solid #2b332e;padding-top:8px">
-      <span>Corpo a corpo</span><b>${esc(armaEquipada(p,'corpo')?.nome || 'Nenhuma')}</b></div>
-    <div class="statLinha"><span>Arma de fogo</span><b>${esc(armaEquipada(p,'fogo')?.nome || 'Nenhuma')}</b></div>
-    <div class="statLinha"><span>Proteção</span><b>${protecaoArmadura(p)}%</b></div>
-    <div class="statLinha"><span>Força</span><b>${p.forca}</b></div>
-    <div class="statLinha"><span>Agilidade</span><b>${p.agilidade}</b></div>
-    <div class="statLinha"><span>Inteligência</span><b>${p.inteligencia}</b></div>
-    <div class="statLinha"><span>Carisma</span><b>${p.carisma}</b></div>
-    <div class="statLinha"><span>Resistência</span><b>${p.resistencia}</b></div>
-  `;
+  const p=S.player;
+  const atual=membroAtual();
+  const nome=atual?.nome || p.nome || 'Sobrevivente';
+  const estado=p.emExcursao
+    ? `Em excurs&atilde;o &middot; ${esc(S.base.excursao?.alvoNome || 'fora da base')}`
+    : (atual?.doenca || atual?.ferido || atual?.ferimentos?.length ? 'Precisa de cuidados' : 'Saud&aacute;vel');
+  const bar=(valor,max,cor)=>`<i class="perfilTopoBarra"><b style="width:${clamp((Number(valor)||0)/(Number(max)||1)*100,0,100)}%;background:${cor}"></b></i>`;
+  const armaCorpo=armaEquipada(p,'corpo')?.nome || 'Nenhuma';
+  const armaFogo=armaEquipada(p,'fogo')?.nome || 'Nenhuma';
+  const conhecimentos=garantirConhecimentos(p);
+  const totalConhecimentos=Object.keys(CONHECIMENTOS_APOCALIPSE||{}).length;
+  const gravidezAtual=S.familia.gravidez && atual && S.familia.gravidez.maeId===atual.id ? dadosGravidez() : null;
+  document.getElementById('statusJogador').innerHTML=`
+    <div class="perfilTopoIdentidade">
+      <div class="perfilTopoNomeLinha"><button class="nomePerfil" onclick="abrirPerfilPrincipal()">${esc(nome)}</button><button type="button" class="perfilTopoInventario" onclick="abrirInventario()" title="Abrir invent&aacute;rio (I)">Invent&aacute;rio</button></div>
+      <span class="perfilTopoMeta">${idadeAtual()} anos &middot; ${esc(p.especialidade || 'Sobrevivente')}</span>
+      <span class="perfilTopoEstado">${estado}</span>
+    </div>
+    <div class="perfilTopoNecessidades" aria-label="Necessidades do personagem">
+      <span><img src="assets/UI/icons/vida.png" alt="Vida"><b>Vida ${Math.round(p.vida)}/${p.vidaMax}</b>${bar(p.vida,p.vidaMax,'#a83232')}</span>
+      <span><img src="assets/UI/icons/energia.png" alt="Energia"><b>Energia ${Math.round(p.energia)}</b>${bar(p.energia,100,'#c9a227')}</span>
+      <span><img src="assets/UI/icons/fome.png" alt="Fome"><b>Fome ${Math.round(p.fome)}</b>${bar(p.fome,100,'#d4793f')}</span>
+      <span><img src="assets/UI/icons/sede.png" alt="Sede"><b>Sede ${Math.round(p.sede)}</b>${bar(p.sede,100,'#3f7fd4')}</span>
+    </div>
+    <div class="perfilTopoDetalhes">
+      <span>N&iacute;vel <b>${p.nivel||1}</b></span>
+      <span>XP <b>${p.experiencia||0}</b></span>
+      <span>&Acirc;nimo<b>${Math.round(p.moral??70)}</b></span>
+      <span>Conhecimentos <b>${conhecimentos.length}/${totalConhecimentos}</b></span>
+      <span>Prote&ccedil;&atilde;o <b>${protecaoArmadura(p)}%</b></span>
+      <span>Armas <b>${esc(armaCorpo)} / ${esc(armaFogo)}</b></span>
+      ${gravidezAtual?`<span class="perfilTopoGravidez">${esc(gravidezAtual.nome)} &middot; ${gravidezAtual.dias}/280 dias</span>`:''}
+    </div>`;
 }
 
 function renderBase(){
   const el=document.getElementById('painelBase');
   if(!document.getElementById('dadosBase'))el.innerHTML=`
     <h3>Base e arredores</h3><div id="dadosBase"></div>
-    <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/ameaca.png" alt=""> Ameaça</span><b id="porcentagemMuro"></b></div>
-    <div class="barraMini"><div id="barraMuro"></div></div>
-    <button class="visorMuro" onclick="abrirMuro()" aria-label="Observar o muro e planejar a defesa"><img id="imagemMuro" alt="Arredores da base"><span id="legendaMuro"></span></button>
-    <div id="ruidoBase" class="notaBase"></div>
+    <div class="notaBase">Amea&ccedil;a, arredores e ru&iacute;do ficam no painel superior. Use Planos do muro para agir.</div>
     <div class="baseComandos"><button onclick="abrirConstrucoes()">Construir</button><button onclick="abrirLocaisBase()">Novos abrigos</button><button onclick="abrirMuro()">Planos do muro</button><button onclick="abrirRadio()">Rádio</button><button onclick="abrirExcursao()" ${radioInstalado()?'':'disabled title="Construa um rádio na base para liberar excursões."'}>Excursão</button><button onclick="acaoLocalizarVeiculo()">Localizar veículo</button><button onclick="abrirOficinaVeiculos()" ${temInstalacao('oficina')?'':'disabled title="Construa uma oficina mecânica para customizar veículos."'}>Oficina</button><button onclick="abrirServicosBase()">Serviços</button><button onclick="abrirSaude()">Saúde</button><button onclick="abrirInventarioBase()">Inventário</button></div>`;
-  const local=LOCAIS_BASE[S.base.local],faixa=faixaMuro(),ruido=barulhoBase();
+  const local=LOCAIS_BASE[S.base.local],faixa=faixaMuro();
   const statusServico=(nome,icone,ligado,estoque)=>{
     const estado=!ligado?'cortada':estoque<=0?'sem reserva':'funcionando';
     const cor=estado==='funcionando'?'#79b77a':estado==='cortada'?'#d56a5c':'#d2ae58';
@@ -3644,18 +3800,19 @@ function renderBase(){
   const e=S.base.excursao;
   const ordem=S.base.ordemRadio&&ORDENS_RADIO[S.base.ordemRadio.tipo];
   const resgates=S.sobreviventes.filter(m=>m.expedicao?.tipo==='resgate');
+  const inventarioBase=typeof garantirInventarioBase==='function'?garantirInventarioBase():{capacidade:32};
   document.getElementById('dadosBase').innerHTML=`<p class="notaBase"><b>${local.nome}</b> · ${S.base.instalacoes.length}/${local.slots} instalações</p>    <p class="notaBase">Saques nas proximidades: <b>${estoqueLootRestante('rua')}</b> restantes. Ao esgotar, só uma nova base renova os arredores.</p>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/barricada.png" alt=""> Barricadas</span><b>${S.base.barricadas}</b></div>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/base.png" alt=""> Defesa</span><b>${Math.round(calcularDefesa())}</b></div>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/base.png" alt=""> Moradores</span><b>${moradores()}/${capacidadeBase()}</b></div>
     <div class="statLinha"><span><img class="statIcon" src="assets/UI/icons/moral.png" alt=""> Moral</span><b>${Math.round(S.base.moral)}</b></div>
     <div class="servicosBase"><b>Serviços da cidade</b>${statusServico('Energia','eletricidade',S.base.eletricidadeLigada,S.recursos.eletricidade)}${statusServico('Água','agua',S.base.aguaLigada,S.recursos.agua)}</div>
-    <div class="servicosBase"><b>Inventário</b><br>${inventarioBaseTexto()}</div>
+    <div class="servicosBase"><b>Invent&aacute;rio da base</b> <span class="capacidadeBaseAviso">${pesoInventarioBase()}/${inventarioBase.capacidade}</span><br>${inventarioBaseTexto()}</div>
     <div class="servicosBase"><b>Garagem</b><br>${(S.base.veiculos||[]).length}/${S.base.vagasVeiculo} vagas · ${veiculos}${e?`<br><b>Excursão:</b> ${esc(e.alvoNome)} · ${e.status}`:''}${resgates.length?`<br><b>Resgate:</b> ${resgates.map(m=>`${esc(m.nome)} · ${Math.max(0,Math.ceil((m.expedicao.fim-S.tempoTotal)/60))}h`).join(', ')}`:''}${ordem?`<br><b>Ordem:</b> ${esc(ordem.nome)} · até o dia ${S.base.ordemRadio.fim}`:''}<br><b>Mural de horários:</b> ${S.base.muralHorarios?'instalado':'não instalado'}</div>`;
-  document.getElementById('porcentagemMuro').textContent=Math.round(S.base.ameaca)+'%';
-  const barra=document.getElementById('barraMuro');barra.style.width=S.base.ameaca+'%';barra.style.background=faixa.cor;
-  document.getElementById('legendaMuro').textContent=`${faixa.nome} · cerca de ${zumbisFora()} zumbis. Clique para observar.`;
-  document.getElementById('ruidoBase').textContent=`Ruído: ${ruido.total.toFixed(1)} · ameaça ${ruido.porHora>=0?'+':''}${ruido.porHora.toFixed(1)}/h${emSilencio()?' · silêncio ativo':''}`;
+  const porcentagem=document.getElementById('porcentagemMuro');
+  if(porcentagem)porcentagem.textContent=Math.round(S.base.ameaca)+'%';
+  const barra=document.getElementById('barraMuro');
+  if(barra){barra.style.width=S.base.ameaca+'%';barra.style.background=faixa.cor;}
   atualizarImagemMuro();
 }
 
@@ -3689,47 +3846,49 @@ function barraRelacao(nome, valor, classe=''){
 }
 
 function abrirGrupo(){
-  const vivos = S.sobreviventes.filter(s=>s.vivo);
-  const grupos = Object.keys(ROTULOS_TAREFA).map(tarefa=>{
-    const pessoas = vivos.map((s,i)=>({s,i})).filter(({s})=>s.tarefa === tarefa);
-    if(!pessoas.length) return '';
-    return `<div class="grupoSecao"><h4>${ROTULOS_TAREFA[tarefa]}</h4>${pessoas.map(({s,i})=>`
+  const vivos=S.sobreviventes.filter(s=>s.vivo);
+  const grupos=Object.keys(ROTULOS_TAREFA).map(tarefa=>{
+    const pessoas=vivos.map((s,i)=>({s,i})).filter(({s})=>s.tarefa===tarefa);
+    if(!pessoas.length)return '';
+    return `<div class="grupoSecao"><h4>${ROTULOS_TAREFA[tarefa]}</h4>${pessoas.map(({s})=>`
       <button class="acaoRelacao" onclick="abrirInteracoes(${S.sobreviventes.indexOf(s)})">
-        <strong>${esc(s.nome)}</strong> · Nível ${s.nivel || 1}<br>
-        <span class="pessoaMeta">${esc(s.especialidade || 'Sobrevivente')} · ${situacaoNPC(s)} · Ânimo ${Math.round(s.moral ?? 70)}</span>
+        <strong>${esc(s.nome)}</strong> \u00b7 N\u00edvel ${s.nivel||1}<br>
+        <span class="pessoaMeta">${esc(s.especialidade||'Sobrevivente')} \u00b7 ${situacaoNPC(s)} \u00b7 \u00c2nimo ${Math.round(s.moral??70)}</span>
       </button>`).join('')}</div>`;
   }).join('');
-  abrirPainel('Grupo do acampamento', grupos || '<span class="idle">Ninguém além de você.</span>', [{texto:'Fechar grupo',fn:()=>{}}]);
+  abrirPainel('Grupo do acampamento',grupos||'<span class="idle">Ningu\u00e9m al\u00e9m de voc\u00ea.</span>',[{texto:'Fechar grupo',fn:()=>{}}]);
 }
 
 function abrirInteracoes(i){
-  const pessoa = S.sobreviventes[i];
-  if(!pessoa || !pessoa.vivo) return;
-  const rel = pessoa.relacao || (pessoa.relacao = {amizade:50,respeito:50,romance:0,status:'solteiro'}); rel.status ||= 'solteiro';
-  const familia = pessoa.familiaId ? S.familia.membros.find(m=>m.id === pessoa.familiaId) : null;
-  const parceiroValido = familia && !impedimentoBebe(familia);
-  const opcoes = [
-    {texto:'AMIGÁVEL · Conversar', fn:()=>iniciarInteracao(i,'conversar')},
-    {texto:'AMIGÁVEL · Abraçar', fn:()=>iniciarInteracao(i,'abracar')},
-    {texto:'AMIGÁVEL · Conversa profunda', fn:()=>iniciarInteracao(i,'profunda')},
-    {texto:'ROTINA · Treinar junto', fn:()=>iniciarInteracao(i,'treinar')},
-    {texto:'ROTINA · Passar um tempo juntos', fn:()=>iniciarInteracao(i,'divertir')}
+  const pessoa=S.sobreviventes[i];
+  if(!pessoa||!pessoa.vivo)return;
+  const rel=pessoa.relacao||(pessoa.relacao={amizade:50,respeito:50,romance:0,status:'solteiro'});rel.status||='solteiro';
+  const familia=pessoa.familiaId?S.familia.membros.find(m=>m.id===pessoa.familiaId):null;
+  const parceiroValido=familia&&!impedimentoBebe(familia);
+  const requisito=(amizade,romance=0)=>({disabled:rel.amizade<amizade||rel.romance<romance,title:`Requer amizade ${amizade}${romance?` e romance ${romance}`:''}.`});
+  const opcoes=[
+    {tipo:'cabecalho',texto:'Conviv\u00eancia e amizade'},
+    {texto:'Conversar',fn:()=>iniciarInteracao(i,'conversar')},
+    {texto:'Abra\u00e7ar - amizade 25',...requisito(25),fn:()=>iniciarInteracao(i,'abracar')},
+    {texto:'Conversa profunda - amizade 45',...requisito(45),fn:()=>iniciarInteracao(i,'profunda')},
+    {tipo:'cabecalho',texto:'Rotina e apoio'},
+    {texto:'Treinar junto',fn:()=>iniciarInteracao(i,'treinar')},
+    {texto:'Passar um tempo juntos',fn:()=>iniciarInteracao(i,'divertir')}
   ];
   if(podeRomance(pessoa)){
-    opcoes.push({texto:'ROMÂNTICA · Flertar',fn:()=>iniciarInteracao(i,'flertar')},{texto:'ROMÂNTICA · Beijar',fn:()=>iniciarInteracao(i,'beijar')},{texto:'ROMÂNTICA · Expressar amor',fn:()=>iniciarInteracao(i,'amor')});
-    if(rel.amizade>=70 && rel.romance>=60)opcoes.push({texto:'COMPROMISSO · COMEÇAR a namorar',fn:()=>iniciarInteracao(i,'namorar')});
-    if(rel.status==='namorando' && rel.amizade>=80 && rel.romance>=85)opcoes.push({texto:'COMPROMISSO · Pedir em casamento',fn:()=>iniciarInteracao(i,'casar')});
+    opcoes.push({tipo:'cabecalho',texto:'Romance e compromisso'},{texto:'Flertar - amizade 55',...requisito(55),fn:()=>iniciarInteracao(i,'flertar')},{texto:'Beijar - amizade 65 + romance 35',...requisito(65,35),fn:()=>iniciarInteracao(i,'beijar')},{texto:'Expressar amor - amizade 70 + romance 60',...requisito(70,60),fn:()=>iniciarInteracao(i,'amor')});
+    if(rel.amizade>=70&&rel.romance>=60)opcoes.push({texto:'Come\u00e7ar a namorar',fn:()=>iniciarInteracao(i,'namorar')});
+    if(rel.status==='namorando'&&rel.amizade>=80&&rel.romance>=85)opcoes.push({texto:'Pedir em casamento',fn:()=>iniciarInteracao(i,'casar')});
   }
-  if(pessoa.ferido) opcoes.push({texto:'Ajudar o ferido',fn:()=>iniciarInteracao(i,'ajudar')});
-  if(parceiroValido) opcoes.push({texto:'Tentar ter um bebê',fn:()=>iniciarInteracao(i,'bebe')});
-  if(pessoa.doenca)opcoes.push({texto:'Tratar doença · 1 remédio · 1h',fn:()=>iniciarTratamento(pessoa.id)});
-  opcoes.push({texto:'Escolher função',fn:()=>abrirFuncoes(i)});
-  abrirPainel(`Conversar com ${esc(pessoa.nome)}`,`
-    <div class="pessoaModal"><strong>${esc(pessoa.nome)}</strong><span class="pessoaMeta">${rotuloGenero(pessoa.genero)} · ${esc(pessoa.especialidade || 'Sobrevivente')} · Nível ${pessoa.nivel || 1}</span>
-      ${barraRelacao('Amizade',rel.amizade)}${barraRelacao('Respeito',rel.respeito,'respeito')}${barraRelacao('Romance',rel.romance,'romance')}
-    </div>
-    <p>Ânimo: <b>${Math.round(pessoa.moral ?? 70)}</b> · Função: <b>${ROTULOS_TAREFA[pessoa.tarefa]}</b><br>${situacaoNPC(pessoa)}</p>`,
-    opcoes.concat([{texto:'Voltar ao grupo',fn:()=>abrirGrupo()}]));
+  if(pessoa.ferido||pessoa.doenca){
+    opcoes.push({tipo:'cabecalho',texto:'Cuidados'});
+    if(pessoa.ferido)opcoes.push({texto:'Ajudar nos ferimentos',fn:()=>iniciarInteracao(i,'ajudar')});
+    if(pessoa.doenca)opcoes.push({texto:'Tratar doen\u00e7a - 1 rem\u00e9dio - 1h',fn:()=>iniciarTratamento(pessoa.id)});
+  }
+  opcoes.push({tipo:'cabecalho',texto:'Fam\u00edlia e comunidade'});
+  if(parceiroValido)opcoes.push({texto:'Tentar ter um beb\u00ea',fn:()=>iniciarInteracao(i,'bebe')});
+  opcoes.push({texto:'Escolher fun\u00e7\u00e3o',fn:()=>abrirFuncoes(i)});
+  abrirPainel(`Intera\u00e7\u00f5es com ${esc(pessoa.nome)}`,`<div class="pessoaModal"><strong>${esc(pessoa.nome)}</strong><span class="pessoaMeta">${rotuloGenero(pessoa.genero)} - ${esc(pessoa.especialidade||'Sobrevivente')} - N\u00edvel ${pessoa.nivel||1}</span>${barraRelacao('Amizade',rel.amizade)}${barraRelacao('Respeito',rel.respeito,'respeito')}${barraRelacao('Romance',rel.romance,'romance')}</div><p>&Acirc;nimo: <b>${Math.round(pessoa.moral??70)}</b> - Fun\u00e7\u00e3o: <b>${ROTULOS_TAREFA[pessoa.tarefa]}</b><br>${situacaoNPC(pessoa)}</p>`,opcoes.concat([{texto:'Voltar ao grupo',fn:()=>abrirGrupo()}]));
 }
 
 function alternarRotina(i){ abrirFuncoes(i); }
@@ -3807,38 +3966,27 @@ function tentarBebeComPessoa(pessoa){
 }
 
 function renderFamilia(){
-  const el = document.getElementById('painelFamilia');
-  if(!el || !S.familia) return;
+  const el=document.getElementById('painelFamilia');
+  if(!el||!S.familia)return;
   el.classList.add('painelFamiliaClicavel');
-  el.setAttribute('role', 'button');
-  el.setAttribute('tabindex', '0');
-  el.setAttribute('aria-label', 'Abrir árvore genealógica');
-  el.onclick = abrirArvore;
-  el.onkeydown = evento => { if(evento.key === 'Enter' || evento.key === ' '){ evento.preventDefault(); abrirArvore(); } };
-  const atual = membroAtual();
+  el.setAttribute('role','button');
+  el.setAttribute('tabindex','0');
+  el.setAttribute('aria-label','Abrir o perfil e a arvore familiar');
+  el.onclick=abrirPerfilPrincipal;
+  el.onkeydown=evento=>{if(evento.key==='Enter'||evento.key===' '){evento.preventDefault();abrirPerfilPrincipal();}};
+  const atual=membroAtual();
   S.familia.membros.forEach(m=>{
-    if(m.id === S.familia.atual) m.vivo = S.vivo;
-    const s = S.sobreviventes.find(sobrevivente=>sobrevivente.familiaId === m.id);
-    if(s) m.vivo = s.vivo;
+    if(m.id===S.familia.atual)m.vivo=S.vivo;
+    const s=S.sobreviventes.find(sobrevivente=>sobrevivente.familiaId===m.id);
+    if(s)m.vivo=s.vivo;
   });
-  const grupos = {};
-  S.familia.membros.filter(m=>m.parentesco!=='Comunidade').forEach(m=>{
-    if(!grupos[m.geracao]) grupos[m.geracao] = [];
-    grupos[m.geracao].push(m);
-  });
-  const linhas = Object.keys(grupos).sort((a,b)=>a-b).map(geracao=>{
-    const nos = grupos[geracao].map(m=>{
-    const classe = [m.id === S.familia.atual ? 'atual' : '', !m.vivo ? 'morto' : ''].join(' ');
-    const idade = idadeMembro(m);
-    const marca = m.id === S.familia.atual ? '<small>Líder ATUAL</small>' : m.filhos.length ? `<small>${m.filhos.length} descendente(s)</small>` : '';
-    return `<span class="noFamilia ${classe}" role="button" tabindex="0" onclick="event.stopPropagation();abrirPerfilFamilia(${m.id})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();abrirPerfilFamilia(${m.id})}"><strong>${esc(m.nome)}</strong><span>${esc(m.parentesco)} · ${idade} anos</span>${marca}</span>`;
-    }).join('');
-    return `<div class="arvoreGeracao"><span class="geracaoNome">G${Number(geracao)+1}</span>${nos}</div>`;
-  }).join('');
-  const nomeLider = atual?.nome || S.familia.liderança?.nome || 'Sem sucessor';
-  el.innerHTML = `<div class="painelResumoAcao"><h3>FAMÍLIA</h3><button class="botaoVisualizar" onclick="event.stopPropagation();abrirArvore()">Visualizar</button></div>
-    <div class="familiaAtual"><strong>${esc(nomeLider)}</strong><span>${atual ? 'Linhagem ativa' : 'Liderança da comunidade'} · ${S.familia.membros.filter(m=>m.vivo && m.parentesco!=='Comunidade').length} vivos</span></div>
-    <div class="arvore">${linhas || '<span class="idle">A linhagem começa aqui.</span>'}</div>`;
+  const familiares=S.familia.membros.filter(m=>m.parentesco!=='Comunidade');
+  const vivos=familiares.filter(m=>m.vivo).length;
+  const parceiro=atual?.parceiro?S.familia.membros.find(m=>m.id===atual.parceiro):null;
+  const filhos=(atual?.filhos||[]).map(id=>S.familia.membros.find(m=>m.id===id)).filter(Boolean);
+  const lider=Object.entries(S.familia).find(([chave])=>chave.startsWith('lideran'))?.[1];
+  const resumo=familiares.slice(0,6).map(m=>`<span class="noFamilia ${m.id===S.familia.atual?'atual':''} ${m.vivo?'':'morto'}" role="button" tabindex="0" onclick="event.stopPropagation();abrirPerfilFamilia(${m.id})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();abrirPerfilFamilia(${m.id})}"><strong>${esc(m.nome)}</strong><span>${esc(m.parentesco)} &middot; ${idadeMembro(m)} anos</span></span>`).join('');
+  el.innerHTML=`<div class="painelResumoAcao"><h3>Fam&iacute;lia</h3><button class="botaoVisualizar" onclick="event.stopPropagation();abrirPerfilPrincipal()">Abrir perfil</button></div><div class="familiaAtual"><strong>${esc(atual?.nome||lider?.nome||'Sem sucessor')}</strong><span>${atual?'Linhagem ativa':'Lideran&ccedil;a da comunidade'} &middot; ${vivos} vivos</span></div><div class="perfilVinculos"><span><b>Parceiro:</b> ${parceiro?esc(parceiro.nome):'Nenhum'}</span><span><b>Filhos:</b> ${filhos.length?filhos.map(f=>esc(f.nome)).join(', '):'Nenhum'}</span></div><div class="arvore familiaResumoPreview">${resumo||'<span class="idle">A linhagem come&ccedil;a aqui.</span>'}</div><p class="notaBase">A &aacute;rvore completa e os v&iacute;nculos ficam dentro do perfil do personagem.</p>`;
 }
 
 function montarArvoreCompleta(){
@@ -3900,20 +4048,38 @@ function abrirPerfilFamilia(id){
     [{ texto:membro.doenca || membro.ferido ? 'Tratar na enfermaria · 1 remédio' : 'Fechar perfil', fn:()=>membro.doenca || membro.ferido ? iniciarTratamento(membro.id) : abrirArvore() },{ texto:'Voltar para a árvore', fn:()=>abrirArvore() }]);
 }
 
+function familiaPerfilHtml(membro){
+  const m=membro||membroAtual();
+  if(!m||!S?.familia)return '';
+  const pessoa=id=>S.familia.membros.find(x=>x.id===id);
+  const pais=(m.pais||[]).map(pessoa).filter(Boolean).map(x=>esc(x.nome)).join(', ')||'N&atilde;o registrados';
+  const filhos=(m.filhos||[]).map(pessoa).filter(Boolean).map(x=>esc(x.nome)).join(', ')||'Nenhum';
+  const parceiro=m.parceiro?pessoa(m.parceiro):null;
+  return `<section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Fam&iacute;lia e linhagem</span><button class="botaoVisualizar" type="button" onclick="abrirArvore()">Abrir &aacute;rvore completa</button></div><div class="perfilVinculos"><span><b>Pais:</b> ${pais}</span><span><b>Parceiro:</b> ${parceiro?esc(parceiro.nome):'Nenhum'}</span><span><b>Filhos:</b> ${filhos}</span></div><details class="perfilArvore"><summary>Expandir &aacute;rvore familiar</summary><div class="arvoreModal">${montarArvoreCompleta()||'<span class="idle">A linhagem come&ccedil;a aqui.</span>'}</div></details></section>`;
+}
+
 function abrirPerfilPrincipal(){
-  if(!S) return;
-  const membro = membroAtual();
-  const p = S.player;
-  const nome = membro?.nome || S.familia.liderança?.nome || p.nome || 'Sobrevivente';
-  const imagem = retratoPessoa(p);
+  if(!S)return;
+  const membro=membroAtual(),p=S.player;
+  const lider=Object.entries(S.familia||{}).find(([chave])=>chave.startsWith('lideran'))?.[1];
+  const nome=membro?.nome||lider?.nome||p.nome||'Sobrevivente';
+  const imagem=retratoPessoa(p);
+  const saude=membro?.doenca||membro?.ferido ? situacaoNPC(membro) : 'Nenhum ferimento registrado.';
   abrirPainel(`Perfil de ${esc(nome)}`,`
-    <img class="perfilPrincipalImagem" src="${imagem}" alt="Aparência de ${esc(nome)}" onerror="this.hidden=true">
-    <p><b>Gênero:</b> ${rotuloGenero(p.genero)}<br><b>Idade:</b> ${idadeAtual()} anos<br><b>Especialidade:</b> ${esc(p.especialidade || 'Sobrevivente')}</p>
-    <p><b>Nível ${p.nivel || 1}</b> · Experiência ${p.experiencia || 0}<br><b>Ânimo:</b> ${Math.round(p.moral ?? 70)}</p>
-    <p><b>Força</b> ${p.forca} · <b>Agilidade</b> ${p.agilidade}<br><b>Inteligência</b> ${p.inteligencia} · <b>Carisma</b> ${p.carisma}<br><b>Resistência</b> ${p.resistencia}</p>
-    <div class="cartaoSaude">${mapaCorporal(membro || p)}<p>${membro?.doenca || membro?.ferido ? situacaoNPC(membro) : 'Nenhum ferimento registrado.'}</p></div>
-    <p><b>Comportamento:</b> ${esc(comportamentoTexto(p.comportamento || {}))}<br><b>Perks:</b> ${p.perks?.length ? esc(p.perks.join(' · ')) : 'Nenhum'}</p><p><b>Inventário</b><br>${inventarioTexto(p)}</p><p><b>Conhecimentos do apocalipse</b></p><div class="conhecimentosApocalipse">${textoConhecimentosApocalipse(p)}</div>`,
-    [{texto:membro?.doenca || membro?.ferido ? 'Tratar ferimento · 1 remédio' : 'Fechar perfil',fn:()=>membro?.doenca || membro?.ferido ? iniciarTratamento(membro.id) : fecharModal()},{texto:'Usar um item da mochila',fn:()=>abrirInventario()},{texto:'Fechar perfil',fn:()=>{}}]);
+    <img class="perfilPrincipalImagem" src="${imagem}" alt="Apar&ecirc;ncia de ${esc(nome)}" onerror="this.hidden=true">
+    <div class="perfilIdentidade">
+      <div class="perfilFicha"><span>G&ecirc;nero</span><b>${rotuloGenero(p.genero)}</b></div>
+      <div class="perfilFicha"><span>Idade</span><b>${idadeAtual()} anos</b></div>
+      <div class="perfilFicha"><span>Especialidade</span><b>${esc(p.especialidade||'Sobrevivente')}</b></div>
+    </div>
+    ${familiaPerfilHtml(membro)}
+    <section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Progress&atilde;o</span><span class="nivelBadge">N&iacute;vel ${p.nivel||1}</span></div><div class="perfilMetricas"><div class="perfilMetrica"><span>Experi&ecirc;ncia</span><b>${p.experiencia||0}</b></div><div class="perfilMetrica"><span>&Acirc;nimo</span><b>${Math.round(p.moral??70)}</b></div><div class="perfilMetrica"><span>Conhecimentos</span><b>${garantirConhecimentos(p).length}/${Object.keys(CONHECIMENTOS_APOCALIPSE).length}</b></div></div></section>
+    <section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Atributos</span></div><div class="perfilAtributos"><span>For&ccedil;a <b>${p.forca}</b></span><span>Agilidade <b>${p.agilidade}</b></span><span>Intelig&ecirc;ncia <b>${p.inteligencia}</b></span><span>Carisma <b>${p.carisma}</b></span><span>Resist&ecirc;ncia <b>${p.resistencia}</b></span></div></section>
+    <section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Sa&uacute;de</span></div><div class="cartaoSaude">${mapaCorporal(membro||p)}<p>${saude}</p></div></section>
+    <section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Comportamento e perks</span></div><p>${esc(comportamentoTexto(p.comportamento||{}))}<br><b>Perks:</b> ${p.perks?.length?esc(p.perks.join(' \u00b7 ')):'Nenhum'}</p></section>
+    <section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Invent&aacute;rio</span></div><p>${inventarioTexto(p)}</p></section>
+    <section class="perfilSecao"><div class="perfilSecaoTitulo"><span>Conhecimentos do apocalipse</span></div><div class="conhecimentosApocalipse">${textoConhecimentosApocalipse(p)}</div></section>`,
+    [{texto:membro?.doenca||membro?.ferido?'Tratar ferimento - 1 rem&eacute;dio':'Fechar perfil',fn:()=>membro?.doenca||membro?.ferido?iniciarTratamento(membro.id):fecharModal()},{texto:'Usar um item da mochila',fn:()=>abrirInventario()},{texto:'Fechar perfil',fn:()=>{}}]);
 }
 
 function slotInventarioVisual(nome,item,acao){
@@ -3923,7 +4089,7 @@ function slotInventarioVisual(nome,item,acao){
 }
 function renderInventarioVisual(p){
   garantirInventario(p);
-  const eq=p.inventario.equipados,armas=p.inventario.armas||[],itens=p.inventario.mochila.itens||[];
+  const eq=p.inventario.equipados,armas=p.inventario.armas||[],itens=p.inventario.mochila.itens||[],pesoAtual=pesoInventario(p),mochilaCheia=pesoAtual>=p.inventario.mochila.capacidade;
   const armaCorpo=armaEquipada(p,'corpo'),armaFogo=armaEquipada(p,'fogo');
   const armasRestantesEquipadas={};
   Object.values(eq.armas||{}).filter(Boolean).forEach(id=>armasRestantesEquipadas[id]=(armasRestantesEquipadas[id]||0)+1);
@@ -3940,7 +4106,7 @@ function renderInventarioVisual(p){
   const ammoBase=estoqueBase.map(i=>{const qtd=Math.min(10,i.quantidade);return `<div class="itemInventario"><div><b>${esc(i.nome)}</b><small>Estoque da base \u00b7 ${i.quantidade} unidades</small></div><button type="button" onclick="acaoInventarioVisual('municaoBase','${esc(i.id)}',${qtd})">Pegar ${qtd}</button></div>`;}).join('');
   const mochilaSlot=eq.mochila||{nome:'Mochila padr\u00e3o',tipo:'mochila',capacidade:0};
   const acaoMochila=eq.mochila?{tipo:'desequiparMochila',valor:'mochila',texto:'Desequipar'}:null;
-  return `<div class="inventarioVisual"><div class="inventarioColuna"><h3 class="inventarioTitulo">Equipamento</h3>${slotInventarioVisual('Arma corpo a corpo',armaCorpo,{tipo:'desequiparArma',valor:'corpo',texto:'Desequipar'})}${slotInventarioVisual('Arma de fogo',armaFogo,{tipo:'desequiparArma',valor:'fogo',texto:'Desequipar'})}${slotInventarioVisual('Mochila',mochilaSlot,acaoMochila)}${slotInventarioVisual('Headwear \u00b7 cabe\u00e7a',eq.armaduras.cabeca)}${slotInventarioVisual('Peito \u00b7 armadura',eq.armaduras.torso)}${slotInventarioVisual('Peito \u00b7 roupa',eq.roupas.torso)}${slotInventarioVisual('Bra\u00e7os',eq.armaduras.bracos)}${slotInventarioVisual('Pernas \u00b7 armadura',eq.armaduras.pernas)}${slotInventarioVisual('Pernas \u00b7 roupa',eq.roupas.pernas)}${slotInventarioVisual('P\u00e9s',eq.roupas.pes)}</div><div class="inventarioCorpo"><img src="${imagemCorpo(p)}" alt="Silhueta do corpo" onerror="this.hidden=true"><div class="inventarioProtecao">Prote\u00e7\u00e3o total: <b>${protecaoArmadura(p)}%</b></div></div><div class="inventarioMochila"><div class="inventarioMochilaCabecalho"><b>Conte\u00fado da mochila</b><span>${pesoInventario(p)}/${p.inventario.mochila.capacidade}</span></div><div class="inventarioItens">${cards}</div>${ammoBase?`<h3 class="inventarioTitulo" style="margin-top:14px">Muni\u00e7\u00e3o na base</h3><div class="inventarioItens">${ammoBase}</div>`:''}<p class="inventarioLegenda">A mochila equipada aparece no slot ao lado do corpo. Itens iguais acumulam quantidade; armas duplicadas podem ser guardadas mesmo quando outra unidade est\u00e1 equipada.</p></div></div>`;
+  return `<div class="inventarioVisual"><div class="inventarioColuna"><h3 class="inventarioTitulo">Equipamento</h3>${slotInventarioVisual('Arma corpo a corpo',armaCorpo,{tipo:'desequiparArma',valor:'corpo',texto:'Desequipar'})}${slotInventarioVisual('Arma de fogo',armaFogo,{tipo:'desequiparArma',valor:'fogo',texto:'Desequipar'})}${slotInventarioVisual('Mochila',mochilaSlot,acaoMochila)}${slotInventarioVisual('Headwear \u00b7 cabe\u00e7a',eq.armaduras.cabeca)}${slotInventarioVisual('Peito \u00b7 armadura',eq.armaduras.torso)}${slotInventarioVisual('Peito \u00b7 roupa',eq.roupas.torso)}${slotInventarioVisual('Bra\u00e7os',eq.armaduras.bracos)}${slotInventarioVisual('Pernas \u00b7 armadura',eq.armaduras.pernas)}${slotInventarioVisual('Pernas \u00b7 roupa',eq.roupas.pernas)}${slotInventarioVisual('P\u00e9s',eq.roupas.pes)}</div><div class="inventarioCorpo"><img src="${imagemCorpo(p)}" alt="Silhueta do corpo" onerror="this.hidden=true"><div class="inventarioProtecao">Prote\u00e7\u00e3o total: <b>${protecaoArmadura(p)}%</b></div></div><div class="inventarioMochila"><div class="inventarioMochilaCabecalho"><b>Conte\u00fado da mochila</b><span>${pesoAtual}/${p.inventario.mochila.capacidade}</span></div>${mochilaCheia?'<p class="avisoModal"><b>Mochila cheia.</b> Guarde, use ou desequipe itens antes de recolher mais.</p>':''}<div class="inventarioItens">${cards}</div>${ammoBase?`<h3 class="inventarioTitulo" style="margin-top:14px">Muni\u00e7\u00e3o na base</h3><div class="inventarioItens">${ammoBase}</div>`:''}<p class="inventarioLegenda">A mochila equipada aparece no slot ao lado do corpo. Itens iguais acumulam quantidade; armas duplicadas podem ser guardadas mesmo quando outra unidade est\u00e1 equipada.</p></div></div>`;
 }
 
 function desequiparArmaInventario(p,categoria){
@@ -3994,8 +4160,17 @@ function renderProgresso(){
 }
 
 function renderBotoes(){
+  const repousoObrigatorio=Boolean(membroAtual()?.ferido);
   document.querySelectorAll('.acaoBtn').forEach(b=>{
-    b.disabled = !!S.acao || !S.vivo || S.pausado;
+    const id=b.dataset.id;
+    const podeRepousar=['comer','beber','descansar','dormir','saude'].includes(id);
+    const bloqueadoRadio=id==='excursao'&&!radioInstalado();
+    const bloqueadoRepouso=repousoObrigatorio&&!podeRepousar;
+    const bloqueado=bloqueadoRadio||bloqueadoRepouso;
+    b.dataset.bloqueado=bloqueado?'1':'0';
+    b.disabled=bloqueado||!!S.acao||!S.vivo||S.pausado;
+    if(bloqueado)b.title=bloqueadoRadio?'Construa um radio na base para liberar excursao.':'Voce precisa repousar enquanto se recupera.';
+    else b.removeAttribute('title');
   });
 }
 

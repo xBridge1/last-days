@@ -14,34 +14,15 @@ Depois, acesse `http://localhost:8000/last_days.html`.
 
 ## Changelog
 
-### 17/09/2026
+### 21/09/2026
 
-- Corrigida a transferência de itens entre o inventário do personagem e o inventário da base, incluindo pilhas de itens e armas duplicadas.
-- A unidade de uma arma que está equipada permanece no personagem; as outras unidades podem ser guardadas normalmente.
-- Propriedades dos itens, como capacidade de mochila, agora são preservadas ao guardar e retirar itens da base.
-- Adicionado um slot visual de mochila equipada, com capacidade exibida e opção de desequipar.
-- Saves antigos com mochila ampliada recebem uma migração automática para o novo slot.
-
-### 16/09/2026
-
-- Adicionados slots separados para armas corpo a corpo e armas de fogo, com catalogo de pistolas, revolveres, submetralhadoras e rifles.
-- Armas civis agora aparecem com baixa chance em saques comuns; armas de uso militar ficam restritas a bloqueios e bases militares encontrados em expedicoes longas.
-- Municao passou a ser organizada por calibre, tem peso no inventario e e consumida durante o combate. A oficina permite fabricar municao e guardar o resultado no inventario da base.
-- O inventario da base aceita transferencias do jogador, acumula itens iguais e permite retirar ou desconstruir unidades para obter materiais da comunidade.
-- Saques proximos agora possuem estoque finito: buscas repetidas podem nao render itens, a duracao das saidas dos Scavengers aumenta quando a regiao e esvaziada e mudar de base renova o estoque local.
-- O modal de inventario exibe silhueta, slots de equipamento, mochila e transferencias de municao, mantendo os equipamentos separados do inventario compartilhado.
-
-
-### 15/09/2026
-
-- Scavengers passaram a ter ciclos variáveis: ficam fora de 3 a 6 horas e descansam de 2 a 5 horas antes da próxima saída.
-- O rádio pode receber o upgrade **Mural de horários**, permitindo escalar cada NPC para horário livre, madrugada, manhã, tarde ou noite. Os turnos controlam guardas, médicos, Scavengers e demais funções.
-- O sistema de ferimentos agora mantém a pessoa em repouso mesmo após o tratamento. O atendimento reduz o tempo de recuperação e elimina o risco associado, mas não remove o ferimento imediatamente.
-- Adicionado minigame de lockpick inspirado em Skyrim e Fallout, com rotação da gazua, aplicação de tensão, desgaste, barulho e recompensa. Os arquivos ficam em `assets/UI/lockpick/`.
-- Adicionados conhecimentos do apocalipse nos dias 3, 5 e 10: ataque na cabeça, sensibilidade dos zumbis ao som e disfarce do cheiro com sangue e vísceras.
-- O evento do dia 5 mostra os zumbis cegos atravessando a rua sem perceber o personagem imóvel; a descoberta registrada continua sendo apenas sobre o som.
-- O evento do dia 10 acontece durante uma caminhada pela cidade, com uma horda distante e um sobrevivente passando despercebido depois de se cobrir com restos de um zumbi.
-- O modo debug ganhou `debugJogo.lockpick()` para testar a fechadura diretamente no console do navegador.
+- Reorganizada a interface principal: dia, clima, suprimentos, ameaça e perfil ficam mais próximos, reduzindo a rolagem.
+- A ameaça passou a ficar em destaque no topo, com a imagem dos arredores logo abaixo da porcentagem.
+- Adicionados avisos na página para mochila cheia, base lotada, limite de construções e estoque da base cheio.
+- A instalação **Estoque** aumenta a capacidade de armazenamento da comunidade; transferências e fabricação agora respeitam o limite total de peso.
+- Construções sem espaço ou sem materiais ficam desativadas e mostram o motivo do bloqueio.
+- Ícones de recursos receberam nomes ao passar o mouse, rótulos acessíveis e melhor identificação visual.
+- Modais informativos receberam fechamento por **X**, suporte à tecla **Esc** e botões desativados mais claros.
 
 ## Fluxo inicial
 
