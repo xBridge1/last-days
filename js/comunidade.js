@@ -619,7 +619,7 @@ function abrirMuro(){
   const r=barulhoBase();
   abrirPainel('Olhar além do muro',`<p><b>${faixaMuro().nome}</b> · ameaça ${Math.round(S.base.ameaca)}% · cerca de ${zumbisFora()} zumbis.</p><p>Barricadas: ${S.base.barricadas} · defesa ${Math.round(calcularDefesa())} · ${S.base.armadilhas} armadilhas prontas.</p><p>A aglomeração cresce com o ruído. População: ${r.populacao.toFixed(1)}; movimento: ${r.movimento.toFixed(1)}; instalações: ${r.construcoes.toFixed(1)}; ação: ${r.acao.toFixed(1)}; motor: ${r.motor.toFixed(1)}. Variação atual: <b>${r.porHora>=0?'+':''}${r.porHora.toFixed(1)} pontos/h</b>.</p><p>Atenção de saqueadores: ${Math.round(S.base.atencaoHumana)}%. Aos 100% de ameaça, uma horda pode atacar. Depois de um ataque há um intervalo mínimo de 12 horas.</p><div class="catalogoBase">${Object.values(PLANOS_MURO).map(p=>`<p><b>${p.nome}</b><br>${p.desc}<br>${custoTexto(p)} · ${p.dur} min · ${p.energia} energia</p>`).join('')}</div>`,[
     ...Object.entries(PLANOS_MURO).map(([id,p])=>({texto:p.nome,fn:()=>iniciarPlanoMuro(id)})),
-    {texto:'Reforçar barricadas · 4 materiais',fn:acaoFortificar},{texto:'Fechar',fn:()=>{}}
+    {texto:'Reforçar barricadas · 4 materiais',fn:acaoFortificar},{texto:'Montar armadilha manualmente · 4 materiais',fn:abrirMinigameArmadilhas},{texto:'Fechar',fn:()=>{}}
   ]);
 }
 function iniciarPlanoMuro(id){

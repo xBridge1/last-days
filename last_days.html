@@ -628,7 +628,7 @@ body{
   <div class="disclaimer18Box">
     <div class="disclaimer18Selo" aria-hidden="true">18+</div>
     <h1 id="tituloDisclaimer18">Aviso de conteúdo adulto</h1>
-    <p>Este jogo contém violência gráfica, sangue, ferimentos, morte, doenças, horror psicológico e situações perturbadoras.</p>
+    <p>Este jogo contém linguagem vulgar, violência gráfica, sangue, ferimentos, morte, doenças, horror psicológico e situações perturbadoras.</p>
     <p class="disclaimer18Nota">Ao continuar, você confirma que tem 18 anos ou mais e que deseja prosseguir por sua própria conta.</p>
     <div class="disclaimer18Ops">
       <button id="confirmarIdade18" class="btnAbertura" type="button" onclick="confirmarIdade18()">Tenho 18 anos ou mais · Continuar</button>
@@ -1689,6 +1689,8 @@ const ACOES = [
   {id:'comer',nome:'Comer',desc:'~20min \u00b7 reduz a fome \u00b7 consome 1 comida'},
   {id:'beber',nome:'Beber \u00e1gua',desc:'~20min \u00b7 reduz a sede \u00b7 consome 1 \u00e1gua'},
   {id:'perto',nome:'Saquear casas pr\u00f3ximas',desc:'~1-2h \u00b7 risco baixo \u00b7 pouco loot'},
+  {id:'furtividade',nome:'Atravessar em furtividade',desc:'~10min \u00b7 reduz amea\u00e7a \u00b7 exige controle de ru\u00eddo'},
+  {id:'arrombar',nome:'Arrombar uma porta',desc:'~1h \u00b7 loot poss\u00edvel \u00b7 aumenta o ru\u00eddo'},
   {id:'expedicao',nome:'Expedi\u00e7\u00e3o distante',desc:'~4-9h \u00b7 risco alto \u00b7 muito loot'},
   {id:'excursao',nome:'Planejar excurs\u00e3o',desc:'V\u00e1rios dias \u00b7 equipe, carga, r\u00e1dio e ve\u00edculos'},
   {id:'localizarVeiculo',nome:'Localizar ve\u00edculo',desc:'~4h \u00b7 encontra um ve\u00edculo para a garagem'},
@@ -1732,7 +1734,7 @@ function construirAcoes(){
   const disponiveis=acoesDisponiveis();
   const grupos=[
     ['Sobreviv&ecirc;ncia',['comer','beber','descansar','dormir']],
-    ['Explora&ccedil;&atilde;o',['perto','expedicao','excursao','localizarVeiculo','procurar']],
+    ['Explora&ccedil;&atilde;o',['perto','furtividade','arrombar','expedicao','excursao','localizarVeiculo','procurar']],
     ['Base e defesa',['fortificar','cacar','gerador','construcoes','muro','radio']],
     ['Comunidade',['familia','ajudar','saude']]
   ];
@@ -1768,6 +1770,8 @@ function clicarAcao(id){
   if(id === 'excursao') return abrirExcursao();
   if(id === 'localizarVeiculo') return acaoLocalizarVeiculo();
   if(id === 'perto')     return acaoPerto();
+  if(id === 'furtividade') return abrirMinigameFurtividade();
+  if(id === 'arrombar') return abrirMinigameArrombamento();
   if(id === 'fortificar')return acaoFortificar();
   if(id === 'cacar')     return acaoCacar();
   if(id === 'descansar') return acaoDescansar();
@@ -2079,6 +2083,7 @@ function abrirRadio(){
   const ordem=S.base.ordemRadio,cfg=ordem&&ORDENS_RADIO[ordem.tipo];
   abrirPainel('Rádio da base',`<p>O rádio mantém contato com outros acampamentos e coordena trabalho interno.</p>${cfg?`<p>Ordem atual: <b>${cfg.nome}</b><br>Termina no dia ${ordem.fim}. ${cfg.desc}</p>`:'<p>Nenhuma ordem ativa.</p>'}<p><b>Mural de horários:</b> ${S.base.muralHorarios?'instalado · turnos configuráveis':'não instalado · exige 8 materiais e 2h'}</p>`,[
     ...Object.entries(ORDENS_RADIO).map(([id,o])=>({texto:`Emitir ordem: ${o.nome}`,fn:()=>iniciarOrdemRadio(id)})),
+    {texto:'Sintonizar uma transmissão',fn:abrirMinigameRadio},
     {texto:'Conversar com outro acampamento',fn:conversarRadio},
     {texto:'Ordem aos Scavengers: procurar alvo grande',fn:()=>abrirExcursao(true)},
     S.base.muralHorarios?{texto:'Abrir mural de horários',fn:abrirMuralHorarios}:{texto:'Instalar mural de horários · 8 materiais · 2h',fn:iniciarMuralHorarios},
@@ -2145,6 +2150,8 @@ function abrirOficinaVeiculos(){
   if(!veiculos.length){abrirPainel('Oficina mecânica','Nenhum veículo está disponível para manutenção agora.',[{texto:'Fechar',fn:()=>{}}]);return;}
   abrirPainel('Oficina mecânica','Escolha um veículo pronto para instalar uma melhoria.',[
     ...veiculos.map(v=>({texto:`${v.nome} · ${v.carga||v.capacidade*4} carga · ${v.combustivel} combustível`,fn:()=>abrirCustomizacaoVeiculo(v.id)})),
+    {texto:'Testar ligação direta em um veículo',fn:()=>abrirMinigameHotwire(veiculos[0].id)},
+    {texto:'Abastecer um veículo',fn:()=>abrirMinigameAbastecimento(veiculos[0].id)},
     {texto:'Fechar',fn:()=>{}}
   ]);
 }
@@ -2154,7 +2161,7 @@ function abrirCustomizacaoVeiculo(id){
   const instaladas=v.customizacoes||[];
   const opcoes=Object.entries(CUSTOMIZACOES_VEICULO).filter(([chave])=>!instaladas.includes(chave)).map(([chave,cfg])=>({texto:`${cfg.nome} · ${cfg.desc} · ${custoTexto(cfg.custo)}`,fn:()=>iniciarCustomizacaoVeiculo(id,chave)}));
    abrirPainel(`Customizar ${v.nome}`,`<p>Carga: <b>${v.carga||v.capacidade*4}</b> · combustível: <b>${v.combustivel}</b> · velocidade: <b>${Math.round((v.velocidade||.85)*100)}%</b></p><p>Melhorias instaladas: ${instaladas.map(chave=>CUSTOMIZACOES_VEICULO[chave]?.nome||chave).join(', ')||'nenhuma'}.</p>`,[
-    ...opcoes,{texto:'Voltar aos veículos',fn:abrirOficinaVeiculos},{texto:'Fechar',fn:()=>{}}
+    ...opcoes,{texto:'Testar ligação direta',fn:()=>abrirMinigameHotwire(id)},{texto:'Abastecer este veículo',fn:()=>abrirMinigameAbastecimento(id)},{texto:'Voltar aos veículos',fn:abrirOficinaVeiculos},{texto:'Fechar',fn:()=>{}}
   ]);
 }
 function iniciarCustomizacaoVeiculo(id,chave){
@@ -2711,15 +2718,17 @@ function abrirLockpick(alvo,recompensa){
   const distanciaAngular=(a,b)=>Math.abs(((a-b+540)%360)-180);
   function desenhar(){
     const texto=`<p>Você encontra ${esc(alvo)}. Posicione a gazua e aplique tensão como em uma fechadura real. Se o ângulo estiver errado, a ferramenta range e perde resistência.</p><div class="lockpickStatus"><span>Resistência da gazua: <b>${Math.max(0,estado.durabilidade)}%</b></span><span>Ângulo: <b>${estado.angulo}°</b></span></div><div class="lockpickBarra"><i style="width:${Math.max(0,estado.durabilidade)}%"></i></div><div class="lockpickDisco" aria-label="Posição da gazua"><img class="lockpickFechadura" src="assets/UI/lockpick/fechadura.png" alt="" onerror="this.hidden=true"><div class="lockpickCentro"></div><div class="lockpickPick" style="transform:rotate(${estado.angulo}deg)"></div><img class="lockpickGazua" src="assets/UI/lockpick/gazua.png" alt="Gazua" style="transform:rotate(${estado.angulo}deg)" onload="this.parentElement.classList.add('comArte')" onerror="this.hidden=true"><img class="lockpickChaveFenda" src="assets/UI/lockpick/chave-fenda.png" alt="" onerror="this.hidden=true"></div><p class="lockpickDica">${esc(estado.mensagem)}</p>`;
-    abrirPainel('Minigame de lockpick',texto,[
+    const textoComAuxilio=typeof auxilioMinigame==='function'?texto+auxilioMinigame('lockpick'):texto;
+    abrirPainel('Minigame de lockpick',textoComAuxilio,[
       {texto:'Girar gazua para a esquerda · 10°',fn:()=>girar(-10)},
       {texto:'Girar gazua para a direita · 10°',fn:()=>girar(10)},
       {texto:'Aplicar tensão',fn:tensionar},
       {texto:'Desistir e deixar o contêiner',fn:()=>log('Você desistiu do contêiner trancado para não fazer barulho.','info')}
     ]);
   }
-  function girar(delta){estado.angulo=(estado.angulo+delta+360)%360;estado.mensagem='A gazua mudou de posição. Agora tente aplicar tensão.';desenhar();}
+  function girar(delta){if(typeof registrarPratica==='function')registrarPratica('lockpick');estado.angulo=(estado.angulo+delta+360)%360;estado.mensagem='A gazua mudou de posição. Agora tente aplicar tensão.';desenhar();}
   function tensionar(){
+    if(typeof registrarPratica==='function')registrarPratica('lockpick');
     const distancia=distanciaAngular(estado.angulo,estado.alvo);
     if(distancia<=estado.tolerancia){
       consumirItemInventario(S.player,'gazua');aplicarGanhos(recompensa);lootItens(S.player,'cofre');
@@ -3429,6 +3438,12 @@ function modalFechavel(modal){
   return Boolean(modal?.painel) && modal.titulo!=='Combate' && modal.titulo!=='Minigame de lockpick';
 }
 
+function modalDoPrologo(titulo){
+  const normalizar=valor=>String(valor||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const texto=normalizar(titulo);
+  return Object.keys(PROLOGO_MIDIA).some(chave=>texto.includes(normalizar(chave)));
+}
+
 function abrirModal(titulo, texto, opcoes, painel=false, midia=null){
   const modal = {titulo,texto,opcoes,painel,midia:midia||midiaDoEvento(titulo)};
   if(modalAtivo){
@@ -3451,7 +3466,7 @@ function exibirModal(modal){
   m.hidden = false;
   const fonte=modal.midia?esc(modal.midia):'';
   const alarme=modal.titulo==='Um alarme começou a tocar';
-  const prologo=Boolean(PROLOGO_MIDIA[modal.titulo]),inventario=modal.titulo==='Invent\u00e1rio e equipamento';
+  const prologo=modalDoPrologo(modal.titulo),inventario=modal.titulo==='Invent\u00e1rio e equipamento';
   // Paineis informativos podem ser fechados; eventos e decisoes criticas continuam exigindo uma escolha.
   const podeFechar=modalFechavel(modal);
   const botaoFechar=podeFechar?'<button type="button" class="modalFechar" aria-label="Fechar modal" title="Fechar">&times;</button>':'';
@@ -3611,7 +3626,7 @@ function assumirLider(membro){
     moral:membro.moral ?? 70,conhecimentosApocalipse:[...(membro.conhecimentosApocalipse || [])],eventosConhecimentoVistos:[...(membro.eventosConhecimentoVistos || [])],especialidade:membro.especialidade,comportamento:{...membro.comportamento},
     imagem:membro.imagem || '',aparencia:membro.aparencia,
     passadoCriminoso:!!membro.passadoCriminoso,passadoRevelado:!!membro.passadoRevelado,
-    arma:'Nenhuma',armaBonus:0,bonusLoot:0,inventario:JSON.parse(JSON.stringify(membro.inventario||{armas:[],mochila:{capacidade:8,itens:[]},equipado:null,equipados:{roupas:{},armaduras:{}}})),vida:100,vidaMax:100,fome:15,sede:15,energia:100,emExcursao:false
+    arma:'Nenhuma',armaBonus:0,bonusLoot:0,minigameSkills:{...(membro.minigameSkills||{})},inventario:JSON.parse(JSON.stringify(membro.inventario||{armas:[],mochila:{capacidade:8,itens:[]},equipado:null,equipados:{roupas:{},armaduras:{}}})),vida:100,vidaMax:100,fome:15,sede:15,energia:100,emExcursao:false
   };
   garantirInventario(S.player);
   const armaNova=armaEquipada(S.player);
@@ -4345,5 +4360,6 @@ renderCriacao();
 </script>
 <script src="assets/muro/config.js"></script>
 <script src="js/comunidade.js"></script>
+<script src="js/minigames.js"></script>
 </body>
 </html>

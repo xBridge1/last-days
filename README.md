@@ -14,15 +14,16 @@ Depois, acesse `http://localhost:8000/last_days.html`.
 
 ## Changelog
 
-### 21/09/2026
+### 25/10/2026
 
-- Reorganizada a interface principal: dia, clima, suprimentos, ameaça e perfil ficam mais próximos, reduzindo a rolagem.
-- A ameaça passou a ficar em destaque no topo, com a imagem dos arredores logo abaixo da porcentagem.
-- Adicionados avisos na página para mochila cheia, base lotada, limite de construções e estoque da base cheio.
-- A instalação **Estoque** aumenta a capacidade de armazenamento da comunidade; transferências e fabricação agora respeitam o limite total de peso.
-- Construções sem espaço ou sem materiais ficam desativadas e mostram o motivo do bloqueio.
-- Ícones de recursos receberam nomes ao passar o mouse, rótulos acessíveis e melhor identificação visual.
-- Modais informativos receberam fechamento por **X**, suporte à tecla **Esc** e botões desativados mais claros.
+- Adicionados minigames de rádio, furtividade, arrombamento de portas, abastecimento, ligação direta e armadilhas, com os assets PNG organizados em `assets/UI/minigames`.
+- O lockpick existente foi integrado ao sistema de habilidades dos minigames.
+- Cada minigame agora registra prática por personagem, mantém níveis no save e libera auxílios graduais sem entregar automaticamente a solução.
+- A ligação direta não revela mais o próximo fio: usa cinco chances, registra erros, desativa fios já conectados e aumenta a ameaça quando produz faíscas.
+- Rádio, furtividade e arrombamento foram adicionados às ações de exploração; oficina, rádio e muro oferecem acesso aos minigames correspondentes.
+- O perfil do jogador passa a preservar `minigameSkills` ao trocar o líder da comunidade.
+- O aviso de conteúdo adulto informa também a presença de linguagem vulgar.
+- Mantidos os avisos de mochila/base cheias, os fechamentos por **X** e **Esc**, e os bloqueios de ações que exigem instalações.
 
 ## Fluxo inicial
 
