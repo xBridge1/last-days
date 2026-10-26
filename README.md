@@ -2,16 +2,6 @@
 
 `Últimos Dias` é um jogo de sobrevivência narrativa em um apocalipse zumbi. O mundo está começando a ruir, e cada decisão muda a saúde, o moral, os recursos e as relações da comunidade.
 
-## Como jogar
-
-O jogo é uma aplicação HTML/JavaScript sem etapa de compilação. Para executar localmente, abra `last_days.html` no navegador ou inicie um servidor estático na pasta do projeto:
-
-```powershell
-python -m http.server 8000
-```
-
-Depois, acesse `http://localhost:8000/last_days.html`.
-
 ## Changelog
 
 ### 25/10/2026
